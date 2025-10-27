@@ -1,0 +1,157 @@
+
+-----------------------
+https://github.com/mcmonkeyprojects/SwarmUI
+https://github.com/black-forest-labs/flux
+https://www.datacamp.com/tutorial/flux-ai
+https://huggingface.co/black-forest-labs/FLUX.1-schnell/tree/main
+https://huggingface.co/comfyanonymous/flux_text_encoders/tree/main
+https://huggingface.co/lllyasviel/flux1-dev-bnb-nf4/blob/main/flux1-dev-bnb-nf4-v2.safetensors
+https://huggingface.co/John6666/nsfw-master-flux-lora-merged-with-flux1-dev-fp16-v10-fp8-flux/blob/main/transformer/diffusion_pytorch_model-00002-of-00002.safetensors
+
+
+import torch
+from diffusers import FluxPipeline
+
+pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-schnell", torch_dtype=torch.bfloat16)
+pipe.enable_model_cpu_offload()
+prompt = "A cat holding a sign that says hello world"
+out = pipe(
+    prompt=prompt,
+    guidance_scale=0.0,
+    height=768,
+    width=1360,
+    num_inference_steps=4,
+    max_sequence_length=256,
+).images[0]
+out.save("image.png")
+
+
+
+import torch
+from diffusers import FluxPipeline
+
+pipe = FluxPipeline.from_pretrained("black-forest-labs/FLUX.1-dev", torch_dtype=torch.bfloat16)
+pipe.enable_model_cpu_offload()
+prompt = "a tiny astronaut hatching from an egg on the moon"
+out = pipe(
+    prompt=prompt,
+    guidance_scale=3.5,
+    height=768,
+    width=1360,
+    num_inference_steps=50,
+).images[0]
+out.save("image.png")
+
+######################################################################
+######################################################################
+https://medium.com/@amdadAI/4-methods-how-to-run-flux-locally-onwindows-mac-and-linux-544f4f11eab7
+https://github.com/huggingface/diffusers
+
+ 
+
+Installing on Linux
+sudo apt install git python3-pip python3-venv
+python3 -m pip --version
+# pip 25.1.1 from /usr/lib/python3/dist-packages/pip (python 3.13)
+# pip 24.0 from /usr/lib/python3/dist-packages/pip (python 3.12)
+
+
+sudo apt install wget
+wget https://github.com/mcmonkeyprojects/SwarmUI/releases/download/0.6.5-Beta/install-linux.sh -O install-linux.sh
+chmod +x install-linux.sh
+./install-linux.sh
+cd SwarmUI
+./launch-linux.sh
+./launch-linux.sh --launch_mode none --host 0.0.0.0 --port 7822
+RuntimeError: No HIP GPUs are available
+
+
+
+
+#sudo amdgpu-uninstall --rocmrelease=all
+sudo apt-get update
+wget https://repo.radeon.com/amdgpu-install/5.4.3/ubuntu/jammy/amdgpu-install_5.4.50403-1_all.deb 
+sudo apt-get install ./amdgpu-install_5.4.50403-1_all.deb
+sudo amdgpu-install --usecase=rocm,hip,mllib --no-dkms
+sudo usermod -a -G video,render $LOGNAME
+
+source venv/bin/activate
+pip3 uninstall torch torchvision torchaudio
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm5.4.2
+
+source venv/bin/activate
+export HSA_OVERRIDE_GFX_VERSION=10.3.0
+python main.py
+
+sudo usermod -a -G video,render $LOGNAME
+TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1 python main.py --use-pytorch-cross-attention --disable-smart-memory 
+....
+The first one is correct for ROCM (AMD):
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.1
+
+This installs CUDA pytorch (NVIDIA):
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu124
+You can't have both in one environment.
+....
+set -x HSA_OVERRIDE_GFX_VERSION 11.0.0
+set -x HCC_AMDGPU_TARGET gfx1100
+set -x PYTORCH_ROCM_ARCH gfx1100
+set -x AMDGPU_TARGETS gfx1100
+set -x TRITON_USE_ROCM ON
+
+set -x ROCM_PATH /opt/rocm-6.1.0
+set -x ROCR_VISIBLE_DEVICES 0
+set -x HIP_VISIBLE_DEVICES 0
+set -x USE_CUDA 0
+
+amdgpu-install --usecase=graphics,rocm,hip,mllib
+source venv/bin/activate.fish
+python3 -m pip list
+...
+sudo apt update
+sudo apt install amdgpu-dkms
+sudo apt install rocm-hip-libraries
+...
+sudo usermod -a -G render eduarte sudo usermod -a -G video eduarte
+sudo grep eduarte /etc/group
+HSA_OVERRIDE_GFX_VERSION=10.3.0 python entry_with_update.py
+
+
+export HSA_OVERRIDE_GFX_VERSION=11.0.0
+export HCC_AMDGPU_TARGET=gfx1101
+python3 entry_with_update.py
+
+
+
+...
+
+Linux Manual Install
+dotnet-sdk-8.0
+git clone https://github.com/mcmonkeyprojects/SwarmUI
+cd SwarmUI
+./launch-linux.sh
+./launch-linux.sh --launch_mode none --host 0.0.0.0 --port 7822
+http://localhost:7801/Install
+http://localhost:7801
+
+...
+
+
+dotnet-install: Attempting to download using aka.ms link https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.21/aspnetcore-runtime-8.0.21-linux-x64.tar.gz
+dotnet-install: Remote file https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.21/aspnetcore-runtime-8.0.21-linux-x64.tar.gz size is 42013551 bytes.
+dotnet-install: Extracting archive from https://builds.dotnet.microsoft.com/dotnet/aspnetcore/Runtime/8.0.21/aspnetcore-runtime-8.0.21-linux-x64.tar.gz
+dotnet-install: Downloaded file size is 42013551 bytes.
+dotnet-install: The remote and local file sizes are equal.
+dotnet-install: Installed version is 8.0.21
+dotnet-install: Adding to current process PATH: `/home/demos/.dotnet`. Note: This change will be visible only when sourcing script.
+dotnet-install: Note that the script does not resolve dependencies during installation.
+dotnet-install: To check the list of dependencies, go to https://learn.microsoft.com/dotnet/core/install, select your operating system and check the "Dependencies" section.
+dotnet-install: Installation finished successfully.
+dotnet-install: Attempting to download using aka.ms link https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-linux-x64.tar.gz
+Remote file https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-linux-x64.tar.gz size is 217023511 bytes.
+dotnet-install: Extracting archive from https://builds.dotnet.microsoft.com/dotnet/Sdk/8.0.415/dotnet-sdk-8.0.415-linux-x64.tar.gz
+dotnet-install: Downloaded file size is 217023511 bytes.
+To check the list of dependencies, go to https://learn.microsoft.com/dotnet/core/install, select your operating system and check the "Dependencies" section.
+
+ Downloading https://download.pytorch.org/whl/rocm6.4/torch-2.9.0%2Brocm6.4-cp312-cp312-manylinux_2_28_x86_64.whl (4473.0 MB)
+

@@ -1,0 +1,246 @@
+#############################################################
+Configure Ollama for Optimal Performance
+#############################################################
+
+brave://settings/clearBrowserData
+https://docs.docker.com/desktop/features/gpu/
+
+#docker container rename old-name new-name 
+docker container rename ollama old-ollama 
+   
+
+docker run --gpus=all -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+docker exec -it --gpus=all ollama  
+
+For code generation, use optimized configurations like 
+--temperature 0.1 --top-p 0.9 --num-ctx 4096 
+--temperature 0.1 --top-p 0.9--num-ctx 1024
+ollama run model_name < /dev/null to load them into memory without starting an interactive session
+
+
+Configure Ollama for Optimal Performance
+https://www.arsturn.com/blog/tips-for-speeding-up-ollama-performance
+https://markaicode.com/optimize-ollama-performance-tuning-guide/
+
+# Verify GPU detection
+ollama
+
+bash
+  export OLLAMA_NUM_THREADS=8 # Set the Number of Threads
+bash
+  export OLLAMA_CUDA=1 # Enable GPU Acceleration
+bash
+  export OLLAMA_MAX_LOADED=2 # Adjust Maximum Loaded Models
+bash
+  ollama run llama2:7b-q4_0 # Implementing Quantization
+bash
+  ollama run llama2 --context-size 2048 # Optimize Context Window Sizes
+bash
+  ollama run llama2 < /dev/null  # Caching Strategies
+bash
+  ollama run llama2 --verbose # Monitoring and Profiling
+  
+  
+Model Size	Memory Usage	Inference Speed	Best Use Case
+7B	4-8GB	Fast	General tasks, chatbots
+13B	8-16GB	Medium	Code generation, analysis
+34B+	20GB+	Slow	Complex reasoning, research
+
+# Download optimized model variants
+ollama pull llama2:7b-chat-q4_0    # 4-bit quantized
+ollama pull llama2:7b-chat-q8_0    # 8-bit quantized
+ollama pull llama2:7b-chat-fp16    # Full precision
+
+# Compare model performance
+ollama run llama2:7b-chat-q4_0 "Explain quantum computing"
+
+# Set memory limits in Ollama configuration
+export OLLAMA_MAX_LOADED_MODELS=2
+export OLLAMA_MAX_QUEUE=10
+export OLLAMA_NUM_PARALLEL=4
+
+# Configure memory usage per model
+ollama run --memory 8GB llama2:13b-chat
+
+docker exec -it ollama /bin/bash
+apt update && apt install nano
+# nano ~/.ollama/config.yaml
+max_loaded_models: 2
+max_queue: 10
+num_parallel: 4
+memory_limit: "16GB"
+gpu_memory_limit: "12GB"
+
+# Enable GPU layers (adjust based on VRAM)
+ollama run --gpu-layers 35 llama2:13b-chat
+
+# Monitor GPU usage
+nvidia-smi -l 1  # NVIDIA GPUs
+# or
+rocm-smi -l 1    # AMD GPUs
+
+# Conservative allocation (stable)
+export OLLAMA_GPU_OVERHEAD=2GB
+
+# Aggressive allocation (maximum performance)
+export OLLAMA_GPU_OVERHEAD=512MB
+
+# Multi-GPU setup
+export OLLAMA_GPU_SPLIT="0.6,0.4"  # 60% GPU0, 40% GPU1
+
+
+# Optimized configuration for code generation
+ollama run --temperature 0.1 --top-p 0.9 --num-ctx 4096 codellama:7b-code
+
+# Custom prompt template for better performance
+ollama create coding-assistant --file ./coding-modelfile
+
+
+# coding-modelfile
+FROM codellama:7b-code
+
+# Optimize for code generation
+PARAMETER temperature 0.1
+PARAMETER top_p 0.9
+PARAMETER top_k 40
+PARAMETER num_ctx 4096
+PARAMETER repeat_penalty 1.1
+
+# Optimized system prompt
+SYSTEM """You are a code assistant. Provide clean, efficient code with minimal explanation unless requested."""
+
+# Real-time chat optimization
+ollama run --num-predict 256 --num-ctx 2048 --temperature 0.7 llama2:7b-chat
+
+# Small context for simple tasks (saves memory)
+ollama run --num-ctx 1024 llama2:7b-chat
+
+# Large context for complex tasks (uses more memory)
+ollama run --num-ctx 8192 llama2:13b-chat
+
+# Dynamic context adjustment
+export OLLAMA_DYNAMIC_CONTEXT=true
+
+# Enable parallel request handling
+export OLLAMA_NUM_PARALLEL=8
+export OLLAMA_MAX_QUEUE=20
+
+# Start Ollama server with optimized settings
+ollama serve --host 0.0.0.0 --port 11434
+
+# performance-optimized-modelfile
+FROM llama2:7b-chat
+
+# Performance-focused parameters
+PARAMETER num_ctx 2048
+PARAMETER num_predict 256
+PARAMETER temperature 0.3
+PARAMETER top_p 0.9
+PARAMETER top_k 40
+PARAMETER repeat_penalty 1.05
+
+# Optimized system message
+SYSTEM """Be concise and direct. Avoid unnecessary explanations unless specifically requested."""
+
+# Custom stop sequences for faster completion
+PARAMETER stop "<|im_end|>"
+PARAMETER stop "\n\n"
+
+# Create the optimized model
+ollama create performance-assistant --file performance-optimized-modelfile
+
+# Test performance improvement
+time ollama run performance-assistant "Explain machine learning in 50 words"
+
+...
+
+# Reduce model size
+ollama pull llama2:7b-chat-q4_0  # Use quantized version
+
+# Limit concurrent models
+export OLLAMA_MAX_LOADED_MODELS=1
+
+# Clear model cache
+ollama rm --all
+ollama pull llama2:7b-chat  # Reload only needed models
+
+...
+# Check GPU utilization
+nvidia-smi
+
+# Reduce context window
+ollama run --num-ctx 1024 llama2:7b-chat
+
+# Use faster model variant
+ollama run llama2:7b-chat-q4_0 instead of llama2:13b-chat
+
+...
+# Check GPU drivers
+nvidia-smi  # NVIDIA
+rocm-smi    # AMD
+
+# Reinstall Ollama with GPU support
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# Verify GPU detection
+ollama info | grep -i gpu
+
+...
+# Dockerfile.ollama-optimized
+FROM ollama/ollama:latest
+
+# Set performance environment variables
+ENV OLLAMA_MAX_LOADED_MODELS=2
+ENV OLLAMA_NUM_PARALLEL=4
+ENV OLLAMA_GPU_OVERHEAD=1GB
+
+# Resource limits
+ENV OLLAMA_MEMORY_LIMIT=16GB
+
+# Copy optimized models
+COPY ./models /root/.ollama/models
+
+# Health check for performance monitoring
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s \
+  CMD ollama ps || exit 1
+
+EXPOSE 11434
+CMD ["ollama", "serve"]
+
+
+# docker-compose.yml for load-balanced Ollama
+version: '3.8'
+services:
+  ollama-1:
+    image: ollama/ollama:latest
+    environment:
+      - OLLAMA_MAX_LOADED_MODELS=1
+      - OLLAMA_NUM_PARALLEL=2
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['0']
+              capabilities: [gpu]
+  
+  ollama-2:
+    image: ollama/ollama:latest
+    environment:
+      - OLLAMA_MAX_LOADED_MODELS=1
+      - OLLAMA_NUM_PARALLEL=2
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+  
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "11434:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf

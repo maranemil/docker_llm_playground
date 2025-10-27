@@ -1,0 +1,117 @@
+
+###############################################################
+Ubuntu 22 lts to 24 lts
+###############################################################
+
+sudo nano /etc/update-manager/release-upgrades
+
+
+sudo apt-get update -y && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt-get purge -y && exit
+
+
+sudo update-manager 
+sudo apt update
+sudo do-release-upgrade
+
+sudo sysctl vm.swappiness=10
+
+------------
+
+sudo snap install brave
+sudo apt install doublecmd-qt  -y
+sudo apt install ffmpeg -y
+sudo apt install git -y
+sudo apt install curl -y
+
+
+# https://docs.docker.com/engine/install/linux-postinstall
+sudo apt install docker.io docker-compose  -y
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
+
+sudo snap install code --classic
+
+snap search intellij
+snap search pycharm
+
+sudo snap install pycharm-community --classic
+sudo snap install intellij-idea-community --classic
+
+
+https://releases.ubuntu.com/noble/#24
+https://releases.ubuntu.com/jammy/#22
+https://voidlinux.org/download/
+https://cdimage.ubuntu.com/xubuntu/releases/jammy/release/
+http://ftp.uni-kl.de/pub/linux/ubuntu-dvd/xubuntu/releases/24.04/release/
+https://www.bunsenlabs.org/installation.html
+https://repo-default.voidlinux.org/live/current/
+
+
+sudo apt install virtualbox -y
+sudo apt install kate konsole -y
+
+ 
+sudo sysctl vm.swappiness=10
+echo 3 | sudo tee /proc/sys/vm/drop_caches
+
+
+
+boost
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get update && sudo apt-get install build-essential
+#sudo apt-get install build-essential
+#sudo apt-get install linux-modules-extra-$(uname -r)
+#sudo apt-get install linux-image-extra-virtual
+# sudo apt install --reinstall linux-image-generic
+sudo apt install linux-modules-extra-$(uname -r) linux-image-extra-virtual 
+   
+sudo su
+cd /etc/init.d/
+cat /etc/init.d/*
+Find the file that starts with "systemd" (e.g., systemd-timesyncd.service)
+Uncomment it by replacing # with ! in the line below:
+sudo nano /etc/init.d/systemd-timesyncd.service
+Replace "SYSTEMD_DAEMON=true" with "SYSTEMD_DAEMON=false" to disable it
+Save and exit the file
+
+cd /etc/systemd/
+cat /etc/systemd/*
+Find the file that starts with "network" (e.g., network.target)
+Uncomment it by replacing # with ! in the line below
+sudo nano /etc/systemd/network/01-wireless.network
+Replace "Wireless=on" with "Wireless=off" to disable it
+
+Enable fast clock: 
+sudo timedatectl set-timezone America/Chicago
+sudo timedatectl set-timezone America/New_York
+sudo timedatectl set-timezone Europe/Berlin
+#sudo dpkg-reconfigure tzdata
+
+top, htop, or psutils
+pscpd
+sudo apt install putty-tools
+
+systemctl reboot -i
+
+
+
+sudo apt-get remove x
+sudo apt autoremove && sudo apt-get purge
+sudo snap remove thunderbird
+
+service --status-all
+
+
+#sudo nanopatch /etc/apt/sources.list.d/01-extra-devel.patch
+
+
+sudo apt-get install psutils
+sudo apt install putty-tools
+sudo apt install dstat
+df -h
+cat /proc/swaps
+free -m
+swapon -s
+
+

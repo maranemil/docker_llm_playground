@@ -1,0 +1,51 @@
+
+docker run --cpus=0.5 -it --name ubuntuollama20  -v ./src:/app ubuntu:20.04 /bin/bash;
+docker run --cpus=0.5 -it --name debianollama  -v ./src:/app debian:latest  /bin/bash;
+apt update
+apt install tmux curl -y
+apt-get install pciutils -y
+curl -fsSL https://ollama.com/install.sh | sh
+tmux
+ollama serve
+ollama run qwen3:0.6b
+ollama stop qwen3:0.6b
+ollama pull tinyllama:1.1b
+ollama pull gemma3:270m
+ollama pull qwen2.5:0.5b
+ollama pull gemma3:1b 
+ollama pull deepseek-r1:1.5b
+ollama pull qwen:0.5b
+
+ollama pull qwen2.5-coder:0.5b
+ollama pull qwen2.5-coder:1.5b
+ollama pull deepseek-coder:1.3b
+ollama pull starcoder2:3b
+ollama pull codegemma:2b
+ollama pull starcoder:1b
+ollama pull opencoder:1.5b
+
+ollama pull qwen2-math:1.5b
+ollama pull tinydolphin:1.1b
+ollama pull internlm2:1.8b
+ollama pull qwen3-embedding:0.6b
+ollama pull llama-guard3:1b
+ollama pull reader-lm:0.5b
+ollama pull sailor2:1b
+
+docker update --cpus "2.0"  debianollama
+docker stop debianollama
+docker start debianollama
+docker exec  -it debianollama /bin/bash
+docker export -o debianollama.tar debianollama
+# docker load -i debianollama.tar
+docker ps -a
+
+
+ollama list
+NAME                ID              SIZE      MODIFIED       
+qwen2.5:0.5b        a8b0c5157701    397 MB    3 minutes ago     
+deepseek-r1:1.5b    e0979632db5a    1.1 GB    12 minutes ago    
+gemma3:1b           8648f39daa8f    815 MB    14 minutes ago    
+gemma3:270m         e7d36fb2c3b3    291 MB    16 minutes ago    
+tinyllama:1.1b      2644915ede35    637 MB    16 minutes ago    
+qwen3:0.6b          7df6b6e09427    522 MB    19 minutes ago 

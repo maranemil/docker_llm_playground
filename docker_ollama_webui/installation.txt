@@ -1,0 +1,84 @@
+
+####################################################################
+ollama + open-webui
+####################################################################
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: always
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:ollama
+    container_name: open-webui
+    volumes:
+      - ollama:/root/.ollama
+      - open-webui:/app/backend/data
+    ports:
+      - "3000:8080"
+    restart: always
+
+volumes:
+  ollama:
+  open-webui:
+
+
+
+docker-compose up -d
+docker exec -it ollama /bin/bash
+ollama pull qwen:0.5
+http://127.0.0.1:3000
+....
+
+
+Here are the equivalent Docker CLI commands for your Docker Compose setup:
+Create the volumes:
+docker volume create ollama
+docker volume create open-webui
+
+Run the Ollama container: 2GB
+docker run -d \
+  --name ollama \
+  --restart always \
+  -v ollama:/root/.ollama \
+  -p 11434:11434 \
+  ollama/ollama
+  
+Run the Open WebUI container: 4GB
+docker run -d \
+  --name open-webui \
+  --restart always \
+  -v ollama:/root/.ollama \
+  -v open-webui:/app/backend/data \
+  -p 3000:8080 \
+  ghcr.io/open-webui/open-webui:ollama
+  
+docker update --cpus "2.0"  open-webui
+docker update --cpus "2.0"  ollama
+curl http://localhost:11434
+http://localhost:3000/auth?redirect=%2F
+
+docker exec -it ollama /bin/bash
+ps aux | grep ollama
+
+Key mappings:
+image → image name at the end of the command
+container_name → --name
+volumes → -v flags
+ports → -p flags (host:container)
+restart: always → --restart always
+-d runs containers in detached mode (background)
+
+docker stop ollama open-webui
+docker start ollama open-webui
+
+docker exec  -it open-webui /bin/bash
+docker export -o open-webui.tar open-webui
+# docker load -i open-webui.tar
+docker exec  -it ollama /bin/bash
+docker export -o ollama.tar ollama
+# docker load -i ollama.tar

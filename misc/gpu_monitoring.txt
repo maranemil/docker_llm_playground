@@ -1,0 +1,31 @@
+####################################################################
+monitor GPU usage on Linux
+####################################################################
+
+NVIDIA GPUs
+nvidia-smi
+sudo nvidia-smi -a
+sudo nvidia-smi -a -d 0
+nvidia-smi --loop=1
+watch -n 1 nvidia-smi
+nvtop
+gpustat
+gpustat --watch
+nvitop
+
+AMD GPUs
+radeontop
+lm-sensors
+sensors
+sensors -u
+aticonfig --odgc --odgt
+sudo apt install radeontop
+radeontop
+   
+
+Intel GPUs
+sudo apt install intel-gpu-tools
+sudo intel_gpu_top
+
+lspci | grep -i 'vga\|3d\|2d'
+sudo lshw -C display -short $ lspci -v

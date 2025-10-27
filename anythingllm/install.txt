@@ -1,0 +1,29 @@
+
+https://anythingllm.com/
+
+# Download the installer script to wherever you want to run it from
+curl -fsSL https://cdn.anythingllm.com/latest/installer.sh -o installer.sh
+ 
+# Make the script executable
+chmod +x installer.sh
+ 
+# Run the script
+./installer.sh
+
+Uninstalling
+To uninstall AnythingLLM, you can run the following commands:
+
+# Remove the installer script
+rm installer.sh
+ 
+# Remove the AppImage
+rm AnythingLLMDesktop.AppImage
+ 
+# Remove the .desktop file
+rm ~/.local/share/applications/anythingllmdesktop.desktop
+ 
+# Remove the apparmor rules
+sudo rm /etc/apparmor.d/anythingllmdesktop
+ 
+# Remove the app data fully
+rm -rf ~/.config/anythingllm-desktop

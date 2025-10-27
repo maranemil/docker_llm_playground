@@ -1,0 +1,110 @@
+
+---------------------------------------------
+https://marketplace.visualstudio.com/items?itemName=Continue.continue
+https://docs.continue.dev/ide-extensions/install
+https://docs.continue.dev/guides/ollama-guide
+https://ollama.com/blog/continue-code-assistant
+https://code.visualstudio.com/docs/intelligentapps/models
+https://marketplace.visualstudio.com/items?itemName=warm3snow.vscode-ollama
+https://marketplace.visualstudio.com/items?itemName=10nates.ollama-autocoder
+https://docs.continue.dev/ide-extensions/chat/model-setup
+
+Ctrl+P
+ext install Continue.continue
+ext install continue.continue
+
+{
+  "models": [
+    {
+      "title": "CodeLlama",
+      "provider": "ollama",
+      "model": "codellama",
+      "apiBase": "http://localhost:11434"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "apiBase": "http://localhost:11434/",
+    "title": "Starcoder2 3b",
+    "provider": "ollama",
+    "model": "starcoder2:3b"
+  }
+}   
+
+
+name: Local Config
+version: 1.0.0
+schema: v1
+models: []
+
+
+name: Local Assistant
+version: 1.0.0
+schema: v1
+models:
+  - name: tinyllama  
+    provider: ollama
+    model: tinyllama:1.1b
+    roles:
+      - chat
+      - edit
+      - apply
+  - name: tinyllama  
+    provider: ollama
+    model: tinyllama:1.1b
+    roles:
+      - autocomplete
+  - name: Nomic Embed
+    provider: ollama
+    model: nomic-embed-text:latest
+    roles:
+      - embed
+
+
+{
+  "models": [
+    {
+      "title": "DeepSeek-6.7b",
+      "provider": "ollama",
+      "model": "deepseek-coder:6.7b",
+      "apiBase": "http://localhost:11434"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "Tab Autocomplete Model",
+    "provider": "ollama",
+    "model": "starcoder2:3b",
+    "apiBase": "http://localhost:11434"
+  }
+}   
+
+
+ollama pull llama3.1:8b
+ollama pull qwen2.5-coder:1.5b-base
+ollama pull nomic-embed-text:latest
+
+https://marketplace.visualstudio.com/items?itemName=Continue.continue
+https://docs.openwebui.com/tutorials/integrations/ipex_llm
+https://docs.openwebui.com/tutorials/integrations/continue-dev/
+
+name: Local Assistant
+version: 1.0.0
+schema: v1
+models:
+  - name: LLama3
+    provider: openai
+    model: Meta-Llama-3-8B-Instruct-Q4_K_M.gguf
+    env:
+      useLegacyCompletionsEndpoint: false
+    apiBase: http://localhost:3000/api
+    apiKey: YOUR_OPEN_WEBUI_API_KEY
+    roles:
+      - chat
+      - edit
+context:
+  - provider: code
+  - provider: docs
+  - provider: diff
+  - provider: terminal
+  - provider: problems
+  - provider: folder
+  - provider: codebase
