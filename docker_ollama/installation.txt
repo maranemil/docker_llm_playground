@@ -49,3 +49,10 @@ gemma3:1b           8648f39daa8f    815 MB    14 minutes ago
 gemma3:270m         e7d36fb2c3b3    291 MB    16 minutes ago    
 tinyllama:1.1b      2644915ede35    637 MB    16 minutes ago    
 qwen3:0.6b          7df6b6e09427    522 MB    19 minutes ago 
+
+ollama list          
+NAME              ID              SIZE      MODIFIED      
+gemma3:1b         8648f39daa8f    815 MB    9 minutes ago    
+smollm:360m       b3ba1ccba2b8    229 MB    5 weeks ago      
+gemma3:270m       e7d36fb2c3b3    291 MB    5 weeks ago      
+tinyllama:1.1b    2644915ede35    637 MB    4 months ago  
