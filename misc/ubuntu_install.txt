@@ -180,6 +180,7 @@ for i in *.mp4; do ffmpeg -hwaccel vaapi -hwaccel_output_format vaapi -i  $i -vf
 for i in *.mp4; do ffmpeg -hwaccel vaapi -hwaccel_output_format vaapi -i  $i -vf 'hwupload' -c:v h264_vaapi -qp 25 -y output_$i.mp4; done
 
 
+
 -------------------------------------------------------------
 
 sudo amdgpu-install
