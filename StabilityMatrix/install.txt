@@ -1,0 +1,6 @@
+
+https://lykos.ai/downloads
+
+chmod +x ./StabilityMatrix.AppImage
+./StabilityMatrix.AppImage
+

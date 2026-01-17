@@ -18,6 +18,15 @@ sudo apt-get -y install libfuse2
 
 
 
+
+
+chmod +x ./LM-Studio-0.3.37-1-x64.AppImage2 
+./LM-Studio-0.3.37-1-x64.AppImage2 --no-sandbox
+
+
+
+
+
 https://huggingface.co/lmstudio-community
 https://huggingface.co/blog/yagilb/lms-hf
 # lms get {user}/{repo}
