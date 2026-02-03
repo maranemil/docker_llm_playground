@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Magenta Presentation Landing Page</title>
+  <link rel="stylesheet" href="styles.css" />
+    <style>
+        /* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5e6ff; /* Soft magenta gradient */
+  color: #3b2e54;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+  transition: all 0.3s ease-in-out;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2em;
+}
+
+/* Header */
+.hero {
+  text-align: center;
+  background: linear-gradient(90deg, #ff69b4, #d02090);
+  color: white;
+  padding: 3em 1.5em;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation */
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2em;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #3b2e54;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar a:hover {
+  color: #ff69b4;
+}
+
+/* Sections */
+.section {
+  padding: 2em 1.5em;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.section:hover {
+  transform: translateY(-5px);
+}
+
+/* Service List */
+.service-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.service-list li {
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e0c7ff;
+  padding-bottom: 0.5rem;
+}
+
+/* Contact Section */
+.contact {
+  text-align: center;
+  padding: 2em 1.5em;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 2em 1.5em;
+  background-color: #f5e6ff;
+  border-radius: 10px;
+  color: #3b2e54;
+  font-size: 0.9em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1rem;
+  }
+
+  .section {
+    margin-bottom: 1rem;
+  }
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <header class="hero">
+    <h1>Welcome to Our Presentation</h1>
+    <p>Your brand's vision, delivered with style.</p>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <!-- Main Content -->
+  <main>
+    <!-- About Section -->
+    <section id="about" class="section">
+      <h2>About Us</h2>
+      <p>At [Your Brand Name], we specialize in creating impactful digital experiences. Our team is passionate about innovation and delivering results that resonate with your audience.</p>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+      <h2>Our Services</h2>
+      <ul class="service-list">
+        <li><strong>Creative Content Designing:</strong> Crafting compelling content for your brand.</li>
+        <li><strong>UI/UX Design:</strong> Building intuitive and user-friendly interfaces.</li>
+        <li><strong>Branding:</strong> From logo design to identity systems.</li>
+        <li><strong>Digital Marketing:</strong> Strategies that drive traffic and conversions.</li>
+      </ul>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+      <h2>Contact Us</h2>
+      <p>Email: <a href="mailto:info@yourbrand.com">info@yourbrand.com</a></p>
+      <p>Phone: +1 (800) 123-4567</p>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    &copy; 2025 [Your Brand Name]. All rights reserved.
+  </footer>
+</div>
+
+</body>
+</html>

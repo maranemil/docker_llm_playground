@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Landing Page</title>
+
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Header / hero section */
+        header {
+            background: #4a90e2;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main content container */
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        }
+
+        section h2 {
+            margin-bottom: 10px;
+            color: #4a90e2;
+        }
+
+        /* Styled lists */
+        ul, ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        ul li,
+        ol li {
+            margin-bottom: 6px;
+        }
+
+        .features li::marker {
+            color: #4a90e2;
+        }
+
+        .steps {
+            list-style-type: decimal;
+        }
+
+        /* Simple footer */
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.9rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero / top section -->
+    <header>
+        <h1>My Simple Landing Page</h1>
+        <p>
+            A clean example landing page built with only HTML and CSS,
+            featuring some basic lists to present information clearly.
+        </p>
+    </header>
+
+    <!-- Main content -->
+    <div class="container">
+        <!-- Features as an unordered list -->
+        <section>
+            <h2>Key Features</h2>
+            <ul class="features">
+                <li>Fully responsive layout using simple CSS</li>
+                <li>Easy to customize colors and fonts</li>
+                <li>Lightweight and fast-loading structure</li>
+                <li>Perfect starting point for small projects</li>
+            </ul>
+        </section>
+
+        <!-- Steps as an ordered list -->
+        <section>
+            <h2>How It Works</h2>
+            <ol class="steps">
+                <li>Download or copy this HTML file.</li>
+                <li>Open it in your browser to view the page.</li>
+                <li>Edit the text, colors, and lists to fit your needs.</li>
+                <li>Upload it to your hosting or share locally.</li>
+            </ol>
+        </section>
+
+        <!-- Mixed list for plans / options -->
+        <section>
+            <h2>Plans</h2>
+            <ul>
+                <li><strong>Free Plan:</strong> Basic template, no support.</li>
+                <li><strong>Pro Plan:</strong> Extra sections and email support.</li>
+                <li><strong>Enterprise Plan:</strong> Custom design and priority help.</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2026 Simple Landing Page. All rights reserved.
+    </footer>
+
+</body>
+</html>

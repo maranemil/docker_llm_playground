@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Link Aggregator</title>
+
+    <!-- Optional icons (can remove this line if you don't want icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* ---------- CSS VARIABLES (easy theming) ---------- */
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --bg: #f4f5fb;
+            --bg-card: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border-radius: 14px;
+            --shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
+            --shadow-soft: 0 6px 18px rgba(15, 23, 42, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                         Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            background: radial-gradient(circle at top left, #eef2ff 0, #f9fafb 45%, #e5e7eb 100%);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* ---------- HEADER / HERO ---------- */
+        header {
+            padding: 40px 16px 24px;
+            text-align: center;
+        }
+
+        .hero {
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .logo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(79, 70, 229, 0.08);
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .logo-badge i {
+            font-size: 0.9rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 3vw, 2.7rem);
+            margin-bottom: 10px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero p {
+            max-width: 520px;
+            margin: 0.5rem auto 1.6rem;
+            color: var(--text-muted);
+            font-size: 0.98rem;
+        }
+
+        /* ---------- FILTER NAV ---------- */
+        .filter-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .filter-nav a {
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 999px;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(156, 163, 175, 0.2);
+            backdrop-filter: blur(14px);
+            transition: all 0.18s ease-out;
+        }
+
+        .filter-nav a:hover {
+            color: var(--primary-dark);
+            border-color: rgba(79, 70, 229, 0.5);
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* ---------- MAIN LAYOUT ---------- */
+        .page {
+            max-width: 1080px;
+            margin: 0 auto 40px;
+            padding: 0 16px 32px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.7fr 1fr;
+            gap: 22px;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---------- CATEGORY CARD ---------- */
+        .category {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 20px 20px 16px;
+        }
+
+        .category + .category {
+            margin-top: 18px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .category-title span.icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: rgba(79, 70, 229, 0.08);
+            color: var(--primary-dark);
+        }
+
+        .category h2 {
+            font-size: 1rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .category-badge {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: #f3f4ff;
+            padding: 3px 9px;
+            border-radius: 999px;
+        }
+
+        /* ---------- LINK LIST ---------- */
+        .link-list {
+            list-style: none;
+            margin-top: 4px;
+        }
+
+        .link-item {
+            border-radius: 12px;
+            padding: 10px 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            transition: all 0.18s ease-out;
+        }
+
+        .link-item + .link-item {
+            margin-top: 4px;
+        }
+
+        .link-item:hover {
+            background: #f4f4ff;
+            transform: translateY(-1px);
+        }
+
+        .link-dot {
+            margin-top: 7px;
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(79, 70, 229, 0.65);
+            flex-shrink: 0;
+        }
+
+        .link-main {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            width: 100%;
+        }
+
+        .link-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 3px;
+        }
+
+        .link-title {
+            font-weight: 600;
+            font-size: 0.96rem;
+        }
+
+        .link-chip {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: var(--primary-dark);
+        }
+
+        .link-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        .link-meta {
+            display: flex;
+            gap: 10px;
+            margin-top: 3px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .link-meta i {
+            margin-right: 3px;
+        }
+
+        /* ---------- SIDEBAR CARD ---------- */
+        .sidebar-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 18px 18px 14px;
+            position: sticky;
+            top: 16px;
+        }
+
+        .sidebar-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-card p {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .tag {
+            font-size: 0.78rem;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: var(--text-muted);
+        }
+
+        .note {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border-top: 1px dashed #e5e7eb;
+            padding-top: 8px;
+            margin-top: 6px;
+        }
+
+        /* ---------- FOOTER ---------- */
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="hero">
+        <div class="logo-badge">
+            <i class="fa-solid fa-link"></i>
+            Curated links for your daily dive
+        </div>
+        <h1>Modern Link Aggregator</h1>
+        <p>
+            A clean, modern hub for your favorite resources. Organized by topic, easy to scan,
+            and built with nothing but HTML and CSS.
+        </p>
+
+        <nav class="filter-nav">
+            <a href="#dev">Development</a>
+            <a href="#design">Design</a>
+            <a href="#news">Tech News</a>
+            <a href="#tools">Tools</a>
+        </nav>
+    </div>
+</header>
+
+<main class="page">
+    <div class="grid">
+        <!-- MAIN COLUMN -->
+        <div>
+            <!-- Development -->
+            <section class="category" id="dev">
+                <div class="category-header">
+                    <div class="category-title">
+                        <span class="icon"><i class="fa-solid fa-code"></i></span>
+                        <h2>Development</h2>
+                    </div>
+                    <span class="category-badge">Core docs & tutorials</span>
+                </div>
+
+                <ul class="link-list">
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://developer.mozilla.org" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">MDN Web Docs</span>
+                                <span class="link-chip">Reference</span>
+                            </div>
+                            <p class="link-desc">
+                                Comprehensive documentation for HTML, CSS, JavaScript and modern web APIs.
+                            </p>
+                            <div class="link-meta">
+                                <span><i class="fa-regular fa-clock"></i>Always up-to-date</span>
+                                <span><i class="fa-solid fa-earth-americas"></i>Docs</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://css-tricks.com" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">CSS‑Tricks</span>
+                                <span class="link-chip">Articles</span>
+                            </div>
+                            <p class="link-desc">
+                                Articles, snippets and guides focusing on modern CSS techniques and layout patterns.
+                            </p>
+                            <div class="link-meta">
+                                <span><i class="fa-regular fa-newspaper"></i>Blog</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://stackoverflow.com" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">Stack Overflow</span>
+                                <span class="link-chip">Q&A</span>
+                            </div>
+                            <p class="link-desc">
+                                Community‑driven questions and answers for every programming topic you can think of.
+                            </p>
+                            <div class="link-meta">
+                                <span><i class="fa-regular fa-user"></i>Community</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Design -->
+            <section class="category" id="design">
+                <div class="category-header">
+                    <div class="category-title">
+                        <span class="icon"><i class="fa-solid fa-palette"></i></span>
+                        <h2>Design & UI</h2>
+                    </div>
+                    <span class="category-badge">Inspiration & patterns</span>
+                </div>
+
+                <ul class="link-list">
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://dribbble.com" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">Dribbble</span>
+                                <span class="link-chip">Gallery</span>
+                            </div>
+                            <p class="link-desc">
+                                Showcases of interface designs, animations, and visual explorations from designers worldwide.
+                            </p>
+                            <div class="link-meta">
+                                <span><i class="fa-regular fa-image"></i>Visual</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://www.behance.net" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">Behance</span>
+                                <span class="link-chip">Portfolio</span>
+                            </div>
+                            <p class="link-desc">
+                                Curated portfolios from designers, illustrators and creative professionals.
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Tech News -->
+            <section class="category" id="news">
+                <div class="category-header">
+                    <div class="category-title">
+                        <span class="icon"><i class="fa-solid fa-rss"></i></span>
+                        <h2>Tech News</h2>
+                    </div>
+                    <span class="category-badge">Stay up to date</span>
+                </div>
+
+                <ul class="link-list">
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://news.ycombinator.com" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">Hacker News</span>
+                                <span class="link-chip">Community</span>
+                            </div>
+                            <p class="link-desc">
+                                Community‑driven tech, startup and science stories with thoughtful discussions.
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://techcrunch.com" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">TechCrunch</span>
+                                <span class="link-chip">News</span>
+                            </div>
+                            <p class="link-desc">
+                                Headlines, analysis and deep‑dives into the latest in startups and technology.
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+
+            <!-- Tools -->
+            <section class="category" id="tools">
+                <div class="category-header">
+                    <div class="category-title">
+                        <span class="icon"><i class="fa-solid fa-screwdriver-wrench"></i></span>
+                        <h2>Tools & Utilities</h2>
+                    </div>
+                    <span class="category-badge">Daily drivers</span>
+                </div>
+
+                <ul class="link-list">
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://github.com" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">GitHub</span>
+                                <span class="link-chip">Code</span>
+                            </div>
+                            <p class="link-desc">
+                                Host, share and collaborate on code repositories with issue tracking and CI integrations.
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="link-item">
+                        <span class="link-dot"></span>
+                        <a class="link-main" href="https://codepen.io" target="_blank">
+                            <div class="link-row">
+                                <span class="link-title">CodePen</span>
+                                <span class="link-chip">Playground</span>
+                            </div>
+                            <p class="link-desc">
+                                Online playground to prototype and share HTML, CSS and JavaScript snippets.
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- SIDEBAR COLUMN -->
+        <aside class="sidebar-card">
+            <h3>How to use this page</h3>
+            <p>
+                This is a pure HTML/CSS link aggregator. Duplicate a
+                <code>.link-item</code> block and edit the URL, title and description
+                to add your own favorites.
+            </p>
+
+            <div class="tag-list">
+                <span class="tag">No JavaScript</span>
+                <span class="tag">Responsive</span>
+                <span class="tag">Card layout</span>
+                <span class="tag">Modern UI</span>
+            </div>
+
+            <p class="note">
+                Tip: customize the color theme by changing the variables inside
+                the <code>:root</code> block (e.g. <code>--primary</code>,
+                <code>--bg</code>, <code>--border-radius</code>).
+            </p>
+        </aside>
+    </div>
+</main>
+
+<footer>
+    &copy; 2026 Modern Link Aggregator. Built with HTML &amp; CSS only.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--
+    create a modern  presentation-focused magenta-themed landing page optimized for showcasing
+    content with elegant lists, smooth transitions, navigation and a clean professional design using html5 and css3
+    -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magenta Presentations | Modern Presentation Tool</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+
+    :root {
+      --magenta-primary: #d400ff;
+      --magenta-secondary: #e600ff;
+      --magenta-light: #f5d9ff;
+      --magenta-dark: #c200e1;
+      --text-primary: #333;
+      --text-secondary: #666;
+      --bg-light: #f8f9fa;
+      --shadow-magenta: 0 4px 20px rgba(212, 0, 255, 0.2);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-primary);
+      background-color: var(--bg-light);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Header Styles */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1rem 2.5rem;
+      background-color: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(212, 0, 255, 0.15);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--magenta-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo::before {
+      content: "✨";
+      font-size: 1.2em;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 0.3rem 0;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--magenta-primary);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--magenta-primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      background: linear-gradient(135deg, var(--magenta-light) 0%, rgba(255, 255, 255, 0.9) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(212, 0, 255, 0.1) 0%, transparent 70%);
+      transform: rotate(30deg);
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--magenta-dark);
+      margin-bottom: 1.2rem;
+      text-shadow: 0 2px 4px rgba(212, 0, 255, 0.2);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 1.8rem;
+      line-height: 1.7;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 0.9rem 2.5rem;
+      background: linear-gradient(90deg, var(--magenta-primary) 0%, var(--magenta-secondary) 100%);
+      color: white;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      transition: all 0.4s ease;
+      box-shadow: var(--shadow-magenta);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(212, 0, 255, 0.4);
+      background: linear-gradient(90deg, var(--magenta-secondary) 0%, var(--magenta-dark) 100%);
+    }
+
+    .cta-button::after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent 50%, rgba(212, 0, 255, 0.2) 100%);
+      transform: rotate(30deg);
+      opacity: 0;
+    }
+
+    .cta-button:hover::after {
+      opacity: 0.8;
+      transform: rotate(30deg);
+    }
+
+    /* Features Section */
+    .section {
+      padding: 6rem 2.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.2rem;
+      color: var(--magenta-dark);
+      display: inline-block;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .section-header h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 3px;
+      background: var(--magenta-primary);
+      border-radius: 2px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-magenta);
+      transition: transform 0.4s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 12px 25px rgba(212, 0, 255, 0.3);
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--magenta-primary) 0%, var(--magenta-secondary) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .feature-icon::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      background: var(--magenta-light);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      color: var(--magenta-dark);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Testimonials Section */
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding-top: 2rem;
+    }
+
+    .testimonial-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-magenta);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .testimonial-card::before {
+      content: """;
+      font-size: 5rem;
+      color: var(--magenta-light);
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.2;
+      z-index: 1;
+    }
+
+    .testimonial-card h4 {
+      font-size: 1.4rem;
+      color: var(--magenta-dark);
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+
+    .testimonial-content {
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .testimonial-content::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--magenta-primary);
+      border-radius: 2px;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 2.5rem;
+      color: var(--text-secondary);
+      background-color: white;
+      border-top: 1px solid rgba(212, 0, 255, 0.15);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--magenta-primary);
+      text-shadow: 0 0 5px rgba(212, 0, 255, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .hero h1 {
+        font-size: 2.8rem;
+      }
+
+      .section-header h2 {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-top: 50px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .cta-button {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-header h2 {
+        font-size: 1.5rem;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .feature-card {
+        padding: 1.5rem;
+      }
+    }
+
+    /* Animation for scroll */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeInUp 0.6s ease forwards;
+      opacity: 1;
+    }
+
+    .fade-in:nth-child(1) { animation-delay: 0.2s; }
+    .fade-in:nth-child(2) { animation-delay: 0.4s; }
+    .fade-in:nth-child(3) { animation-delay: 0.6s; }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <nav>
+      <a href="#" class="logo">Magenta</a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero fade-in">
+    <div class="hero-content">
+      <h1>Modern Presentations, Perfected</h1>
+      <p>Create stunning presentations that captivate your audience with our elegant, professional tools designed specifically for today's digital world.</p>
+      <a href="#" class="cta-button">Get Started Today →</a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="section fade-in">
+    <div class="section-header">
+      <h2>Powerful Presentation Tools</h2>
+      <p>Everything you need to create professional presentations effortlessly</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 6v12m0-5h-5m10 0h-5"></path>
+          </svg>
+        </div>
+        <h3><span>✨</span> AI-Powered Design</h3>
+        <p>Our intelligent design engine creates professional presentations in seconds with your content. No templates needed.</p>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M16 5h-3m-2.76 1.94l-1.38-.24L11 10l-1.38.24-3.34-3.58a2.43 2.43 0 0 1 .82-2.28m6.78-2.94h-3.34v-.55c-1.16 0-2.58-.69-3.58-1.76a1.63 1.63 0 0 1 .82-2.28m3.58 1.76h3.34v-.55"></path>
+          </svg>
+        </div>
+        <h3><span>📊</span> Data Visualization</h3>
+        <p>Create compelling data visualizations that help your audience understand complex information quickly.</p>
+      </div>
+
+      <div class="feature-card fade-in">
+        <div class="feature-icon">
+          <svg width="30" height="3 0" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 6v12m0-5h-5m10 0h-5"></path>
+          </svg>
+        </div>
+        <h3><span>🔒</span> Collaboration Tools</h3>
+        <p>Real-time collaboration with your team. Share presentations, get feedback, and make changes together.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="section fade-in">
+    <div class="section-header">
+      <h2>What Our Users Say</h2>
+      <p>Trusted by professionals and businesses worldwide</p>
+    </div>
+
+    <div class="testimonials">
+      <div class="testimonial-card fade-in">
+        <h4>Jane Smith, Marketing Director</h4>
+        <p class="testimonial-content">"Magenta has completely transformed how we present data to our stakeholders. The AI tools create presentations that are both professional and engaging."</p>
+      </div>
+
+      <div class="testimonial-card fade-in">
+        <h4>Michael Johnson, Startup Founder</h4>
+        <p class="testimonial-content">"The collaboration features have been a game-changer for our team. We can now work together on presentations in real-time without any delays."</p>
+      </div>
+
+      <div class="testimonial-card fade-in">
+        <h4>Emily Rodriguez, Business Analyst</h4>
+        <p class="testimonial-content">"The data visualization tools have helped me present complex information in a way that's easy to understand for my clients. Highly recommended!"</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <p>&copy; 2023 Magenta Presentations. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Simple scroll animation on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      const fadeElements = document.querySelectorAll('.fade-in');
+
+      // Add animation to elements as they come into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      fadeElements.forEach(element => {
+        observer.observe(element);
+      });
+    });
+  </script>
+</body>
+<html>
+</html>
