@@ -1,0 +1,36 @@
+https://stackoverflow.com/questions/54720587/how-to-change-the-network-of-a-running-docker-container
+https://docs.docker.com/engine/network/drivers/host/
+https://docs.docker.com/engine/network/
+https://docs.docker.com/desktop/features/networking/
+https://docs.docker.com/reference/cli/docker/container/update/
+https://docs.docker.com/ai/sandboxes/get-started/
+
+docker run -d --network host --name alpine1 alpine
+docker run -d --name alpine2 alpine
+
+docker network disconnect bridge alpine2
+docker network create --driver bridge alpine-net
+docker network connect alpine-net alpine2
+
+docker run -p 80:80 nginx
+docker run --rm -it --net=host nicolaka/netshoot nc -lkv 0.0.0.0 8000
+nc localhost 8000
+
+docker run --rm -it --net=host nicolaka/netshoot
+nc localhost 80
+
+docker run --rm -d --network host --name my_nginx nginx
+sudo netstat -tulpn | grep :80
+docker container stop my_nginx
+
+docker run --rm -ti busybox ping -c1 docker.com
+docker network create -d bridge my-net
+docker run --network=my-net -it busybox
+docker network create --ipv6 --ipv4=false v6net
+
+docker run -dit --name test --kernel-memory 50M ubuntu bash
+docker update --kernel-memory 80M test
+docker run -dit --name test2 --memory 300M ubuntu bash
+docker update --restart=on-failure:3 abebf7571666 hopeful_morse
+
+
