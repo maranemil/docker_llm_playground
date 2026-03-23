@@ -1,0 +1,126 @@
+Here’s a complete, runnable example of a simple WebSocket API in PHP using the Ratchet library.
+This will allow you to create a WebSocket server that clients can connect to and exchange messages in real time.
+
+1. Install Ratchet via Composer
+Make sure you have Composer installed, then run:
+
+Bash
+
+Copy code
+composer require cboden/ratchet
+2. Create the WebSocket Server (server.php)
+Php
+
+Copy code
+<?php
+require __DIR__ . '/vendor/autoload.php';
+
+use Ratchet\MessageComponentInterface;
+use Ratchet\ConnectionInterface;
+
+/**
+ * Simple WebSocket server class
+ */
+class SimpleWebSocket implements MessageComponentInterface {
+    protected $clients;
+
+    public function __construct() {
+        // Store connected clients
+        $this->clients = new \SplObjectStorage;
+        echo "WebSocket server started...\n";
+    }
+
+    public function onOpen(ConnectionInterface $conn) {
+        // Add new connection
+        $this->clients->attach($conn);
+        echo "New connection: ({$conn->resourceId})\n";
+    }
+
+    public function onMessage(ConnectionInterface $from, $msg) {
+        echo "Message from {$from->resourceId}: $msg\n";
+
+        // Example: Simple API response
+        $response = [
+            'from' => $from->resourceId,
+            'message' => strtoupper($msg), // Example transformation
+            'timestamp' => date('Y-m-d H:i:s')
+        ];
+
+        // Send to all connected clients
+        foreach ($this->clients as $client) {
+            $client->send(json_encode($response));
+        }
+    }
+
+    public function onClose(ConnectionInterface $conn) {
+        // Remove connection
+        $this->clients->detach($conn);
+        echo "Connection {$conn->resourceId} closed\n";
+    }
+
+    public function onError(ConnectionInterface $conn, \Exception $e) {
+        echo "Error: {$e->getMessage()}\n";
+        $conn->close();
+    }
+}
+
+// Run the WebSocket server
+$server = \Ratchet\Server\IoServer::factory(
+    new \Ratchet\Http\HttpServer(
+        new \Ratchet\WebSocket\WsServer(
+            new SimpleWebSocket()
+        )
+    ),
+    8080 // Port
+);
+
+$server->run();
+3. Run the Server
+Bash
+
+Copy code
+php server.php
+The server will start listening on ws://localhost:8080.
+
+4. Test with a Client (HTML + JavaScript)
+Create client.html:
+
+Html
+
+Copy code
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Client</h1>
+    <input id="msg" type="text" placeholder="Type a message">
+    <button onclick="sendMessage()">Send</button>
+    <pre id="log"></pre>
+
+    <script>
+        const ws = new WebSocket("ws://localhost:8080");
+        const log = document.getElementById("log");
+
+        ws.onopen = () => log.textContent += "Connected\n";
+        ws.onmessage = (event) => log.textContent += "Received: " + event.data + "\n";
+        ws.onclose = () => log.textContent += "Disconnected\n";
+
+        function sendMessage() {
+            const message = document.getElementById("msg").value;
+            ws.send(message);
+        }
+    </script>
+</body>
+</html>
+5. How It Works
+Server: Listens for WebSocket connections, receives messages, and broadcasts them to all connected clients.
+Client: Connects to the server, sends messages, and displays responses.
+API Behavior: In this example, the server simply returns the message in uppercase with a timestamp, but you can extend it to handle JSON requests, authentication, or database queries.
+If you want, I can extend this example into a REST + WebSocket hybrid API so you can handle both HTTP and real-time events in the same PHP 
+
+
+#############################
+
+https://websocket.org/guides/languages/php/

@@ -1,0 +1,237 @@
+Here’s a complete, runnable example of a simple gRPC API in Node.js.
+We’ll create a service that returns a greeting message.
+
+1️⃣ Install Dependencies
+Run:
+
+Bash
+
+Copy code
+mkdir grpc-node-example && cd grpc-node-example
+npm init -y
+npm install @grpc/grpc-js @grpc/proto-loader
+2️⃣ Define the gRPC Service (greet.proto)
+Proto
+
+Copy code
+syntax = "proto3";
+
+package greet;
+
+// The greeting service definition
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+3️⃣ Create the Server (server.js)
+Javascript
+
+Copy code
+// Import gRPC libraries
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
+const path = require('path');
+
+// Load the protobuf
+const PROTO_PATH = path.join(__dirname, 'greet.proto');
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true,
+});
+const greetProto = grpc.loadPackageDefinition(packageDefinition).greet;
+
+// Implement the SayHello RPC method
+function sayHello(call, callback) {
+  const name = call.request.name?.trim();
+  if (!name) {
+    return callback({
+      code: grpc.status.INVALID_ARGUMENT,
+      message: 'Name is required',
+    });
+  }
+  callback(null, { message: `Hello, ${name}!` });
+}
+
+// Start the gRPC server
+function main() {
+  const server = new grpc.Server();
+  server.addService(greetProto.Greeter.service, { SayHello: sayHello });
+  const address = '0.0.0.0:50051';
+  server.bindAsync(address, grpc.ServerCredentials.createInsecure(), (err, port) => {
+    if (err) {
+      console.error('Server binding failed:', err);
+      return;
+    }
+    console.log(`🚀 gRPC server running at ${address}`);
+    server.start();
+  });
+}
+
+main();
+4️⃣ Create the Client (client.js)
+Javascript
+
+Copy code
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
+const path = require('path');
+
+// Load the protobuf
+const PROTO_PATH = path.join(__dirname, 'greet.proto');
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true,
+});
+const greetProto = grpc.loadPackageDefinition(packageDefinition).greet;
+
+// Create a client instance
+const client = new greetProto.Greeter('localhost:50051', grpc.credentials.createInsecure());
+
+// Call the SayHello RPC
+client.SayHello({ name: 'Alice' }, (error, response) => {
+  if (error) {
+    console.error('Error:', error.message);
+    return;
+  }
+  console.log('Greeting:', response.message);
+});
+5️⃣ Run the Example
+In two terminals:
+
+Terminal 1 – Start the server:
+
+Bash
+
+Copy code
+node server.js
+Terminal 2 – Run the client:
+
+Bash
+
+Copy code
+node client.js
+Expected Output:
+
+
+Copy code
+Greeting: Hello, Alice!
+✅ Features in this example:
+
+Uses @grpc/grpc-js (modern gRPC implementation for Node.js).
+Includes input validation (returns INVALID_ARGUMENT if name is missing).
+Fully self-contained and runnable.
+
+################
+
+
+gRPC Server in Node.js
+1
+2
+3
+gRPC is a high-performance RPC framework that uses HTTP/2 and Protocol Buffers for efficient communication. Below is a step-by-step guide to creating a gRPC server in Node.js.
+
+1. Install Dependencies
+
+First, set up your Node.js project and install the required libraries:
+
+npm init -y
+npm install @grpc/grpc-js @grpc/proto-loader
+Copy
+2. Define the Service
+
+Create a .proto file to define your gRPC service and messages. For example, service.proto:
+
+syntax = "proto3";
+
+service ExampleService {
+rpc GetMessage (Request) returns (Response);
+}
+
+message Request {
+string name = 1;
+}
+
+message Response {
+string message = 1;
+}
+Copy
+3. Load the Proto File
+
+Use @grpc/proto-loader to load the .proto file dynamically:
+
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
+
+const PROTO_PATH = './service.proto';
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+keepCase: true,
+longs: String,
+enums: String,
+defaults: true,
+oneofs: true,
+});
+const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
+const ExampleService = protoDescriptor.ExampleService;
+Copy
+4. Implement the Service
+
+Define the logic for your gRPC methods:
+
+function getMessage(call, callback) {
+const name = call.request.name;
+callback(null, { message: `Hello, ${name}!` });
+}
+Copy
+5. Start the Server
+
+Create and start the gRPC server:
+
+const server = new grpc.Server();
+
+server.addService(ExampleService.service, { GetMessage: getMessage });
+
+server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), () => {
+console.log('Server running at http://0.0.0.0:50051');
+server.start();
+});
+Copy
+6. Test the Server
+
+Run the server using:
+
+node server.js
+Copy
+You can now create a gRPC client to test the GetMessage method.
+
+Best Practices
+
+Use Protocol Buffers for efficient serialization.
+
+Secure communication with TLS instead of createInsecure().
+
+Use structured error handling for better debugging.
+
+This setup provides a foundation for building scalable and efficient APIs with gRPC in Node.js.
+
+
+
+###
+https://daily.dev/blog/build-a-grpc-service-in-nodejs
+https://grpc.io/docs/languages/node/basics/
+

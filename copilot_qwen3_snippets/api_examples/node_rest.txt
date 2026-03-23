@@ -1,0 +1,236 @@
+Here’s a complete, runnable example of a simple REST API using Node.js and Express.
+It includes CRUD operations, input validation, and error handling.
+
+📂 Project Setup
+Create a folder and initialize:
+Bash
+
+Copy code
+mkdir simple-rest-api
+cd simple-rest-api
+npm init -y
+npm install express body-parser
+📜 server.js
+Javascript
+
+Copy code
+// Import required modules
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+const PORT = 3000;
+
+// Middleware to parse JSON request bodies
+app.use(bodyParser.json());
+
+// In-memory "database"
+let items = [
+    { id: 1, name: "Item One" },
+    { id: 2, name: "Item Two" }
+];
+
+// ✅ CREATE - Add a new item
+app.post('/items', (req, res) => {
+    try {
+        const { name } = req.body;
+        if (!name || typeof name !== 'string') {
+            return res.status(400).json({ error: "Invalid 'name' field" });
+        }
+        const newItem = { id: items.length ? items[items.length - 1].id + 1 : 1, name };
+        items.push(newItem);
+        res.status(201).json(newItem);
+    } catch (err) {
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+// 📖 READ - Get all items
+app.get('/items', (req, res) => {
+    res.json(items);
+});
+
+// 📖 READ - Get single item by ID
+app.get('/items/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const item = items.find(i => i.id === id);
+    if (!item) {
+        return res.status(404).json({ error: "Item not found" });
+    }
+    res.json(item);
+});
+
+// ✏️ UPDATE - Modify an item
+app.put('/items/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const { name } = req.body;
+    if (!name || typeof name !== 'string') {
+        return res.status(400).json({ error: "Invalid 'name' field" });
+    }
+    const itemIndex = items.findIndex(i => i.id === id);
+    if (itemIndex === -1) {
+        return res.status(404).json({ error: "Item not found" });
+    }
+    items[itemIndex].name = name;
+    res.json(items[itemIndex]);
+});
+
+// 🗑 DELETE - Remove an item
+app.delete('/items/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const itemIndex = items.findIndex(i => i.id === id);
+    if (itemIndex === -1) {
+        return res.status(404).json({ error: "Item not found" });
+    }
+    const deletedItem = items.splice(itemIndex, 1);
+    res.json(deletedItem[0]);
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`✅ Server running on http://localhost:${PORT}`);
+});
+▶️ Run the API
+Bash
+
+Copy code
+node server.js
+Server will start at:
+http://localhost:3000
+
+📌 Example API Calls
+GET all items → GET http://localhost:3000/items
+GET one item → GET http://localhost:3000/items/1
+POST new item → POST http://localhost:3000/items
+Body: { "name": "New Item" }
+PUT update item → PUT http://localhost:3000/items/1
+Body: { "name": "Updated Name" }
+DELETE item → DELETE http://localhost:3000/items/1
+
+
+
+
+------------------------------
+
+Build a REST API with Node.js
+1
+2
+3
+Creating a REST API with Node.js and Express | Postman Blog
+https://blog.postman.com/how-to-create-a-rest-api-with-node-js-and-express/
+Node.js REST API
+https://www.w3schools.com/nodejs/nodejs_rest_api.asp
+How to Create a RESTful API with Node.js: A Step-by-Step Guide - DE…
+https://dev.to/abhinowww/how-to-create-a-restful-api-with-nodejs-a-step-by-step-guide-47dj
+Creating a REST API with Node.js and Express is a common approach for building scalable backend services. Below is a concise guide to get you started.
+
+1. Initialize the Project
+
+Open a terminal and run:
+
+mkdir my-api
+cd my-api
+npm init -y
+Copy
+Install dependencies:
+
+npm install express mongoose body-parser cors
+Copy
+Here, Express handles routing, Mongoose connects to MongoDB, body-parser parses JSON, and CORS enables cross-origin requests.
+
+2. Set Up the Server
+
+Create server.js:
+
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(bodyParser.json());
+
+mongoose.connect('your_mongodb_connection_string', {
+useNewUrlParser: true,
+useUnifiedTopology: true
+}).then(() => console.log('MongoDB connected'))
+.catch(err => console.log(err));
+
+app.get('/status', (req, res) => {
+res.json({ status: 'Running', time: new Date().toISOString() });
+});
+
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+Copy
+3. Create a Data Model
+
+In models/Item.js:
+
+const mongoose = require('mongoose');
+const ItemSchema = new mongoose.Schema({
+name: { type: String, required: true },
+quantity: { type: Number, required: true }
+});
+module.exports = mongoose.model('Item', ItemSchema);
+Copy
+4. Define CRUD Routes
+
+In routes/items.js:
+
+const express = require('express');
+const router = express.Router();
+const Item = require('../models/Item');
+
+// CREATE
+router.post('/items', async (req, res) => {
+try {
+const item = await Item.create(req.body);
+res.status(201).json(item);
+} catch (err) {
+res.status(500).json({ error: err.message });
+}
+});
+
+// READ
+router.get('/items', async (req, res) => {
+const items = await Item.find();
+res.json(items);
+});
+
+// UPDATE
+router.put('/items/:id', async (req, res) => {
+const updated = await Item.findByIdAndUpdate(req.params.id, req.body, { new: true });
+res.json(updated);
+});
+
+// DELETE
+router.delete('/items/:id', async (req, res) => {
+await Item.findByIdAndDelete(req.params.id);
+res.status(204).send();
+});
+
+module.exports = router;
+
+Copy
+In server.js:
+
+const itemRoutes = require('./routes/items');
+app.use('/api', itemRoutes);
+
+Copy
+5. Test and Improve
+
+Use Postman to test endpoints.
+
+Follow REST conventions for naming and HTTP methods.
+
+Add authentication, validation, and error handling for production readiness.
+
+This setup gives you a fully functional REST API with Node.js that can be extended for authentication, role-based access, and advanced features.
+
+
+https://www.w3schools.com/nodejs/nodejs_rest_api.asp
+https://blog.postman.com/how-to-create-a-rest-api-with-node-js-and-express/

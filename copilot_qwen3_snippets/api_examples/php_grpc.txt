@@ -1,0 +1,134 @@
+ here’s a complete, minimal, runnable example of a simple gRPC API in PHP.
+We’ll create a Greeter service with one method SayHello that returns a greeting.
+
+1. Install Requirements
+You need:
+
+Bash
+
+Copy code
+# Install PHP gRPC extension
+pecl install grpc
+
+# Install Protocol Buffers compiler
+sudo apt install protobuf-compiler
+
+# Install PHP protobuf library
+composer require grpc/grpc google/protobuf
+2. Define the Service (helloworld.proto)
+Proto
+
+Copy code
+syntax = "proto3";
+
+package helloworld;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings.
+message HelloReply {
+  string message = 1;
+}
+3. Generate PHP Classes
+Run:
+
+Bash
+
+Copy code
+protoc --proto_path=. --php_out=./generated --grpc_out=./generated --plugin=protoc-gen-grpc=/usr/local/bin/grpc_php_plugin helloworld.proto
+This generates:
+
+Helloworld/HelloRequest.php
+Helloworld/HelloReply.php
+Helloworld/GreeterClient.php
+Helloworld/GreeterInterface.php (server stub)
+4. Implement the Server (server.php)
+Php
+
+Copy code
+<?php
+require 'vendor/autoload.php';
+require 'generated/Helloworld/GreeterInterface.php';
+require 'generated/Helloworld/HelloRequest.php';
+require 'generated/Helloworld/HelloReply.php';
+
+use Helloworld\GreeterInterface;
+use Helloworld\HelloRequest;
+use Helloworld\HelloReply;
+use Grpc\ServerContext;
+
+class GreeterService implements GreeterInterface {
+    public function SayHello(ServerContext $context, HelloRequest $request): HelloReply {
+        $reply = new HelloReply();
+        $reply->setMessage("Hello, " . $request->getName());
+        return $reply;
+    }
+}
+
+// Start gRPC server
+$server = new \Grpc\RpcServer();
+$server->addHttp2Port('0.0.0.0:50051');
+$server->handle(new GreeterService());
+echo "gRPC PHP Server running on port 50051...\n";
+$server->run();
+5. Implement the Client (client.php)
+Php
+
+Copy code
+<?php
+require 'vendor/autoload.php';
+require 'generated/Helloworld/GreeterClient.php';
+require 'generated/Helloworld/HelloRequest.php';
+
+use Helloworld\GreeterClient;
+use Helloworld\HelloRequest;
+
+$client = new GreeterClient('localhost:50051', [
+    'credentials' => Grpc\ChannelCredentials::createInsecure(),
+]);
+
+$request = new HelloRequest();
+$request->setName("World");
+
+list($reply, $status) = $client->SayHello($request)->wait();
+
+if ($status->code === Grpc\STATUS_OK) {
+    echo "Server says: " . $reply->getMessage() . PHP_EOL;
+} else {
+    echo "Error: " . $status->details . PHP_EOL;
+}
+6. Run the Example
+In two terminals:
+
+Terminal 1 (Server):
+
+Bash
+
+Copy code
+php server.php
+Terminal 2 (Client):
+
+Bash
+
+Copy code
+php client.php
+Output:
+
+
+Copy code
+Server says: Hello, World
+✅ This is the simplest working gRPC API in PHP.
+It uses proto3, the official PHP gRPC extension, and Composer dependencies.
+
+ simple gprc api using php
+
+https://grpc.io/docs/languages/php/quickstart/

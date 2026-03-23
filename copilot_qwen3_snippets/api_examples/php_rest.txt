@@ -1,0 +1,244 @@
+Here’s a complete, runnable example of a simple REST API in PHP using MySQL.
+It supports GET, POST, PUT, DELETE for a users table and returns JSON responses.
+
+1️⃣ Database Setup
+Run this SQL to create a sample database and table:
+
+Sql
+
+Copy code
+CREATE DATABASE rest_api_demo;
+USE rest_api_demo;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE
+);
+2️⃣ PHP REST API (api.php)
+Php
+
+Copy code
+<?php
+// Enable error reporting for development
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Set JSON header
+header("Content-Type: application/json; charset=UTF-8");
+
+// Database connection
+$host = "localhost";
+$db_name = "rest_api_demo";
+$username = "root"; // Change if needed
+$password = "";     // Change if needed
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db_name;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    http_response_code(500);
+    echo json_encode(["error" => "Database connection failed"]);
+    exit;
+}
+
+// Get HTTP method
+$method = $_SERVER['REQUEST_METHOD'];
+
+// Get request data
+$input = json_decode(file_get_contents("php://input"), true);
+
+// Handle API requests
+switch ($method) {
+    case 'GET':
+        if (isset($_GET['id'])) {
+            // Fetch single user
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+            $stmt->execute([intval($_GET['id'])]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            echo json_encode($user ?: ["message" => "User not found"]);
+        } else {
+            // Fetch all users
+            $stmt = $pdo->query("SELECT * FROM users");
+            echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+        }
+        break;
+
+    case 'POST':
+        if (!isset($input['name'], $input['email'])) {
+            http_response_code(400);
+            echo json_encode(["error" => "Name and email are required"]);
+            exit;
+        }
+        try {
+            $stmt = $pdo->prepare("INSERT INTO users (name, email) VALUES (?, ?)");
+            $stmt->execute([$input['name'], $input['email']]);
+            echo json_encode(["message" => "User created", "id" => $pdo->lastInsertId()]);
+        } catch (PDOException $e) {
+            http_response_code(400);
+            echo json_encode(["error" => "Email must be unique"]);
+        }
+        break;
+
+    case 'PUT':
+        if (!isset($_GET['id']) || !isset($input['name'], $input['email'])) {
+            http_response_code(400);
+            echo json_encode(["error" => "ID, name, and email are required"]);
+            exit;
+        }
+        $stmt = $pdo->prepare("UPDATE users SET name = ?, email = ? WHERE id = ?");
+        $stmt->execute([$input['name'], $input['email'], intval($_GET['id'])]);
+        echo json_encode(["message" => "User updated"]);
+        break;
+
+    case 'DELETE':
+        if (!isset($_GET['id'])) {
+            http_response_code(400);
+            echo json_encode(["error" => "ID is required"]);
+            exit;
+        }
+        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        $stmt->execute([intval($_GET['id'])]);
+        echo json_encode(["message" => "User deleted"]);
+        break;
+
+    default:
+        http_response_code(405);
+        echo json_encode(["error" => "Method not allowed"]);
+        break;
+}
+3️⃣ Testing the API
+You can test with Postman or cURL:
+
+Bash
+
+Copy code
+# Create user
+curl -X POST -H "Content-Type: application/json" \
+-d '{"name":"John Doe","email":"john@example.com"}' \
+http://localhost/api.php
+
+# Get all users
+curl http://localhost/api.php
+
+# Get single user
+curl http://localhost/api.php?id=1
+
+# Update user
+curl -X PUT -H "Content-Type: application/json" \
+-d '{"name":"Jane Doe","email":"jane@example.com"}' \
+"http://localhost/api.php?id=1"
+
+# Delete user
+curl -X DELETE http://localhost/api.php?id=1
+✅ Features:
+
+Handles CRUD operations.
+Uses PDO for secure database access.
+Returns JSON responses.
+Includes error handling and input validation.
+
+#############
+
+
+
+PHP REST API Tutorial
+1
+Creating a REST API with PHP and MySQL allows you to handle CRUD operations (Create, Read, Update, Delete) over HTTP using JSON responses. Below is a concise step-by-step guide.
+
+1. Set Up the Environment
+
+Install XAMPP to get PHP, MySQL, and Apache.
+
+Start Apache and MySQL from the XAMPP control panel.
+
+Access http://localhost/dashboard to confirm setup.
+
+2. Create the Database and Table
+
+Go to http://localhost/phpmyadmin/.
+
+Create a database:
+
+CREATE DATABASE geeksforgeeks;
+Copy
+Create a table:
+
+CREATE TABLE users (
+id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(30) NOT NULL,
+email VARCHAR(50) NOT NULL,
+age INT(3) NOT NULL
+);
+Copy
+3. Create the Project Folder
+
+Inside htdocs, create a folder: geeksforgeeks_api.
+
+4. Database Connection File (db.php)
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "geeksforgeeks";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+die("Connection failed: " . $conn->connect_error);
+}
+?>
+Copy
+5. API File (api.php)
+
+<?php
+include 'db.php';
+header("Content-Type: application/json");
+$method = $_SERVER['REQUEST_METHOD'];
+$input = json_decode(file_get_contents('php://input'), true);
+
+switch ($method) {
+case 'GET':
+if (isset($_GET['id'])) {
+$id = $_GET['id'];
+$result = $conn->query("SELECT * FROM users WHERE id=$id");
+echo json_encode($result->fetch_assoc());
+} else {
+$result = $conn->query("SELECT * FROM users");
+$users = [];
+while ($row = $result->fetch_assoc()) { $users[] = $row; }
+echo json_encode($users);
+}
+break;
+case 'POST':
+$conn->query("INSERT INTO users (name,email,age) VALUES ('{$input['name']}','{$input['email']}',{$input['age']})");
+echo json_encode(["message" => "User added successfully"]);
+break;
+case 'PUT':
+$id = $_GET['id'];
+$conn->query("UPDATE users SET name='{$input['name']}', email='{$input['email']}', age={$input['age']} WHERE id=$id");
+echo json_encode(["message" => "User updated successfully"]);
+break;
+case 'DELETE':
+$id = $_GET['id'];
+$conn->query("DELETE FROM users WHERE id=$id");
+echo json_encode(["message" => "User deleted successfully"]);
+break;
+default:
+echo json_encode(["message" => "Invalid request method"]);
+}
+$conn->close();
+?>
+Copy
+6. Testing with Postman
+
+GET: http://localhost/geeksforgeeks_api/api.php
+
+POST: Send JSON in body to add a user.
+
+PUT: Update user by ID.
+
+DELETE: Remove user by ID.
+
+
+https://www.geeksforgeeks.org/php/building-a-rest-api-with-php-and-mysql/
