@@ -1,0 +1,82 @@
+
+# install vscode
+
+https://vscode.dev/
+https://code.visualstudio.com/docs/setup/linux
+https://snapcraft.io/code
+https://snapcraft.io/install/code/ubuntu
+
+sudo apt update
+sudo apt install snapd
+sudo snap install code --classic
+
+
+
+# install continue dev extension
+
+https://docs.continue.dev/
+https://docs.continue.dev/ide-extensions/autocomplete/quick-start
+https://docs.continue.dev/ide-extensions/chat/quick-start
+https://marketplace.visualstudio.com/items?itemName=Continue.continue
+
+Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter.
+ext install Continue.continue
+ 
+
+name: My Local Config
+version: 0.0.1
+schema: v1
+models:
+  - name: Autodetect
+    provider: ollama
+    model: AUTODETECT
+    roles:
+      - chat
+      - edit
+      - apply
+      - rerank
+      - autocomplete
+      
+      
+
+# install ollama      
+      
+docker run --cpus=0.5 -it --network=host --name debianollama  -v ./src:/app debian:latest  /bin/bash;
+apt update
+apt install tmux curl -y
+apt-get install pciutils -y
+apt-get install zstd -y
+curl -fsSL https://ollama.com/install.sh | sh
+tmux
+ollama serve
+ollama run qwen3:0.6b
+
+docker update --cpus "2.9"  debianollama
+docker stop debianollama
+docker start debianollama
+docker exec  -it debianollama /bin/bash
+docker export -o debianollama.tar debianollama
+# docker load -i debianollama.tar
+
+docker start debianollama
+docker exec -it debianollama bash
+
+qwen2:0.5b        6f48b936a09f    352 MB    4 months ago    
+qwen:0.5b         b5dc5e784f2a    394 MB    4 months ago    
+smollm:360m       b3ba1ccba2b8    229 MB    6 months ago    
+gemma3:270m       e7d36fb2c3b3    291 MB    6 months ago    
+tinyllama:1.1b    2644915ede35    637 MB    9 months ago 
+
+
+https://docs.ollama.com/modelfile
+/set parameter ?
+/? set
+/set parameter temperature 0.4
+/set parameter temperature 0.2
+ollama show --parameters gemma3:270m 
+
+Default Temperature: 0.8.
+Best for Accuracy: 0.0 - 0.2.
+Best for Creativity: 0.7 - 1.0+.
+
+curl localhost:11434/api/generate -d '{"model":"gemma3:270m","options":{"temperature":0.7},"prompt":"why is the sky blue?"}'
