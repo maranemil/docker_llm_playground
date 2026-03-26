@@ -1,0 +1,17 @@
+OllamAssist
+
+https://plugins.jetbrains.com/plugin/26388-ollamassist
+https://plugins.jetbrains.com/plugin/22707-continue
+
+
+https://docs.ollama.com/integrations/jetbrains
+https://www.jetbrains.com/help/ai-assistant/use-custom-models.html#provide-your-own-api-key
+https://ollama.com/blog/continue-code-assistant
+
+
+
+In Intellij, click the chat icon located in the right sidebar
+Select the current model in the sidebar, then click Set up Local Models
+Under Third Party AI Providers, choose Ollama
+Confirm the Host URL is http://localhost:11434, then click Ok
+Once connected, select a model under Local models by Ollama
