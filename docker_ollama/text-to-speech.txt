@@ -1,0 +1,208 @@
+curl localhost:11434/api/generate -d '{"model":"gemma3:270m","options":{"temperature":0.7},"prompt":"why is the sky blue? concise answer"}' |  jq -r -j .response  > output.txt && say -f output.txt
+
+
+curl localhost:11434/api/generate -d '{"model":"gemma3:270m","options":{"temperature":0.7},"prompt":"why is the sky blue? concise answer"}' |  jq -r -j .response  > output.txt && cat output.txt |spd-say -e -t female2
+
+curl localhost:11434/api/generate -d '{"model":"gemma3:270m","options":{"temperature":0.7},"prompt":"why is the sky blue? concise answer"}' |  jq -r -j .response  > output.txt && cat output.txt | festival --tts
+
+curl localhost:11434/api/generate -d '{"model":"gemma3:270m","options":{"temperature":0.7},"prompt":"why is the sky blue? concise answer"}' |  jq -r -j .response  > output.txt && cat output.txt | festival --tts
+
+--
+
+python3 -m venv my-env
+source my-env/bin/activate
+pip3 install google_speech
+
+#pip install google-speech
+#python3 -m pip install  google-speech
+
+sudo apt-get install sox
+sudo apt-get install libsox-fmt-mp3
+sudo apt-get install libsox-fmt-all
+
+google_speech -l en "Hello, I am a robot " -e speed 0.9 
+google_speech -l en "Hello $USER, it is $(date)"
+for i in {10..0}; do ( google_speech $i & ); sleep 1s; done
+
+https://pypi.org/project/google-speech/
+
+
+docker exec debianollama ollama serve
+
+
+curl localhost:11434/api/generate -d '{"model":"gemma3:270m","options":{"temperature":0.7},"prompt":"why is the sky blue? concise answer"}' | sed 's/\*//g'|  jq -r -j .response  > output.txt && cat output.txt | google_speech -
+
+---
+sudo apt install python3-pyaudio
+sudo apt-get install python3-pyaudio
+# sudo apt-get install python-pyaudio python3-pyaudio
+sudo apt-get install portaudio19-dev
+pip install pyaudio
+
+python3 -m pip install pyaudio
+#pip install pipwin
+#pipwin install pyaudio
+pip install pyaudio
+pip install PyAudio
+
+pip install SpeechRecognition
+python -m speech_recognition
+---
+
+
+Using sed in a Pipeline
+echo '{"name": "Alice\\nBaker", "age": 30}' | \
+jq '.name' | \
+sed 's/\\n//g'   
+Output: "AliceBaker"
+
+Remove Character Before Parsing
+echo '{"name": "Alice\\nBaker"}' | \
+sed 's/\\n//g' | \
+jq '.name'
+Output: "AliceBaker"
+
+Using tr to Delete Characters
+echo '{"msg": "test\\tdata"}' | \
+jq -r '.msg' | \
+tr -d '\t'
+Output: testdata
+
+Handle Raw Output with jq -r
+echo '{"text": "hello\\tworld"}' | \
+jq -r '.text' | \
+sed 's/\\t/ /g'
+Output: hello world
+
+For control characters like \u0000, use:
+jq '.data' file.json | sed 's/\\u0000//g'
+
+-------------
+# OK
+# Capture speech live from your microphone and convert it to text
+import speech_recognition as sr
+
+r = sr.Recognizer()
+
+with sr.Microphone() as source:
+    print("Say something...")
+    r.adjust_for_ambient_noise(source)  # Reduce background noise
+    audio = r.listen(source)
+
+try:
+    text = r.recognize_google(audio)
+    print("You said:", text)
+except sr.UnknownValueError:
+    print("Sorry, could not understand audio.")
+except sr.RequestError:
+    print("Could not connect to Google API.")   
+    
+    
+------------------
+
+Handle Large Audio Files
+Split long audio files into chunks and transcribe them efficiently.
+
+import speech_recognition as sr
+from pydub import AudioSegment
+from pydub.silence import split_on_silence
+import os
+
+def transcribe_large_audio(path):
+    sound = AudioSegment.from_wav(path)
+    chunks = split_on_silence(
+        sound,
+        min_silence_len=500,
+        silence_thresh=sound.dBFS - 14,
+        keep_silence=500
+    )
+
+    folder_name = "audio-chunks"
+    if not os.path.exists(folder_name):
+        os.mkdir(folder_name)
+
+    recognizer = sr.Recognizer()
+    full_text = ""
+
+    for i, chunk in enumerate(chunks):
+        chunk_filename = f"{folder_name}/chunk{i}.wav"
+        chunk.export(chunk_filename, format="wav")
+
+        with sr.AudioFile(chunk_filename) as source:
+            audio = recognizer.record(source)
+            try:
+                text = recognizer.recognize_google(audio)
+                full_text += text + " "
+            except sr.UnknownValueError:
+                print(f"Chunk {i}: Could not understand.")
+            except sr.RequestError:
+                print(f"Chunk {i}: API connection error.")
+
+    return full_text
+
+# Usage
+print("Full transcript:", transcribe_large_audio("long_audio.wav"))   
+
+
+------------------
+
+Offline Speech Recognition (Optional)
+
+
+# pip install vosk pyaudio
+from vosk import Model, KaldiRecognizer
+import pyaudio
+
+model = Model("vosk-model-small-en-us")  # Download from https://alphacephei.com/vosk/models
+rec = KaldiRecognizer(model, 16000)
+
+p = pyaudio.PyAudio()
+stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8192)
+stream.start_stream()
+
+print("Listening (say 'exit' to stop)...")
+while True:
+    data = stream.read(4096)
+    if rec.AcceptWaveform(data):
+        result = rec.Result()
+        print(result)
+        if "exit" in result.lower():
+            break   
+
+
+-------
+# Use spchcat (Command-Line Tool)
+# Install (Debian/Ubuntu)
+wget https://github.com/petewarden/spchcat/releases/latest/download/spchcat_0.0-2_amd64.deb
+sudo dpkg -i spchcat_0.0-2_amd64.deb
+
+# Transcribe a WAV file
+spchcat audio.wav
+
+# Save output to file
+spchcat audio.wav > transcript.txt   
+
+-------------
+# Run Python One-Liner from CLI
+
+python3 -c "
+import speech_recognition as sr
+r = sr.Recognizer()
+with sr.AudioFile('audio.wav') as source:
+    audio = r.record(source)
+    print(r.recognize_google(audio))
+"
+
+https://github.com/dalasnoin/open_whisper
+https://pypi.org/project/openai-whisper/
+https://pypi.org/project/SpeechRecognition/
+https://www.geeksforgeeks.org/python/python-convert-speech-to-text-and-text-to-speech/
+https://github.com/EpicenterHQ/epicenter/tree/main/apps/whispering
+https://github.com/richiejp/VoxInput
+https://github.com/ideasman42/nerd-dictation
+https://simonlermen.substack.com/p/run-local-speech-to-text-transcription
+https://github.com/petewarden/spchcat
+https://libraries.io/pypi/vaani-speech-to-text
+
+
+
