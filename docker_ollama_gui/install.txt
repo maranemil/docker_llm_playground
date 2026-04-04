@@ -1,0 +1,12 @@
+pip install ollama-gui --break-system-packages
+ollama-gui
+/home/user/.local/bin/ollama-gui
+
+
+https://pypi.org/project/ollama-gui/
+https://pypi.org/project/ollama-gui/1.0.0/
+
+docker start debianollama
+docker exec debianollama ollama serve
+docker exec -it debianollama bash
+docker stop debianollama
