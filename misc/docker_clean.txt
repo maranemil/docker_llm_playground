@@ -1,0 +1,16 @@
+docker image prune
+docker image prune -a
+# docker image prune -a --filter "until=24h"
+# docker container prune --filter "until=24h"
+docker image  list
+docker ps -a --size
+docker volume prune
+docker network prune
+# docker network prune --filter "until=24h"
+
+# docker system prune
+# docker system prune --volumes
+# docker system prune --filter "until=24h"
+
+https://docs.docker.com/engine/manage-resources/pruning/
+docker rmi $(docker images -f dangling=true -q)
