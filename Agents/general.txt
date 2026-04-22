@@ -3,7 +3,9 @@ App & Agent Rankings - open agent rank ai agents
 https://openrouter.ai/apps
 https://openrouter.ai/rankings
 https://artificialanalysis.ai/agents/coding
+
 https://www.canirun.ai/
+https://whatllm.org/best-ai-models
 ##########################################
 
 
