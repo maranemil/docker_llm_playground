@@ -1,0 +1,7 @@
+##########################################
+copilot
+##########################################
+
+https://developer.microsoft.com/blog/making-windows-terminal-awesome-with-github-copilot-cli
+
+npm install -g @github/copilot

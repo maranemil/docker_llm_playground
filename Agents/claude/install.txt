@@ -1,0 +1,107 @@
+
+####################################
+claude
+####################################
+
+https://code.claude.com/docs/en/quickstart
+https://ollama.com/library/qwen3-coder
+https://ollama.com/library/qwen2.5-coder
+
+curl -fsSL https://claude.ai/install.sh | bash
+claude
+/login
+# Follow the prompts to log in with your account
+# Start your first session
+cd /path/to/your/project
+claude
+claude --dangerously-skip-permissions
+
+ollama lauch claude
+ollama lauch claude --config
+ollama run qwen3-coder
+ollama run qwen2.5-coder
+
+prompts
+what does this project do?
+explain the folder structure
+where is the main entry point?
+what can Claude Code do?
+
+add a hello world function to the main file
+what files have I changed?
+commit my changes with a descriptive message
+create a new branch called feature/quickstart
+show me the last 5 commits
+help me resolve merge conflicts
+
+add input validation to the user registration form
+there's a bug where users can submit empty forms - fix it
+
+
+
+
+#####################################################
+OpenClaw, NanoBot, PicoClaw, IronClaw, ZeroClaw, NullClaw
+OpenClaw, MoltBot und ClawdBot
+#####################################################
+
+https://openclaw.ai/
+https://www.docker.com/blog/run-openclaw-securely-in-docker-sandboxes/
+https://openclaw.ai/
+https://nullclaw.org/
+https://github.com/nullclaw/nullclaw
+https://github.com/HKUDS/nanobot
+https://www.nanobot.ai/
+https://github.com/sipeed/picoclaw
+https://picoclaw.net/
+https://github.com/zeroclaw-labs/zeroclaw
+https://zeroclaw.org/
+https://github.com/nearai/ironclaw
+https://github.com/aiming-lab/MetaClaw
+
+
+Run OpenClaw Securely in Docker Sandboxes
+
+docker model pull ai/gpt-oss:20B-UD-Q4_K_XL
+docker sandbox create --name openclaw -t olegselajev241/openclaw-dmr:latest shell .
+docker sandbox network proxy openclaw --allow-host localhost
+docker sandbox run openclaw
+~/start-openclaw.sh
+~/start-openclaw.sh list
+~/start-openclaw.sh ai/qwen2.5:7B-Q4_K_M
+
+
+Build Your Own
+docker sandbox create --name my-openclaw shell .
+docker sandbox network proxy my-openclaw --allow-host localhost
+docker sandbox run my-openclaw
+
+# Install Node 22 (OpenClaw requires it)
+npm install -g n && n 22
+hash -r
+ # Install OpenClaw
+npm install -g openclaw@latest
+ # Run initial setup
+openclaw setup
+
+#####################################################
+How to use AI sandboxes in docker
+#####################################################
+
+https://docs.docker.com/ai/sandboxes/
+https://docs.docker.com/ai/sandboxes/get-started/
+https://www.docker.com/blog/run-openclaw-securely-in-docker-sandboxes/
+
+cd ~/my-project
+docker sandbox run claude
+docker sandbox run claude ~/project-a
+docker sandbox run shell 
+
+docker model pull ai/gpt-oss:20B-UD-Q4_K_XL
+docker sandbox create --name openclaw -t olegselajev241/openclaw-dmr:latest shell .
+docker sandbox network proxy openclaw --allow-host localhost
+docker sandbox run openclaw
+~/start-openclaw.sh
+~/start-openclaw.sh list
+~/start-openclaw.sh ai/qwen2.5:7B-Q4_K_M
+

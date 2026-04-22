@@ -1,0 +1,68 @@
+
+LM Studio MCP-Server
+
+https://lobehub.com/de/mcp/samscarrow-mcp-servers-lmstudio
+
+
+Manual Configuration
+Add to ~/.lmstudio/mcp.json:
+
+*.json
+JSON
+{
+  "mcpServers": {
+    "lmstudio-concurrent": {
+      "command": "python3",
+      "args": ["/path/to/lmstudio_bridge.py"],
+      "env": {
+        "LMSTUDIO_API_BASE": "http://localhost:1234/v1"
+      }
+    }
+  }
+}
+
+
+
+CLI Installation
+*.bash
+Shell
+# Using the installer generator
+python3 generate_installer.py --preset concurrent --open
+# Or directly with LM Studio CLI
+lmstudio mcp add-json 'lmstudio-concurrent' '{"command":"python3","args":["/path/to/server.py"]}'
+
+
+
+
+
+Create Your Own MCP Server
+# my_mcp_server.py
+from mcp import server
+import asyncio
+
+@server.tool()
+async def my_tool(param: str) -> str:
+    """Your tool description"""
+    return f"Processed: {param}"
+
+if __name__ == "__main__":
+    server.run()
+
+
+
+Generate Installer
+*.bash
+# Clone this repo
+git clone https://github.com/samscarrow/mcp-servers-lmstudio.git
+cd mcp-servers-lmstudio
+
+# Generate installer for your server
+python3 scripts/generate_installer.py \
+  --name "my-server" \
+  --script "/path/to/my_mcp_server.py" \
+  --output installers/my-server.html \
+  --open
+
+
+
+

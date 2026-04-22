@@ -1,0 +1,23 @@
+#####################################################
+coding agent
+#####################################################
+
+https://opencode.ai/
+curl -fsSL https://opencode.ai/install | bash
+
+https://opencode.ai/
+docker run -it --rm ghcr.io/anomalyco/opencode
+
+
+
+https://github.com/anomalyco/opencode
+https://opencode.ai/
+
+npm install -g opencode-ai@latest
+npm i -g opencode-ai
+curl -fsSL https://opencode.ai/install | bash
+/root/.opencode/bin/opencode
+
+
+
+

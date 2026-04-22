@@ -1,0 +1,23 @@
+
+####################################
+Agent Zero AI framework
+####################################
+
+https://www.agent-zero.ai/p/docs/installation/
+
+Quick Start
+https://github.com/agent0ai/agent-zero
+Linux
+curl -fsSL https://bash.agent-zero.ai | bash
+Docker
+docker run -p 80:80 agent0ai/agent-zero
+
+
+Manual Docker workflow
+docker pull agent0ai/agent-zero:latest
+# Basic run
+docker run -d -p 50080:80 --name agent-zero agent0ai/agent-zero
+
+# Persist user data
+docker run -d -p 50080:80 -v /path/to/local/data:/a0/usr --name agent-zero agent0ai/agent-zero
+

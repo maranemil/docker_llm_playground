@@ -1,0 +1,37 @@
+
+###############################
+LibreTranslate  1.8 GB
+###############################
+
+https://github.com/argosopentech/argos-translate/
+https://hub.docker.com/r/libretranslate/libretranslate
+https://github.com/LibreTranslate/LibreTranslate
+
+docker run -ti --rm -p 5000:5000 libretranslate/libretranslate
+docker run -ti --name libretranslate  -p 5000:5000 libretranslate/libretranslate
+http://localhost:5000/
+
+docker start libretranslate
+docker exec -it libretranslate bash
+docker stop libretranslate
+docker export -o libretranslate.tar libretranslate
+# docker load -i libretranslate.tar
+--
+https://github.com/lingarr-translate/lingarr
+https://hub.docker.com/r/lingarr/lingarr
+https://hub.docker.com/r/thedaviddelta/lingva-translate
+
+docker run -p 3000:3000 -e site_domain=lingva.ml -e force_default_theme=light -e default_source_lang=auto -e default_target_lang=en thedaviddelta/lingva-translate:latest
+
+https://github.com/TTomas65/Subtitle-Translator-for-LM-Studio
+
+https://huggingface.co/collections/google/translategemma
+https://www.kaggle.com/models/google/translategemma
+https://github.com/jhkchan/translategemma-cli
+https://github.com/realies/translategemma-ui
+https://github.com/the-homeless-god/voicer
+https://github.com/arrase/gemma-translator
+https://github.com/SubtitleEdit/subtitleedit
+https://zenn.dev/shivase/articles/017-lm-studio-local-translator?locale=en
+https://docs.vntranslator.com/advanced/llms/lm-studio
+

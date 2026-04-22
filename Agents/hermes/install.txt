@@ -1,0 +1,12 @@
+##########################################
+hermes agent
+##########################################
+
+https://hermes-agent.nousresearch.com/
+https://github.com/nousresearch/hermes-agent
+https://hermes-agent.org/
+
+curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+hermes setup
+

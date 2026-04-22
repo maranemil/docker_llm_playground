@@ -1,0 +1,9 @@
+
+##########################################
+codex
+##########################################
+
+https://developers.openai.com/codex/cli/
+
+npm i -g @openai/codex
+npm install -g @openai/codex

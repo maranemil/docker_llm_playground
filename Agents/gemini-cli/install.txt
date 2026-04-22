@@ -1,0 +1,9 @@
+##########################################
+gemini cli
+##########################################
+
+https://github.com/google-gemini/gemini-cli
+https://geminicli.com/
+
+
+npm install -g @google/gemini-cli
