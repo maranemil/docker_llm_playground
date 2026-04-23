@@ -6,6 +6,8 @@ https://artificialanalysis.ai/agents/coding
 
 https://www.canirun.ai/
 https://whatllm.org/best-ai-models
+https://arena.ai/leaderboard
+https://arena.ai/leaderboard/text
 ##########################################
 
 
