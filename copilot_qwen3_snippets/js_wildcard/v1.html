@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildcard Words</title>
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/latin.css" rel="stylesheet">
+    <!--  create a wildcard words game in simple html javascript -->
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+            --success: #10b981;
+            --error: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        
+        body {
+            background: radial-gradient(circle at top right, #1e1b4b, var(--bg-dark));
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        #game-wrapper {
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* HUD */
+        .hud {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .hud-item { text-align: center; }
+        .hud-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+        .hud-value { font-size: 1.5rem; font-weight: 800; margin-top: 0.25rem; }
+        .lives-container { display: flex; gap: 4px; }
+        .heart { width: 24px; height: 24px; fill: var(--error); transition: transform 0.2s, opacity 0.3s; }
+        .heart.lost { opacity: 0.2; transform: scale(0.8); }
+
+        /* Word Display */
+        #word-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 2rem;
+            min-height: 60px;
+        }
+        .letter-slot {
+            width: 48px;
+            height: 56px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .letter-slot.wildcard {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--accent);
+            color: var(--accent-hover);
+        }
+
+        /* Input Area */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        #word-input {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            text-align: center;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+            text-transform: uppercase;
+        }
+        #word-input:focus { border-color: var(--accent); }
+        #word-input::placeholder { color: var(--text-muted); opacity: 0.5; text-transform: none; }
+
+        .btn {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--accent);
+            color: white;
+        }
+        .btn:hover { background: var(--accent-hover); transform: translateY(-2px); }
+        .btn:active { transform: translateY(0); }
+        .btn-secondary { background: rgba(255,255,255,0.1); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); }
+
+        /* Message Toast */
+        #toast {
+            height: 40px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateY(10px);
+        }
+        #toast.visible { opacity: 1; transform: translateY(0); }
+        #toast.success { color: var(--success); }
+        #toast.error { color: var(--error); }
+
+        /* Overlays */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .overlay.active { opacity: 1; pointer-events: all; }
+        .overlay-content { text-align: center; max-width: 400px; padding: 20px; }
+        .overlay h1 { font-size: 3rem; font-weight: 900; margin-bottom: 0.5rem; background: linear-gradient(to right, #6366f1, #ec4899); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .overlay p { color: var(--text-muted); margin-bottom: 2rem; font-size: 1.1rem; }
+        .stat-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 1.5rem; display: inline-block; }
+        .stat-value { font-size: 2rem; font-weight: 800; }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+        
+        @keyframes pop {
+            0% { transform: scale(0.9); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .pop { animation: pop 0.3s ease forwards; }
+
+        @media (max-width: 480px) {
+            .card { padding: 1.5rem; }
+            .letter-slot { width: 40px; height: 48px; font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-wrapper">
+        <div class="card" id="game-card">
+            <div class="hud">
+                <div class="hud-item">
+                    <div class="hud-label">Score</div>
+                    <div class="hud-value" id="score-display">0</div>
+                </div>
+                <div class="hud-item">
+                    <div class="hud-label">Lives</div>
+                    <div class="lives-container" id="lives-display"></div>
+                </div>
+                <div class="hud-item">
+                    <div class="hud-label">Time</div>
+                    <div class="hud-value" id="time-display">60</div>
+                </div>
+            </div>
+
+            <div id="word-container"></div>
+
+            <div class="input-group">
+                <input type="text" id="word-input" maxlength="10" placeholder="Type missing letters..." autocomplete="off">
+                <button id="submit-btn" class="btn">Check</button>
+            </div>
+
+            <div id="toast">Correct!</div>
+        </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div class="overlay active" id="start-overlay">
+        <div class="overlay-content">
+            <h1>Wildcard</h1>
+            <p>Fill in the blanks to complete the words. Match your letters to the missing ones!</p>
+            <button class="btn" onclick="startGame()">Play Now</button>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div class="overlay" id="end-overlay">
+        <div class="overlay-content">
+            <h1 id="end-title">Game Over</h1>
+            <p id="end-message">You ran out of time!</p>
+            <div class="stat-box">
+                <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 5px;">Final Score</div>
+                <div class="stat-value" id="final-score">0</div>
+            </div>
+            <br>
+            <button class="btn" onclick="startGame()">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        const WORDS = [
+            "APPLE", "BREAD", "CLOUD", "DANCE", "EARTH", "FLAME", "GRAPE", "HOUSE",
+            "IMAGE", "JUICE", "KITES", "LEMON", "MAGIC", "NIGHT", "OCEAN", "PEACH",
+            "QUEEN", "RIVER", "STONE", "TIGER", "UMBRA", "VIDEO", "WATER", "YOUTH",
+            "ZEBRA", "BEACH", "CRANE", "DREAM", "EAGLE", "FROST", "GHOST", "HEART",
+            "IVORY", "JOLLY", "KOALA", "LIGHT", "MOOSE", "NOBLE", "OASIS", "PIANO",
+            "QUILT", "ROYAL", "SMILE", "TRAIN", "UNION", "VIVID", "WORLD", "XEROX",
+            "YACHT", "BLANK", "CRISP", "DRAKE", "EMBER", "FAIRY", "GROVE", "HASTE",
+            "INERT", "JOKER", "KNOLL", "LUNAR", "METAL", "NORTH", "ORBIT", "PULSE"
+        ];
+
+        let state = {
+            score: 0,
+            lives: 3,
+            timeLeft: 60,
+            timerId: null,
+            currentPuzzle: null,
+            isPlaying: false
+        };
+
+        const dom = {
+            score: document.getElementById('score-display'),
+            lives: document.getElementById('lives-display'),
+            time: document.getElementById('time-display'),
+            wordContainer: document.getElementById('word-container'),
+            input: document.getElementById('word-input'),
+            submitBtn: document.getElementById('submit-btn'),
+            toast: document.getElementById('toast'),
+            startOverlay: document.getElementById('start-overlay'),
+            endOverlay: document.getElementById('end-overlay'),
+            endTitle: document.getElementById('end-title'),
+            endMessage: document.getElementById('end-message'),
+            finalScore: document.getElementById('final-score'),
+            card: document.getElementById('game-card')
+        };
+
+        function startGame() {
+            state.score = 0;
+            state.lives = 3;
+            state.timeLeft = 60;
+            state.isPlaying = true;
+            
+            dom.startOverlay.classList.remove('active');
+            dom.endOverlay.classList.remove('active');
+            
+            updateHUD();
+            nextPuzzle();
+            focusInput();
+
+            if (state.timerId) clearInterval(state.timerId);
+            state.timerId = setInterval(tickTimer, 1000);
+        }
+
+        function tickTimer() {
+            if (!state.isPlaying) return;
+            state.timeLeft--;
+            dom.time.textContent = state.timeLeft;
+            
+            if (state.timeLeft <= 10) {
+                dom.time.style.color = 'var(--error)';
+            } else {
+                dom.time.style.color = 'var(--text-main)';
+            }
+
+            if (state.timeLeft <= 0) {
+                endGame(false);
+            }
+        }
+
+        function endGame(won) {
+            state.isPlaying = false;
+            clearInterval(state.timerId);
+            
+            dom.endTitle.textContent = won ? "You Won!" : "Game Over";
+            dom.endMessage.textContent = won ? "Incredible run!" : (state.score > 200 ? "Great effort!" : "Keep practicing!");
+            dom.finalScore.textContent = state.score;
+            dom.endOverlay.classList.add('active');
+        }
+
+        function updateHUD() {
+            dom.score.textContent = state.score;
+            
+            // Render Hearts
+            let heartsHTML = '';
+            for (let i = 0; i < 3; i++) {
+                heartsHTML += `<svg class="heart ${i >= state.lives ? 'lost' : ''}" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;
+            }
+            dom.lives.innerHTML = heartsHTML;
+        }
+
+        function generatePuzzle() {
+            const word = WORDS[Math.floor(Math.random() * WORDS.length)];
+            const chars = word.split('');
+            
+            // Randomly hide 1 letter (sometimes 2 for longer words)
+            let hideCount = word.length > 6 ? 2 : 1;
+            let indicesToHide = new Set();
+            
+            while(indicesToHide.size < hideCount) {
+                indicesToHide.add(Math.floor(Math.random() * chars.length));
+            }
+            
+            let hiddenLetters = '';
+            indicesToHide.forEach(idx => {
+                hiddenLetters += chars[idx];
+                chars[idx] = '_';
+            });
+
+            return {
+                fullWord: word,
+                displayChars: chars,
+                hiddenLetters: hiddenLetters, // Sorted by position if multiple
+                hiddenCount: hideCount
+            };
+        }
+
+        function nextPuzzle() {
+            state.currentPuzzle = generatePuzzle();
+            renderBoard();
+            dom.input.value = '';
+            dom.input.maxLength = state.currentPuzzle.hiddenCount;
+            dom.input.placeholder = state.currentPuzzle.hiddenCount === 1 ? 'Type the missing letter...' : `Type the ${state.currentPuzzle.hiddenCount} missing letters...`;
+            focusInput();
+        }
+
+        function renderBoard() {
+            dom.wordContainer.innerHTML = '';
+            state.currentPuzzle.displayChars.forEach(char => {
+                const slot = document.createElement('div');
+                slot.className = `letter-slot ${char === '_' ? 'wildcard' : ''}`;
+                slot.textContent = char === '_' ? '?' : char;
+                dom.wordContainer.appendChild(slot);
+            });
+        }
+
+        function focusInput() {
+            setTimeout(() => dom.input.focus(), 50);
+        }
+
+        function showToast(msg, type) {
+            dom.toast.textContent = msg;
+            dom.toast.className = 'visible ' + type;
+            setTimeout(() => dom.toast.className = '', 1500);
+        }
+
+        function checkAnswer() {
+            if (!state.isPlaying) return;
+            
+            const guess = dom.input.value.toUpperCase().trim();
+            if (!guess) return;
+
+            // Check if guess matches hidden letters exactly
+            if (guess === state.currentPuzzle.hiddenLetters) {
+                // Correct
+                state.score += 10 * state.currentPuzzle.fullWord.length + Math.ceil(state.timeLeft / 10) * 5;
+                state.timeLeft = Math.min(60, state.timeLeft + 4);
+                updateHUD();
+                showToast('Perfect! +Time', 'success');
+                
+                // Reveal word
+                const slots = dom.wordContainer.querySelectorAll('.letter-slot');
+                let hiddenIdx = 0;
+                for (let i = 0; i < slots.length; i++) {
+                    if (state.currentPuzzle.displayChars[i] === '_') {
+                        slots[i].textContent = guess[hiddenIdx] || guess;
+                        slots[i].style.borderColor = 'var(--success)';
+                        slots[i].style.color = 'var(--success)';
+                        slots[i].classList.add('pop');
+                        hiddenIdx++;
+                    }
+                }
+                
+                setTimeout(nextPuzzle, 800);
+            } else {
+                // Wrong
+                state.lives--;
+                updateHUD();
+                showToast('Try again!', 'error');
+                dom.card.classList.add('shake');
+                dom.input.value = '';
+                setTimeout(() => dom.card.classList.remove('shake'), 400);
+                
+                if (state.lives <= 0) {
+                    endGame(false);
+                }
+            }
+        }
+
+        // Event Listeners
+        dom.submitBtn.addEventListener('click', checkAnswer);
+        
+        dom.input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') checkAnswer();
+        });
+
+        // Auto-submit on exact length match
+        dom.input.addEventListener('input', (e) => {
+            if (dom.input.value.length === state.currentPuzzle.hiddenCount) {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
+
