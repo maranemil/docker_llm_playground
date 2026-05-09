@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Article Reader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- create a website with  navigation menu on the left and  article on the right -->
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --bg-sidebar: #0f172a;
+            --text-sidebar: #94a3b8;
+            --text-sidebar-active: #ffffff;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-sidebar);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-subtitle {
+            font-size: 11px;
+            color: var(--text-sidebar);
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 12px;
+        }
+
+        .nav-section-title {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(148, 163, 184, 0.6);
+            padding: 12px 12px 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-sidebar);
+            transition: all 0.2s ease;
+            margin-bottom: 2px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-sidebar-active);
+        }
+
+        .nav-item.active {
+            background: rgba(37, 99, 235, 0.15);
+            color: var(--text-sidebar-active);
+        }
+
+        .nav-item.active .nav-icon {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--primary);
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 7px;
+            border-radius: 10px;
+        }
+
+        .sidebar-footer {
+            padding: 16px 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f472b6, #a78bfa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .user-email {
+            font-size: 11px;
+            color: var(--text-sidebar);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(248, 250, 252, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+
+        .menu-toggle:hover {
+            background: var(--border);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 8px 16px;
+            width: 320px;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-icon {
+            color: var(--text-muted);
+            width: 16px;
+            height: 16px;
+        }
+
+        .search-input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 14px;
+            color: var(--text-primary);
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .icon-btn:hover {
+            background: var(--border);
+            color: var(--text-primary);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid var(--bg-body);
+        }
+
+        .articles-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .article-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease, transform 0.2s ease;
+            cursor: pointer;
+            border: 1px solid var(--border);
+        }
+
+        .article-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .article-body {
+            padding: 24px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .article-tag {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            background: rgba(37, 99, 235, 0.08);
+            color: var(--primary);
+        }
+
+        .article-date {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .article-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 10px;
+            line-height: 1.3;
+            color: var(--text-primary);
+        }
+
+        .article-card p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .article-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .author-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .author-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .article-stats {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Full article view */
+        .article-full {
+            background: var(--bg-card);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .article-full .article-full-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .article-full .article-full-body {
+            padding: 32px;
+            font-family: 'Merriweather', serif;
+        }
+
+        .article-full h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .article-full .article-full-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .article-full p {
+            font-size: 16px;
+            line-height: 1.9;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .article-full blockquote {
+            border-left: 3px solid var(--primary);
+            padding-left: 20px;
+            margin: 24px 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.04);
+        }
+
+        /* Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 90;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .search-bar {
+                width: 180px;
+            }
+
+            .articles-container {
+                padding: 20px 16px;
+            }
+
+            .article-full .article-full-body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar {
+                display: none;
+            }
+        }
+
+        /* Scrollbar */
+        .sidebar-nav::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar-nav::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .article-card, .article-full {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .article-card:nth-child(2) { animation-delay: 0.05s; }
+        .article-card:nth-child(3) { animation-delay: 0.1s; }
+        .article-card:nth-child(4) { animation-delay: 0.15s; }
+        .article-card:nth-child(5) { animation-delay: 0.2s; }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="#" class="sidebar-logo" onclick="showList(); return false;">
+                <div class="logo-icon">A</div>
+                <div>
+                    <div class="logo-text">ArticleHub</div>
+                    <div class="logo-subtitle">Content Platform</div>
+                </div>
+            </a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">Main</div>
+            <a class="nav-item active" data-section="all" onclick="filterArticles('all')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                All Articles
+                <span class="nav-badge">12</span>
+            </a>
+            <a class="nav-item" data-section="tech" onclick="filterArticles('tech')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                Technology
+            </a>
+            <a class="nav-item" data-section="science" onclick="filterArticles('science')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Science
+            </a>
+            <a class="nav-item" data-section="design" onclick="filterArticles('design')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Design
+            </a>
+            <a class="nav-item" data-section="business" onclick="filterArticles('business')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Business
+            </a>
+
+            <div class="nav-section-title" style="margin-top: 16px;">Categories</div>
+            <a class="nav-item" data-section="ai" onclick="filterArticles('ai')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.58-3.25 3.93L12 22"/><path d="M8 6a4 4 0 0 1 1.57-3.14"/><path d="M16 6a4 4 0 0 0-1.57-3.14"/></svg>
+                Artificial Intelligence
+            </a>
+            <a class="nav-item" data-section="web" onclick="filterArticles('web')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                Web Development
+            </a>
+            <a class="nav-item" data-section="health" onclick="filterArticles('health')">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                Health
+            </a>
+
+            <div class="nav-section-title" style="margin-top: 16px;">Collections</div>
+            <a class="nav-item" onclick="void(0)">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                Saved Articles
+                <span class="nav-badge" style="background: #8b5cf6;">3</span>
+            </a>
+            <a class="nav-item" onclick="void(0)">
+                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Reading List
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">JD</div>
+                <div class="user-info">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-email">john@example.com</div>
+                </div>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-sidebar);"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+            </div>
+        </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <button class="menu-toggle" onclick="toggleSidebar()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+            </button>
+            <div class="search-bar">
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" class="search-input" placeholder="Search articles..." id="searchInput" oninput="searchArticles()">
+            </div>
+            <div class="top-bar-actions">
+                <button class="icon-btn" title="Notifications">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                    <span class="notification-dot"></span>
+                </button>
+                <button class="icon-btn" title="Settings">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="articles-container" id="articlesContainer">
+            <!-- Content will be injected by JS -->
+        </div>
+    </main>
+
+    <script>
+        const articlesData = [
+            {
+                id: 1,
+                title: "The Future of AI: How Machine Learning is Transforming Industries",
+                excerpt: "From healthcare to finance, artificial intelligence is revolutionizing the way we work, live, and interact with technology. Explore the latest breakthroughs in AI.",
+                content: `<p>Artificial intelligence has moved from the realm of science fiction to becoming an integral part of our daily lives. As we look toward the future, the potential applications of machine learning continue to expand at an unprecedented rate.</p>
+                <blockquote>"AI is not just a technology; it's a fundamental shift in how we approach problem-solving across every industry."</blockquote>
+                <p>In healthcare, AI algorithms are now capable of detecting diseases from medical images with accuracy rates that rival experienced physicians. In finance, machine learning models process millions of transactions in real-time to detect fraudulent activity.</p>
+                <p>The automotive industry is perhaps the most visible example, with autonomous vehicles becoming increasingly sophisticated. Companies are investing billions in developing self-driving technology that promises to reshape transportation as we know it.</p>
+                <p>Looking ahead, the integration of AI into everyday workflows will become seamless. The key challenge remains ensuring these systems are developed ethically and with proper governance frameworks in place.</p>`,
+                image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop",
+                tag: "AI",
+                section: ["tech", "ai"],
+                date: "May 8, 2026",
+                readTime: "5 min read",
+                author: { name: "Sarah Chen", initials: "SC", color: "#3b82f6" },
+                likes: 124,
+                comments: 18
+            },
+            {
+                id: 2,
+                title: "Modern Web Design: Trends to Watch in 2026",
+                excerpt: "Discover the latest design trends shaping the web experience this year, from spatial interfaces to AI-generated layouts.",
+                content: `<p>The landscape of web design continues to evolve at a breakneck pace. In 2026, we're seeing several key trends emerge that are fundamentally changing how we think about digital experiences.</p>
+                <p>Spatial design interfaces, inspired by the rise of mixed reality headsets, are bringing depth and three-dimensional elements to traditional web layouts. Designers are experimenting with parallax effects, layered compositions, and dynamic depth fields that create immersive browsing experiences.</p>
+                <blockquote>"The best interfaces are the ones that adapt to the user, not the other way around."</blockquote>
+                <p>AI-powered design tools are also revolutionizing the creative process. From automated layout generation to intelligent color palette suggestions, these tools are empowering designers to work faster while maintaining high quality standards.</p>
+                <p>Minimalism continues its reign, but with a twist — we're seeing 'warm minimalism' that incorporates organic shapes, subtle textures, and hand-drawn elements to create more human-centered digital spaces.</p>`,
+                image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=400&fit=crop",
+                tag: "Design",
+                section: ["design", "web"],
+                date: "May 6, 2026",
+                readTime: "4 min read",
+                author: { name: "Alex Rivera", initials: "AR", color: "#8b5cf6" },
+                likes: 89,
+                comments: 12
+            },
+            {
+                id: 3,
+                title: "Quantum Computing Breakthroughs: A New Era of Processing Power",
+                excerpt: "Recent advances in quantum computing promise to solve problems previously thought impossible. Here's what you need to know.",
+                content: `<p>Quantum computing has reached a pivotal moment in its development. Recent breakthroughs in qubit stability and error correction have brought us closer to practical quantum computers than ever before.</p>
+                <p>Researchers have successfully demonstrated quantum advantage in several specialized domains, from drug discovery to cryptographic analysis. The ability of quantum computers to process information in fundamentally different ways from classical computers opens up possibilities that were previously theoretical.</p>
+                <p>One of the most significant recent achievements was the demonstration of a 1000-qubit processor with sustained coherence times measured in seconds rather than milliseconds. This improvement dramatically increases the complexity of problems that can be tackled.</p>
+                <blockquote>"We're standing at the threshold of a computational revolution that will reshape our understanding of what's possible in science and engineering."</blockquote>
+                <p>While general-purpose quantum computers remain years away, the specialized quantum systems being developed today are already beginning to impact fields like materials science, financial modeling, and artificial intelligence.</p>`,
+                image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=400&fit=crop",
+                tag: "Science",
+                section: ["tech", "science"],
+                date: "May 4, 2026",
+                readTime: "6 min read",
+                author: { name: "Dr. James Liu", initials: "JL", color: "#06b6d4" },
+                likes: 156,
+                comments: 24
+            },
+            {
+                id: 4,
+                title: "Sustainable Business Practices: Building for the Future",
+                excerpt: "Companies worldwide are embracing sustainability as a core strategy. Learn how businesses are balancing profit with planet.",
+                content: `<p>The business landscape is undergoing a fundamental transformation as organizations recognize that long-term profitability and environmental sustainability are not mutually exclusive goals.</p>
+                <p>Leading companies are integrating ESG (Environmental, Social, and Governance) criteria into every aspect of their operations. From supply chain optimization to carbon-neutral manufacturing, the commitment to sustainable practices is reshaping corporate strategies worldwide.</p>
+                <p>The circular economy model is gaining particular traction, with businesses designing products for reuse, repair, and recycling. This approach not only reduces environmental impact but also creates new revenue streams and cost efficiencies.</p>
+                <blockquote>"Sustainability is no longer a corporate responsibility checkbox — it's a competitive advantage that drives innovation and market growth."</blockquote>
+                <p>Investors are increasingly demanding transparent sustainability reporting, and consumers are voting with their wallets for brands that demonstrate genuine environmental commitment. This dual pressure is accelerating the pace of change across industries.</p>`,
+                image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=400&fit=crop",
+                tag: "Business",
+                section: ["business"],
+                date: "May 2, 2026",
+                readTime: "5 min read",
+                author: { name: "Emma Watson", initials: "EW", color: "#10b981" },
+                likes: 97,
+                comments: 15
+            },
+            {
+                id: 5,
+                title: "The Science of Sleep: Latest Research on Rest and Recovery",
+                excerpt: "New studies reveal how sleep affects everything from memory to immunity. Discover practical tips for better rest.",
+                content: `<p>Sleep science has made remarkable progress in recent years, revealing just how critical quality rest is to every aspect of our health and wellbeing.</p>
+                <p>Recent research has identified specific brain mechanisms that activate during sleep to clear toxic proteins associated with neurodegenerative diseases. This 'cleaning' process, known as the glymphatic system, appears to be most active during deep sleep stages.</p>
+                <p>The relationship between sleep and mental health has also become clearer. Studies show that consistent, quality sleep is one of the most effective interventions for managing anxiety and depression, often matching the effectiveness of pharmaceutical treatments.</p>
+                <blockquote>"Sleep is the Swiss Army knife of health. When sleep is short, it affects every major system in the body."</blockquote>
+                <p>Practical recommendations include maintaining a consistent sleep schedule, limiting blue light exposure before bedtime, and optimizing your bedroom environment for temperature and darkness. Even small improvements in sleep hygiene can yield significant health benefits.</p>`,
+                image: "https://images.unsplash.com/photo-1531353826977-0941b4779a1c?w=800&h=400&fit=crop",
+                tag: "Health",
+                section: ["health", "science"],
+                date: "Apr 30, 2026",
+                readTime: "4 min read",
+                author: { name: "Dr. Maya Patel", initials: "MP", color: "#f59e0b" },
+                likes: 203,
+                comments: 31
+            },
+            {
+                id: 6,
+                title: "Building Scalable Applications with Microservices Architecture",
+                excerpt: "A comprehensive guide to designing, deploying, and managing microservices for modern web applications.",
+                content: `<p>Microservices architecture has become the gold standard for building scalable, maintainable applications. But adopting this approach requires careful planning and a deep understanding of distributed systems.</p>
+                <p>The key benefit of microservices is the ability to independently deploy and scale individual components of your application. This means teams can work on different services simultaneously without stepping on each other's toes, and you can allocate resources precisely where they're needed most.</p>
+                <p>However, microservices introduce complexity in areas like inter-service communication, data consistency, and observability. Service meshes like Istio and Linkerd have emerged to address these challenges, providing standardized infrastructure for service-to-service communication.</p>
+                <blockquote>"Start with a monolith, understand your domain, then carefully extract services as patterns emerge. Premature microservices adoption is a common pitfall."</blockquote>
+                <p>When implementing microservices, focus on clear service boundaries defined by business capabilities, implement robust CI/CD pipelines, and invest heavily in monitoring and logging from day one.</p>`,
+                image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop",
+                tag: "Web Dev",
+                section: ["tech", "web"],
+                date: "Apr 28, 2026",
+                readTime: "7 min read",
+                author: { name: "Tom Baker", initials: "TB", color: "#ef4444" },
+                likes: 145,
+                comments: 22
+            }
+        ];
+
+        let currentView = 'list';
+        let currentFilter = 'all';
+        let currentSearch = '';
+
+        function renderArticlesList() {
+            const container = document.getElementById('articlesContainer');
+            let filtered = articlesData;
+
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(a => a.section.includes(currentFilter));
+            }
+
+            if (currentSearch) {
+                const search = currentSearch.toLowerCase();
+                filtered = filtered.filter(a =>
+                    a.title.toLowerCase().includes(search) ||
+                    a.excerpt.toLowerCase().includes(search) ||
+                    a.tag.toLowerCase().includes(search)
+                );
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="page-header">
+                        <h1>No articles found</h1>
+                        <p>Try adjusting your filters or search terms.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `<div class="page-header"><h1>${currentFilter === 'all' ? 'All Articles' : currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)}</h1><p>Discover the latest stories and insights</p></div>`;
+
+            filtered.forEach(article => {
+                html += `
+                    <article class="article-card" onclick="showArticle(${article.id})">
+                        <img class="article-image" src="${article.image}" alt="${article.title}" loading="lazy">
+                        <div class="article-body">
+                            <div class="article-meta">
+                                <span class="article-tag">${article.tag}</span>
+                                <span class="article-date">${article.date} · ${article.readTime}</span>
+                            </div>
+                            <h2>${article.title}</h2>
+                            <p>${article.excerpt}</p>
+                            <div class="article-footer">
+                                <div class="article-author">
+                                    <div class="author-avatar" style="background: ${article.author.color}">${article.author.initials}</div>
+                                    <span class="author-name">${article.author.name}</span>
+                                </div>
+                                <div class="article-stats">
+                                    <span class="stat-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                        ${article.likes}
+                                    </span>
+                                    <span class="stat-item">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                        ${article.comments}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function showArticle(id) {
+            const article = articlesData.find(a => a.id === id);
+            if (!article) return;
+
+            currentView = 'article';
+            const container = document.getElementById('articlesContainer');
+            container.innerHTML = `
+                <button class="back-btn" onclick="showList()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                    Back to articles
+                </button>
+                <article class="article-full">
+                    <img class="article-full-image" src="${article.image}" alt="${article.title}">
+                    <div class="article-full-body">
+                        <div class="article-full-meta">
+                            <span class="article-tag">${article.tag}</span>
+                            <span class="article-date">${article.date}</span>
+                            <span class="article-date">${article.readTime}</span>
+                        </div>
+                        <h1>${article.title}</h1>
+                        <div class="article-author" style="margin-bottom: 28px;">
+                            <div class="author-avatar" style="background: ${article.author.color}; width: 36px; height: 36px; font-size: 13px;">${article.author.initials}</div>
+                            <span class="author-name" style="font-size: 14px;">${article.author.name}</span>
+                        </div>
+                        ${article.content}
+                        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 16px;">
+                            <button class="stat-item" style="cursor: pointer; padding: 8px 16px; border: 1px solid var(--border); border-radius: 8px; background: none;" onclick="this.style.color='var(--primary)'; this.style.borderColor='var(--primary)';">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                ${article.likes} Likes
+                            </button>
+                            <span class="stat-item">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                ${article.comments} Comments
+                            </span>
+                        </div>
+                    </div>
+                </article>
+            `;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showList() {
+            currentView = 'list';
+            renderArticlesList();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function filterArticles(section) {
+            currentFilter = section;
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === section) {
+                    item.classList.add('active');
+                }
+            });
+
+            if (currentView === 'article') {
+                showList();
+            } else {
+                renderArticlesList();
+            }
+
+            if (window.innerWidth <= 768) {
+                closeSidebar();
+            }
+        }
+
+        function searchArticles() {
+            currentSearch = document.getElementById('searchInput').value.trim();
+            renderArticlesList();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+
+        // Initialize
+        renderArticlesList();
+    </script>
+</body>
+</html>
+
