@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: system-ui;
+            background: #f06d06;
+            color: white;
+            text-align: center;
+        }
+
+        button,
+        input,
+        select {
+            padding: 5px 10px;
+        }
+
+        .row,
+        .info {
+            width: 570px;
+            text-align: left;
+            padding: 5px 1px;
+        }
+
+        .title {
+            width: 570px;
+            text-align: center;
+            padding: 5px 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h3 class="title">
+        Utilize JavaScript to generate arbitrary musical tones.</h3>
+    <div class="row">
+        <label>Notes (Hz) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <input name="notes" id="notes" value="440" size="5" type="number" />
+        </label>
+        <button href="#" onclick="playSeq()">Play</button>
+        <button href="#" onclick="stopSeq()">Stop</button>
+    </div>
+    <div class="row">
+        <label for="speed">Time Loop (ms)</label>
+        <input name="speed" id="speed" value=1200 type="number" step="200" />
+    </div>
+    <div class="row">
+        <label for="osc_type">
+            Type Oscilator &nbsp;
+        </label>
+        <select name="osc_type" id="osc_type">
+            <option value="sine">sine</option>
+            <option value="square">square</option>
+            <option value="sawtooth">sawtooth</option>
+            <option value="triangle">triangle</option>
+        </select>
+    </div>
+    <p class="info">
+        Find motivation through experimenting with random musical notes using JavaScript in your web browser. By
+        listening to random notes, you may stumble upon your next song idea.
+    </p>
+
+    <script>
+        // https://stackoverflow.com/questions/46175892/audiocontext-how-to-play-the-notes-in-a-sequence
+
+        // let context = new (window.AudioContext || window.webkitAudioContext)();
+
+        function play(frequency, time) {
+            let synthDelay = context.createDelay(5.0);
+            let o = context.createOscillator();
+            let g = context.createGain();
+            g.gain.value = 0.54;
+            o.connect(g);
+            //o.type = "square"; // sine square sawtooth triangle
+            o.type = document.getElementById("osc_type").value;
+            g.connect(context.destination);
+            g.gain.exponentialRampToValueAtTime(
+                0.01,
+                context.currentTime + duration + time
+            );
+            g.connect(synthDelay);
+            // o.frequency.value = frequency;
+            o.frequency.setValueAtTime(frequency, context.currentTime); // value in hertz
+            o.detune.setValueAtTime(frequency - 50, context.currentTime); // value in
+            o.start(time);
+            o.stop(2);
+        }
+
+        let context = new AudioContext();
+        let duration = 0.99;
+        let notes = [725, 1172, 1063];
+        let interval = 0.5;
+        var timer = 0;
+        let synthDelay = context.createDelay(5.0);
+
+        function playSeq() {
+            context = new AudioContext();
+            duration = 0.2;
+            const loopSpeed = document.getElementById("speed").value;
+
+            notes = Array.from(
+                {
+                    length: 1
+                },
+                () => Math.floor(Math.random() * 1140)
+            );
+            interval = 0.2;
+
+            document.getElementById("notes").value = notes;
+            document.getElementById("notes").innerText = notes;
+
+            for (let i = 0; i < notes.length; i++) {
+                play(notes[i], i * interval);
+            }
+            timer = setTimeout(function () {
+                playSeq();
+            }, loopSpeed);
+        }
+
+        function stopSeq() {
+            if (timer) {
+                clearTimeout(timer);
+                timer = 0;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
