@@ -223,3 +223,23 @@ Adding MCP Server to LM Studio
 
 https://fccview.github.io/degoog/
 https://github.com/fccview/degoog
+
+
+-------------------------------------------------
+
+
+https://github.com/ihor-sokoliuk/MCP-searxng
+{
+  "mcpServers": {
+    "searxng": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-searxng"
+      ],
+      "env": {
+        "SEARXNG_URL": "YOUR_SEARXNG_INSTANCE_URL"
+      }
+    }
+  }
+}
