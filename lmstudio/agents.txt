@@ -1,0 +1,54 @@
+
+https://lmstudio.ai/models/qwen3-coder-next
+https://lmstudio.ai/docs/integrations/openclaw
+
+OpenClaw
+lms server start --port 1234
+openclaw onboard
+
+openclaw onboard \
+  --non-interactive \
+  --accept-risk \
+  --auth-choice lmstudio \
+  --custom-base-url http://localhost:1234/v1 \
+  --lmstudio-api-key "$LM_API_TOKEN" \
+  --custom-model-id qwen/qwen3.5-9b
+
+
+openclaw config set agents.defaults.memorySearch.provider lmstudio
+openclaw gateway restart
+
+https://lmstudio.ai/docs/integrations/hermes
+
+lms server start --port 1234
+hermes setup
+hermes model
+..
+hermes config set model.provider lmstudio
+hermes config set model.base_url http://localhost:1234/v1
+hermes config set model.default your-model-name
+hermes config set LM_API_KEY your-key
+
+codex
+https://lmstudio.ai/docs/integrations/codex
+https://developers.openai.com/codex/cli
+
+npm i -g @openai/Codex
+#npm i -g @openai/codex@latest
+Codex
+
+lms server start --port 1234
+codex --oss
+codex --oss -m ibm/granite-4-micro
+
+codex --provider ollama
+
+---------------------------------------------------------
+https://ngrok.com/download/linux
+https://cursor.com/de
+https://cursor.com/de/cli
+
+curl https://cursor.com/install -fsS | bash
+set OLLAMA_ORIGINS=*
+
+

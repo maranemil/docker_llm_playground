@@ -243,3 +243,71 @@ https://github.com/ihor-sokoliuk/MCP-searxng
     }
   }
 }
+
+
+#############################################
+playwright mcp lmstudio
+#############################################
+
+
+
+https://playwright.dev/docs/getting-started-mcp
+https://playwright.dev/mcp/introduction
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
+
+
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    }
+  }
+}
+
+
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--headless"
+      ]
+    }
+  }
+}
+
+Browser selection (Supported values: chrome, firefox, webkit, msedge.)
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--browser=firefox"
+      ]
+    }
+  }
+}
+
+
+VS Code
+code --add-mcp '{"name":"playwright","command":"npx","args":["@playwright/mcp@latest"]}'
+
+Cursor
+Or go to Cursor Settings → MCP → Add new MCP Server and use command type with npx @playwright/mcp@latest.
+
+Claude Code
+claude mcp add playwright npx @playwright/mcp@latest
+
+
