@@ -10,3 +10,38 @@ curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scri
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 hermes setup
 
+
+##########################################
+sandbox
+##########################################
+
+hermes 
+hermes --tui
+
+hermes gateway setup
+to configure Discord, Slack, WhatsApp, Signal, Telegram, Email (IMAP/SMTP), Matrix, or Webhooks
+
+https://docs.docker.com/ai/sandboxes/get-started/
+https://www.docker.com/blog/run-openclaw-securely-in-docker-sandboxes/
+https://docs.openclaw.ai/de/gateway/sandboxing#docker-backend
+https://docs.docker.com/ai/sandboxes/agents/gemini/
+
+
+curl -fsSL https://get.docker.com | sudo REPO_ONLY=1 sh
+sudo apt-get install docker-sbx
+sbx login
+sbx policy reset
+sbx ls
+
+docker model pull ai/gpt-oss:20B-UD-Q4_K_XL
+docker sandbox create --name openclaw -t olegselajev241/openclaw-dmr:latest shell .
+docker sandbox network proxy openclaw --allow-host localhost
+docker sandbox run openclaw
+~/start-openclaw.sh
+~/start-openclaw.sh list
+~/start-openclaw.sh ai/qwen2.5:7B-Q4_K_M
+# OpenClaw → bridge (localhost:54321) → proxy (host.docker.internal:3128) → Model Runner (host localhost:12434)
+
+
+#
+docker sandbox create --name openclaw -t yourname/my-openclaw:latest shell .
