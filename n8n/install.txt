@@ -61,3 +61,25 @@ https://hub.docker.com/r/mcp/n8n
 
 
 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+n8n
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://hub.docker.com/r/n8nio/n8n
+
+
+docker pull n8nio/n8n:next
+
+
+docker volume create n8n_data
+docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n
+
+http://localhost:5678
+
+n8n must be reachable from the internet to make use of webhooks
+
+docker volume create n8n_data
+
+docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n start --tunnel
+
+
