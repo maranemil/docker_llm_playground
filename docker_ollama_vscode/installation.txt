@@ -68,6 +68,18 @@ gemma3:270m       e7d36fb2c3b3    291 MB    6 months ago
 tinyllama:1.1b    2644915ede35    637 MB    9 months ago 
 
 
+
+ollama pull qwen3.5:9b
+ollama pull gemma3:4b
+ollama pull gemma4:12b
+
+
+https://ollama.com/library/qwen3.5
+https://ollama.com/library/gemma3
+https://ollama.com/library/gemma4
+
+
+
 https://docs.ollama.com/modelfile
 /set parameter ?
 /? set
