@@ -1,0 +1,68 @@
+
+
+# VST plugin - YT - Claude vs Gemini Make VSTs from Scratch
+https://www.youtube.com/watch?v=dMb4xFw9D4A
+https://www.youtube.com/watch?v=YL5e3ae7wxY
+-------------------------
+Build a VST3/AU instrument plugin and create a name for it (developer name: Hitclub DSP). A mono-focused lead/bass synth with a colorful, knob-heavy Ul inspired by Nexus - every parameter is a custom-drawn glowing rotary knob (no scary flat UI), color-coded by section, with live-updating visual displays for oscillator waveforms, filter curve, and ADSR envelope shapes. **Voice engine:** Mono/Legato/Poly switch + a Portamento/Glide knob (with Always vs Legato-only mode).
+**Sound engine:** 2 oscillators (saw/square/tri/sine/PWM) + sub osc + noise, unison/detune stacking for fat mono tones, multi-mode filter (LP/HP/BP/notch, 12/24dB) with drive and key tracking, 2 ADSR envelopes (amp + filter) with visual curve displays, 2 LFOs with tempo sync.
+**Effects chain:** Bitcrusher/Distortion
+Chorus → Delay → Reverb. The bitcrusher must be a unique "colored" character effect (bit-crush + sample-rate reduction + asymmetric waveshaping + resonant tone filter), not a generic clipper.
+
+
+
+
+
+# Song lyrics - Brave AI 
+-------------------------
+white a hip hop lyrics, 4 lines, rapping some nonsense.
+Yo, the toaster popped a galaxy inside my shoe, 
+Purple elephants are dancing on a stick of glue. 
+I ate a clock for lunch and now I’m ticking backwards fast, 
+Sipping liquid moonlight from a broken plastic glass.
+
+
+
+
+
+# Web Launchpad - Audio Pad Controller - Qwen3.7-Plus
+-------------------------
+Create an web audio tool that can load an wav files on different buttons like  a  Novation Launchpad.
+The loaded files should play in the loop
+
+
+
+
+# Audio Mastering Web App with Tone.js - Qwen3.7-Plus
+-------------------------
+build a web app  using Tone.js that can load a wav file and boost the sound with masterize options
+
+
+
+
+# Tone.js FX Processor - Qwen3.7-Plus
+-------------------------
+build a web app  using Tone.js that can load a wav file and apply Pitch Shift  ,3D panning, Chorus, EQ and reverb effects.
+add delay effect too.
+
+
+
+# Web Audio FX Rack - Qwen3.7-Plus
+-------------------------
+build a web app that can load a wav file and apply audio effects like phaser, chorus, delay and eq filter
+add a loop functionality beside play and stop
+
+
+
+
+
+
+AMORPH OPEN BETA - turn ideas into Instruments/FX
+https://artistsindsp.gumroad.com/l/amorph
+
+
+Vibe Coding an Audio Plugin - Claude
+https://www.youtube.com/watch?v=qeCYi0pwi3I
+
+
+

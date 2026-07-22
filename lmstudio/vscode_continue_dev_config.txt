@@ -1,0 +1,12 @@
+https://docs.continue.dev/customize/model-providers/top-level/lmstudio
+
+name: My Config
+version: 0.0.1
+schema: v1
+
+models:
+  - name: gemma3-3-1
+    provider: lmstudio
+    model: gemma3-3-1
+    apiBase: http://localhost:1234/v1
+
