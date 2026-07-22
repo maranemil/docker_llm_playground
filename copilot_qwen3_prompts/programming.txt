@@ -1,0 +1,24 @@
+CLAUDE .md  for ,NET by Julio Casal
+
+# GameStore
+ASP.NET Core 10 Web API with EF Core, Vertical Slice Architecture, FluentValidation, and xUnit.
+
+## Commands
+- dotnet build--configuration Release
+- dotnet test-run all xUnit tests
+- dotnet format --verify-no-changes-check formatting - dotnet ef migrations add <Name> --project src/GameStore.Api --startup-project src/GameStore.Api - dotnet run --project src/GameStore.Api
+-docker compose up -d-PostgreSQL, Redis, RabbitMQ
+
+## Architecture
+-/src/GameStore.Api-host, endpoints, Program.cs -/src/GameStore.Api/Features/-one folder per slice (request, handler, response, validator)
+-/src/GameStore.Api/Data/-DbContext, configurations -/src/GameStore.Api/Shared/-cross-cutting concerns -/tests/-WebApplicationFactory + Testcontainers
+
+## Code Style
+- Nullable reference types enabled
+- Primary constructors, collection expressions -Async all the way-no.Result or .Wait()
+- Record types for DTOs, no repository wrappers
+
+## Important
+- NEVER use DateTime.Now-use TimeProvider
+- NEVER use new HttpClient()-use IHttpClientFactory - Always IOptions<T>-no raw config["Key"]
+- See docs/auth-flow.md for identity setup
