@@ -1,0 +1,7 @@
+
+https://pypi.org/project/lmstudio/
+pip install lmstudio
+
+import lmstudio as lms
+model = lms.llm()
+model.complete("Once upon a time,")
