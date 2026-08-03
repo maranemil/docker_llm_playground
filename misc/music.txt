@@ -1,0 +1,3 @@
+https://github.com/asigalov61/giantmusictransformer
+https://github.com/asigalov61/Giant-Music-Transformer
+https://huggingface.co/spaces/asigalov61/Inpaint-Music-Transformer

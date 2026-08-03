@@ -1,0 +1,41 @@
+https://www.geeksforgeeks.org/python/broken-pipe-error-in-python/
+https://documentation.help/Python-3.7/cgi.html
+https://cgi.tutorial.codepoint.net/file-upload
+https://stackoverflow.com/questions/40280267/file-upload-using-python-with-cgi
+https://unix.stackexchange.com/questions/659816/cgi-commong-gateway-interface-program-example-wont-run-from-html-page
+
+
+
+
+import cgi
+import sys
+
+try:
+    # Your upload processing logic here
+    form = cgi.FieldStorage()
+    # ... handle file ...
+except (BrokenPipeError, IOError, Exception) as e:
+    # Log the error or ignore if it was a client disconnect
+    sys.stderr.write(f"Connection lost: {e}\n")
+
+
+
+
+import warnings
+warnings.filterwarnings("ignore", "'cgi' is deprecated", DeprecationWarning)
+import cgi
+# no warning output
+
+
+<system.web>
+    <httpRuntime executionTimeout="12250" maxRequestLength="500000" />
+    <customErrors mode="Off" />
+</system.web>
+
+
+import sys
+sys.stdout.close()
+sys.stderr.close()
+
+
+

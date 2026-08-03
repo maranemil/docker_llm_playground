@@ -26,3 +26,121 @@ chmod +x webui.sh
 
 https://github.com/AUTOMATIC1111/stable-diffusion-webui
 https://github.com/comfyanonymous/ComfyUI/releases
+
+--------------------------------------------
+
+
+
+docker model pull ai/stable-diffusion:Q4
+
+
+docker run -d --name webui --gpus all -p 7860:7860 -p 8888:8888 webui 
+docker run -d -p 8000:8000
+
+--------------------------------------------
+
+
+https://sygil-dev.github.io/sygil-webui/docs/Installation/docker-guide
+
+  
+docker pull tukirito/sygil-webui:latest
+docker scout quickview tukirito/sygil-webui:latest
+
+docker container run --rm -d -p 8501:8501 -e STREAMLIT_SERVER_HEADLESS=true -e "WEBUI_SCRIPT=webui_streamlit.py" -e "VALIDATE_MODELS=false" -v "${PWD}/outputs:/sd/outputs" --gpus all tukirito/sygil-webui:latest
+
+---
+
+####################################################
+SDXL 36GB 
+####################################################
+
+docker run --rm --gpus all -p 7860:7860 -e PORT=7860 -e HOST=0.0.0.0 saladtechnologies/sdnext-sdxl10:latest
+docker run  -p 7860:7860 -e PORT=7860 -e HOST=0.0.0.0 saladtechnologies/sdnext-sdxl10:latest
+
+curl -X POST \
+  'http://localhost:7860/sdapi/v1/txt2img' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{ "prompt": "a cat", "batch_size": 1, "steps": 35, "width": 1024, "height": 1024 }' \
+  -o response.json   
+
+
+curl -X POST 'http://localhost:7860/sdapi/v1/txt2img' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "prompt": "a cat", "batch_size": 1, "steps": 35, "width": 1024, "height": 1024 }' -o response.json  
+
+curl -X POST 'http://localhost:7860/sdapi/v1/txt2img' -H 'accept: application/json' -H 'Content-Type: application/json' -d '{ "prompt": "a cat", "batch_size": 1, "steps": 5, "width": 256, "height": 256 }' -o response.json
+
+
+
+docker network create --ipv6 --subnet 2001:0DB8::/112 ip6net
+docker run \
+  --rm \
+  --gpus all \
+  -p 7860:7860 \
+  -e PORT=7860 \
+  -e HOST='[::]' \
+  --network="ip6net" \
+  saladtechnologies/sdnext-sdxl10:latest   
+
+
+
+Local URL: http://localhost:7860/
+API Docs: http://localhost:7860/docs
+
+https://github.com/SaladTechnologies/stable-diffusion-xl-1.0
+
+/webui/data/models/Diffusers
+
+models--Manojb--stable-diffusion-2-base        models--kostakoff--stable-diffusion-2-GGUF
+models--MohamedRashad--diffusion_fashion       
+models--Muapi--dynamic-pose-fashion            models--sd2-community--stable-diffusion-2-base
+models--Ojimi--anime-kawai-diffusion           models--stabilityai--stable-diffusion-3.5-medium
+models--bdsqlsz--stable-diffusion-xl-anime-V5  models--stable-diffusion-v1-5--stable-diffusion-v1-5
+models--dreamlike-art--dreamlike-anime-1.0
+
+
+
+models--Manojb--stable-diffusion-2-base        models--kostakoff--stable-diffusion-2-GGUF
+models--Ojimi--anime-kawai-diffusion           models--sd2-community--stable-diffusion-2-base
+models--bdsqlsz--stable-diffusion-xl-anime-V5  models--stabilityai--stable-diffusion-3.5-medium
+models--dreamlike-art--dreamlike-anime-1.0     models--stable-diffusion-v1-5--stable-diffusion-v1-5
+
+------------------------------------------------
+
+https://github.com/fboulnois/stable-diffusion-docker
+https://github.com/AbdBarho/stable-diffusion-webui-docker
+
+
+
+####################################################
+Docker concurrent downloads settings
+####################################################
+
+/etc/docker/daemon.json
+
+{
+    "max-concurrent-uploads": 1,
+    "max-concurrent-downloads": 1
+}
+
+{
+  "max-concurrent-downloads": 25
+}
+
+dockerd --max-concurrent-downloads 1
+dockerd --max-concurrent-uploads 1
+
+docker-compose pull --parallel
+
+####################################################
+ControlNet Inpaint
+####################################################
+
+https://github.com/mikonvergence/ControlNetInpaint/blob/main/ControlNet-with-Inpaint-Demo.ipynb
+https://colab.research.google.com/github/mikonvergence/ControlNetInpaint/blob/main/ControlNet-with-Inpaint-Demo-colab.ipynb
+https://github.com/mikonvergence/ControlNetInpaint
+https://github.com/mikonvergence/ControlNetInpaint/blob/main/ControlNet-with-Inpaint-Demo.ipynb
+https://oneuptime.com/blog/post/2026-02-08-how-to-run-automatic1111-web-ui-in-docker/view
+
+
+
+
