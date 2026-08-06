@@ -41,6 +41,12 @@ docker export -o debianollama.tar debianollama
 docker ps -a
 
 
+# split into 2G files volumes
+docker export -o debianollama.tar debianollama
+split -b 2G debianollama.tar debianollama_parts_
+
+
+
 ollama list
 NAME                ID              SIZE      MODIFIED       
 qwen2.5:0.5b        a8b0c5157701    397 MB    3 minutes ago     
