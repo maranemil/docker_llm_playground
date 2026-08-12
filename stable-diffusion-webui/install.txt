@@ -51,7 +51,7 @@ docker container run --rm -d -p 8501:8501 -e STREAMLIT_SERVER_HEADLESS=true -e "
 ---
 
 ####################################################
-SDXL 36GB 
+SDXL 13 GB + models = 36GB 
 ####################################################
 
 docker run --rm --gpus all -p 7860:7860 -e PORT=7860 -e HOST=0.0.0.0 saladtechnologies/sdnext-sdxl10:latest
@@ -110,6 +110,54 @@ https://github.com/fboulnois/stable-diffusion-docker
 https://github.com/AbdBarho/stable-diffusion-webui-docker
 
 
+####################################################
+models SDXL
+####################################################
+
+
+models--Ojimi--anime-kawai-diffusion        models--stabilityai--stable-diffusion-xl-base-1.0
+models--dreamlike-art--dreamlike-anime-1.0  models--stable-diffusion-v1-5--stable-diffusion-v1-5
+models--stabilityai--sdxl-turbo
+
+
+docker cp  loving_mclaren:/webui/data/models/Diffusers/models--Ojimi--anime-kawai-diffusion .
+docker cp  loving_mclaren:/webui/data/models/Diffusers/models--dreamlike-art--dreamlike-anime-1.0 .
+docker cp  loving_mclaren:/webui/data/models/Diffusers/models--stabilityai--sdxl-turbo .
+docker cp  loving_mclaren:/webui/data/models/Diffusers/models--stabilityai--stable-diffusion-xl-base-1.0 .
+docker cp  loving_mclaren:/webui/outputs/ .
+docker cp .\Downloads\sdxl\outputs\ focused_aryabhata:/webui/outputs/
+cd .\Downloads\sdxl\
+docker cp  focused_aryabhata:/webui/data/models/Diffusers/models--dreamlike-art--dreamlike-diffusion-1.0 .
+docker cp  focused_aryabhata:/webui/data/models/Diffusers/models--dreamlike-art--dreamlike-photoreal-2.0 .
+docker cp .\outputs\text\ focused_aryabhata:/webui/outputs/text/
+
+docker update --memory 512m --cpus 1.5 mein-container
+docker update --memory 16g --cpus 5 mein-container
+
+
+Model list enumerated 5 models in 6.462 GB
+Model list enumerated 5 models in 12.12 GB
+Error: dreamlike-art/dreamlike-anime-1.0 [Errno 2] No such file or directory: 'dreamlike-art/dreamlike-anime-1.0'
+Model list enumerated 5 models in 12.12 GB
+Error: dreamlike-art/dreamlike-diffusion-1.0 [Errno 2] No such file or directory: 'dreamlike-art/dreamlike-diffusion-1.0'
+Model list enumerated 5 models in 12.12 GB
+Error: dreamlike-art/dreamlike-photoreal-2.0 [Errno 2] No such file or directory: 'dreamlike-art/dreamlike-photoreal-2.0'
+Model list enumerated 5 models in 12.12 GB
+
+
+
+/webui/
+
+docker kill $(docker ps -q)
+ls data/models/Diffusers
+
+ls
+models--Manojb--stable-diffusion-2-base   models--aipicasso--manga-diffusion-poc          models--stabilityai--stable-diffusion-xl-base-1.0
+models--MohamedRashad--diffusion_fashion  models--dreamlike-art--dreamlike-anime-1.0      models--stable-diffusion-v1-5--stable-diffusion-v1-5
+models--Muapi--dynamic-pose-fashion       models--sd2-community--stable-diffusion-2-base
+models--Ojimi--anime-kawai-diffusion      models--stabilityai--sdxl-turbo
+
+
 
 ####################################################
 Docker concurrent downloads settings
@@ -143,4 +191,71 @@ https://oneuptime.com/blog/post/2026-02-08-how-to-run-automatic1111-web-ui-in-do
 
 
 
+####################################################
+automatic_1111
+####################################################
+
+# Image herunterladen
+docker pull hfarkhari/automatic_1111:v1.6_gradio_3.43.2_user_p7860_sadtalker
+
+# Repository klonen (für Modelle/Outputs)
+git clone https://github.com/HFarkhari/stable-diffusion-webui /stable-diffusion-webui
+
+# Container starten
+docker run --gpus all -p 7860:7860 -it --rm -v $(realpath /stable-diffusion-webui):/workspace hfarkhari/automatic_1111:v1.6_gradio_3.43.2_user_p7860_sadtalker python launch.py --listen --port 7860 --xformers --api   
+
+
+----
+
+
+docker pull goolashe/automatic1111-sd-webui
+docker pull hfarkhari/automatic_1111:v1.6_gradio_3.43.2_user_p7860_sadtalker
+docker pull hfarkhari/automatic_1111:v1.6_gradio_3.43.2_user_p7860_sadtalker
+
+
+docker run --gpus all  -p 7860:7860 -it --rm  -v $(realpath <path-to-local-cloned-git-folder>/stable-diffusion-webui):/workspace hfarkhari/automatic_1111:v1.6_gradio_3.43.2_user_p7860_sadtalker
+
+docker run --gpus all --net=host --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -p 7860:7860 -it --rm --shm-size=16g  -v $(realpath ~/Desktop/stable-diffusion-webui):/workspace hfarkhari/automatic_1111:v1.6_gradio_3.43.2_user_p7860_sadtalker
+
+docker run --gpus all --net=host --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -p 7860:7860 -it --shm-size=16g hfarkhari/automatic_1111:v1.6_gradio_3.43.2_user_p7860_sadtalker
+
+
+docker run --gpus all  -p 7860:7860 -it --rm  -v $(realpath <path-to-local-cloned-git-folder>/stable-diffusion-webui):/workspace hfarkhari/automatic_1111:v1.6_gradio_3.43.2_user_p7860_sadtalker bash webui.sh  --listen --port 7860 --xformers --api
+
+----
+How do I resolve `The following packages have unmet dependencies`
+sudo apt-get install aptitude
+sudo aptitude install <package-name>
+
+sudo apt-get update
+sudo apt-get autoclean
+sudo apt-get autoremove
+sudo apt --fix-broken install
+sudo apt-get update && sudo apt-get upgrade
+sudo dpkg --configure -a
+sudo apt-get install -f
+
+
+
+sudo apt install google-perftools
+sudo ldconfig
+export LD_PRELOAD=libtcmalloc.so.4
+./webui.sh --debug
+
+
+
+docker run --gpus all -p 7860:7860 -it -name automatic1111 ghcr.io/ai-dock/stable-diffusion-webui:latest-cuda
+docker run --gpus all -p 7860:7860 -it -name automatic1111 ghcr.io/ai-dock/stable-diffusion-webui:latest-rocm
+
+
+sudo sh -c "/usr/bin/echo 3 > /proc/sys/vm/drop_caches"
+echo 2 > /proc/sys/vm/drop_caches
+echo 3 | sudo tee /proc/sys/vm/drop_caches
+
+
+####################################################
+utils volume
+####################################################
+
+docker run -it --rm --name ubuntu-app -v "C:/Examplefolder:/srv/app" ubuntu:24.04 bash
 
