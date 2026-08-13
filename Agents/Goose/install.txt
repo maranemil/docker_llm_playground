@@ -1,0 +1,43 @@
+##########################################
+goose in 5 minute
+##########################################
+
+https://goose-docs.ai/docs/getting-started/providers/
+https://goose-docs.ai/docs/quickstart/
+
+wget https://github.com/aaif-goose/goose/releases/download/v1.46.0/goose_1.46.0_amd64.deb
+
+sudo dpkg -i (filename).deb
+goose configure
+goose session
+create an interactive browser-based tic-tac-toe game in javascript where a player competes against a bot
+goose session -r
+open the tic-tac-toe game in a browser
+
+https://lmstudio.ai/
+localhost:1234 by default.
+
+https://ollama.com/
+OLLAMA_HOST  localhost:11434 , 127.0.0.1:11434, 0.0.0.0:11434, OLLAMA_HOST=0.0.0.0 ollama serve, OLLAMA_HOST=0.0.0.0:8080 ollama serve
+sudo systemctl edit ollama
+Environment="OLLAMA_HOST=0.0.0.0"
+
+https://github.com/AtomicBot-ai/Atomic-Chat
+localhost:1337 by default.
+
+https://docs.docker.com/ai/model-runner/
+OPENAI_BASE_PATH
+
+https://ramalama.ai/  
+OLLAMA_HOST
+
+https://docs.vllm.ai/en/latest/getting_started/quickstart/#offline-batched-inference
+https://vllm.ai/
+https://docs.vllm.ai/en/latest/
+uv pip install vllm --torch-backend auto
+uv pip install vllm --extra-index-url https://wheels.vllm.ai/rocm/0.27.1/rocm723
+
+uv venv --python 3.12 --seed
+source .venv/bin/activate
+uv pip install vllm --extra-index-url https://wheels.vllm.ai/rocm/
+
