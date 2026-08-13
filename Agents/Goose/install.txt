@@ -14,6 +14,7 @@ create an interactive browser-based tic-tac-toe game in javascript where a playe
 goose session -r
 open the tic-tac-toe game in a browser
 
+
 https://lmstudio.ai/
 localhost:1234 by default.
 
