@@ -1,0 +1,236 @@
+########################################################
+AGENTS
+########################################################
+
+---------------------
+goose_1
+apt --fix-broken install
+apt install libgtk-3-0 libnotify4 libnss3 xdg-utils libatspi2.0-0 libdrm2 libgbm1 libxcb-dri3-0  kde-cli-tools trash-cli  libglib2.0-bin
+dpkg -i goose_1.46.0_amd64.deb
+goose configure --no-sandbox
+---------------------
+curl -fsSL https://bash.agent-zero.ai | bash
+Failed to connect to bash.agent-zero.ai port 443 after 21137 ms: Couldn't connect to server
+-----------------
+curl -fsSL https://app.factory.ai/cli | sh
+echo 'export PATH=/root/.local/bin:$PATH' >> ~/.profile
+  source ~/.profile
+Then run 'droid' to get started!
+auth ....
+---------------------
+curl -fsSL https://qwen-code-assets.oss-cn-hangzhou.aliyuncs.com/installation/install-qwen.sh | bash
+---------------------
+
+---------------------
+npm install -g @anthropic-ai/claude-code
+claude
+auth ....
+---------------------
+npm i -g @openai/codex
+codex
+auth ....
+---------------------
+npm install -g @google/gemini-cli
+gemini
+auth ....
+---------------------
+npm install -g @vibe-kit/grok-cli
+grok
+Error: API key required. Set GROK_API_KEY environment variable, use --api-key flag, or set "apiKey" field in ~/.grok/user-settings.json
+---------------------
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+tar (child): xz: Cannot exec: No such file or directory
+hermes setup gateway
+hermes setup
+
+
+hermes model            (pick any provider/model)
+hermes setup --portal   (Nous Portal OAuth, no API key)
+
+hermes              Start chatting
+hermes gateway      Start messaging gateway
+hermes doctor       Check for issues
+hermes              Start chatting
+hermes setup        Configure API keys & settings
+hermes config       View/edit configuration
+hermes config edit  Open config in editor
+hermes gateway install Install gateway service (messaging + cron)
+hermes update       Update to latest version
+hermes setup          Re-run the full wizard
+hermes setup model    Change model/provider
+hermes setup terminal Change terminal backend
+hermes setup gateway  Configure messaging
+hermes setup tools    Configure tool providers
+
+hermes config         View current settings
+hermes config edit    Open config in your editor
+hermes config set <key> <value>
+
+Or edit the files directly:
+   nano /root/.hermes/config.yaml
+   nano /root/.hermes/.env
+Config:    /root/.hermes/config.yaml
+   API Keys:  /root/.hermes/.env
+   Data:      /root/.hermes/cron/, sessions/, logs/
+   Code:      /usr/local/lib/hermes-agent
+
+
+For automatic restarts, use a Docker restart policy:
+     docker run --restart unless-stopped ...
+     
+Session reset: never (use /reset or compression)
+    Run `hermes setup agent` later to customize.
+
+
+hermes model
+Custom OpenAI-compatible endpoint configuration:
+http://127.0.0.1:11434
+http://127.0.0.1:11434/v1
+
+
+
+hermes doctor
+hermes chat -q "/no_think say ok"
+hermes chat -q "say ok"
+hermes doctor --fix
+export PATH="$HOME/.local/bin:$PATH"
+
+✓ ~/.hermes/sessions/ exists
+  ✓ ~/.hermes/logs/ exists
+  ✓ ~/.hermes/skills/ exists
+  ✓ ~/.hermes/memories/ exists
+  ✓ ~/.hermes/SOUL.md exists (persona configured)
+  ✓ ~/.hermes/memories/ directory exists
+
+
+echo $HOME
+ls -la ~/.hermes/
+hermes config show | head -30
+
+# Fix B: copy the config across
+sudo cp -r ~/.hermes /root/.hermes
+sudo chown -R root:root /root/.hermes
+
+hermes model
+
+---------------------
+
+
+########################################################
+DOCKER
+########################################################
+
+
+
+
+docker run --cpus=2 -it --name ubuntu-appag --network=host -v "test:/srv/app" ubuntu:24.04 bash
+apt install curl -y
+apt install wget -y
+apt install nano -y
+apt update && sudo apt install xz-utils
+curl 127.0.0.1:11434
+
+
+docker stop ubuntu-appag
+docker start ubuntu-appag
+docker exec -it ubuntu-appag bash
+
+curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+
+All packages are up to date.
+2026-08-13 22:33:27 - Repository configured successfully.
+2026-08-13 22:33:27 - To install Node.js, run: apt install nodejs -y
+2026-08-13 22:33:27 - You can use N|solid Runtime as a node.js alternative
+2026-08-13 22:33:27 - To install N|solid Runtime, run: apt install nsolid -y 
+
+
+docker update --cpus "4.0" ubuntu-appag
+docker update --cpus "4.0" debianollama
+
+
+docker update --memory "1g" --cpuset-cpus "1" ubuntu-appag
+docker update --memory "1g" --cpuset-cpus "1" ubuntu-appag
+docker run -it --cpus=".5" ubuntu-appag /bin/bash
+docker run -it --cpu-period=100000 --cpu-quota=50000 ubuntu /bin/bash
+docker update --cpu-shares 512 abebf7571666
+,,,,,,,,
+
+
+
+docker run --cpus=2 -it --name debianollama --network=host  -v ./src:/app debian:latest  /bin/bash
+apt update
+apt install tmux pciutils zstd -y
+apt install pciutils zstd curl -y
+curl -fsSL https://ollama.com/install.sh | sh
+
+echo 3 | sudo tee /proc/sys/vm/drop_caches
+#echo 3 > /proc/sys/vm/drop_caches
+#sync; echo 3 > /proc/sys/vm/drop_caches
+#sync; echo 3; sudo tee /proc/sys/vm/drop_caches
+
+
+#echo "1" | sudo tee /proc/sys/net/ipv4/ip_forward
+free -m  && sync && echo 3 > /proc/sys/vm/drop_caches && free -m
+
+docker exec -it debianollama bash
+tmux
+ollama serve
+
+docker exec -it debianollama bash
+ollama run qwen3:0.6b
+ollama run gemma3:270m
+ollama run gemma3:1b
+ollama run deepseek-r1:1.5b
+-------
+
+
+docker export -o ubuntu-appag.tar ubuntu-appag
+docker export -o debianollama.tar debianollama
+#docker save -o ubuntu-appag2.tar ubuntu-appag:latest
+
+docker load -i ubuntu-appag.tar
+docker load -i debianollama.tar
+docker load --input ubuntu-appag.tar
+docker load < ubuntu-appag.tar
+
+docker start ubuntu-appag
+docker start debianollama
+
+
+
+
+sudo systemctl stop ollama.service
+
+
+OLLAMA_CONTEXT_LENGTH=22000 ollama serve
+OLLAMA_CONTEXT_LENGTH=64000 ollama serve
+ollama ps
+ollama serve
+ollama create mein-64k-modell -f ./Modelfile
+ollama run mein-64k-modell
+
+
+FROM qwen2.5:14b
+PARAMETER num_ctx 64000
+ollama create qwen2.5-64k -f ./Modelfile
+
+
+Ollama Models Work with Hermes
+https://techno.slomka.biz/?p=1183
+glm-5.1:cloud
+qwen3.6:latest
+gemma4:latest
+deepseek-v3.2:cloud
+qwen3.5:latest
+
+https://ollama.com/library/qwen3.5:0.8b
+ollama run qwen3.5:0.8b
+
+
+To run reasoning models like Qwen without the internal thinking process in Ollama, use the flag --think=false or type /set nothink inside an interactive session. 
+You can also use --hidethinking to hide the reasoning trace while keeping the function active
+
+ollama run qwen3.5:0.8b --think=false "hello"
+Tippen Sie /set nothink oder /set think.
+ollama run qwen3.5:0.8b --hidethinking "hello"
+
