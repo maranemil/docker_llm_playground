@@ -1,0 +1,183 @@
+Trivial File Transfer Protocol (TFTP)
+
+https://www.baeldung.com/linux/tftp-server-install-configure-test
+https://everything.curl.dev/usingcurl/tftp.html
+https://everything.curl.dev/ftp/upload.html
+https://curl.se/docs/manpage.html
+
+
+sudo apt update
+sudo apt install tftpd-hpa tftp-hpa
+sudo systemctl enable --now tftpd-hpa
+
+
+sudo vi /etc/default/tftpd-hpa 
+TFTP_USERNAME="tftp"
+TFTP_DIRECTORY="/var/lib/tftpboot"
+TFTP_ADDRESS="0.0.0.0:69"
+TFTP_OPTIONS="--secure"
+
+sudo mkdir /var/lib/tftpboot
+sudo chmod -R 777 /var/lib/tftpboot
+sudo chown -R nobody:nogroup /var/lib/tftpboot
+sudo systemctl restart tftpd-hpa
+
+tftp 192.168.0.103 #remote_machine_ip
+tftp> status
+tftp> verbose
+tftp> get ip.info
+
+
+dw
+curl -O tftp://localserver/file.boot
+
+up 
+curl -T file.boot tftp://localserver/
+
+
+curl --tftp-blksize 8192 tftp://localserver/file
+curl --tftp-no-options tftp://localserver/file
+
+------
+~~~~~~~~~~~~~~~~~~~~~
+AI models responses
+~~~~~~~~~~~~~~~~~~~~~
+
+
+curl -v -p 12345 ftp -tftp local-server@localhost:8888
+curl -O -o test.txt http://localhost:8888/ftpfile
+xdotool test.txt
+
+
++
++
++
++
++
+
+
+curl -v -p 12345 ftp -tftp local-server@localhost:8888
+curl -O -o test.txt http://localhost:8888/ftpfile
+curl -o test.txt http://localhost:8888/ftpfile
+curl --location --request GET 'http://localhost:8888/my_files/my_file.txt'
+
+
++
++
++
++
++
+
+
+1. Create an FTP server on the local computer:
+   curl -v -p 12345 ftp -tftp local-server@localhost:8888
+2. Transfer the file:
+   curl -O -o test.txt http://localhost:8888/ftpfile
+3. Read the file:
+   curl -o test.txt http://localhost:8888/ftpfile
+
+
++
++
++
++
++
+
+
+OK
+python -m http.server 8888
+http://localhost:8888
+curl http://localhost:8888
+
+
+
++
++
++
++
++
+
+
+sudo nano /etc/http.conf
+```
+2. Add the following content to the `http.conf` file:
+```
+server {
+    listen 8888;
+    server_name localhost;
+    location / {
+        index index.html;
+    }
+}
+```
+sudo systemctl start http.server
+sudo systemctl enable http.server
+curl -u username:password http://localhost:8888/example.txt
+`http://localhost:8888
+
+
++
++
++
++
++
+
+ install the "HTTP::ServerPSGI" module. Open your terminal and run the following command:
+
+```bash
+sudo cpan HTTP::ServerPSGI
+```
+
+This will install the module and its dependencies.
+
+Once installed, you can create a simple Perl script to run an HTTP server. Create a new file called "server.pl" and add the following code to it:
+
+```perl
+#!/usr/bin/perl
+use strict;
+use warnings;
+use HTTP::ServerPSGI;
+
+my $app = sub {
+    my $env = shift;
+    my $res  = shift;
+
+    $res->{content_type} = 'text/plain';
+    $res->{status} = 200;
+    $res->{body} = 'Hello, World!';
+
+    return $res;
+};
+
+HTTP::ServerPSGI->new(
+    Port => 8080,
+    App  => $app,
+)->run();
+```
+
+Make sure to make the file executable by running:
+
+```bash
+chmod +x server.pl
+```
+
+Now, you can run the HTTP server by executing the script:
+
+```bash
+./server.pl
+```
+
+The server will start running on port 8080. You can view it by opening your web browser 
+and entering `http://localhost:8080` in the address bar. You should see "Hello, World!" as the response.
+I hope this helps you to create an HTTP server using Perl on your Ubuntu system.
+
+
+1. Bash: A shell scripting language.
+2. Perl: A high-level, general-purpose, interpreted programming language.
+3. Python: A high-level, interpreted programming language with clear syntax and simple object-oriented concepts.
+4. Ruby: A scripting language that emphasizes readability and simplicity, and is often used in web development.
+5. PHP: A server-side scripting language that is particularly popular for web development.
+6. Node.js: An open-source, cross-platform, back-end JavaScript runtime environment that executes JavaScript code outside of a web browser.
+
+
+

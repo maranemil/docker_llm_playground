@@ -34,10 +34,16 @@ npm install -g @google/gemini-cli
 gemini
 auth ....
 ---------------------
+
 npm install -g @vibe-kit/grok-cli
 grok
 Error: API key required. Set GROK_API_KEY environment variable, use --api-key flag, or set "apiKey" field in ~/.grok/user-settings.json
 ---------------------
+
+~~~~~~~~~~~~~~~~~~~~~~~~~
+hermes
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
 curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
 tar (child): xz: Cannot exec: No such file or directory
 hermes setup gateway
@@ -112,6 +118,107 @@ sudo cp -r ~/.hermes /root/.hermes
 sudo chown -R root:root /root/.hermes
 
 hermes model
+ollama launch hermes --model hermes3:3b
+
+----------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~
+openclaw
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+apt install sudo
+curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+apt install nodejs -y
+apt install nsolid -y
+
+
+---------------------------
+https://openclaw.ai/#quickstart
+https://docs.openclaw.ai/gateway/security
+npm i -g openclaw
+openclaw onboard
+openclaw configure
+Say talk to agent to meet your agent right here, or help for everything I can do
+
+ollama serve
+ollama launch openclaw --model hermes3
+ollama launch openclaw --model hermes3:3b
+openclaw security audit
+openclaw security audit --deep    # attempts a live Gateway probe
+openclaw security audit --fix     # apply safe remediations
+openclaw security audit --json
+
+ Web UI: http://127.0.0.1:18789/                               │
+│  Gateway WS: ws://127.0.0.1:18789                              │
+│  Gateway: not detected (connect ECONNREFUSED 127.0.0.1:18789)  │
+│  Docs: https://docs.openclaw.ai/web/control-ui 
+
+
+openClaw Error: gateway did not start on 127.0.0.1:18789
+openclaw gateway status --deep
+openclaw gateway restart
+openclaw logs --follow
+
+Gateway: bind=loopback (127.0.0.1), port=18789 (env/config)
+Probe target: ws://127.0.0.1:18789
+Dashboard: http://127.0.0.1:18789/
+Probe note: Loopback-only gateway; only local clients can connect.
+
+openclaw config set gateway.port 28789
+openclaw gateway restart
+
+Gateway service disabled.
+Start with: openclaw gateway install
+Start with: openclaw gateway
+Start with: systemctl --user start openclaw-gateway.service
+Start with: WSL2 needs systemd enabled: edit /etc/wsl.conf with [boot]\nsystemd=true
+Start with: Then run: wsl --shutdown (from PowerShell) and reopen your distro.
+Start with: Verify: systemctl --user status
+
+apt install lsof -y
+ nano  /root/.openclaw/openclaw.json
+openclaw gateway restart
+openclaw doctor --fix
+openclaw config validate
+
+ Rejected validation details: gateway.mode: Invalid input (allowed: "local", "remote")
+
+
+ docker debug debianollama2
+
+
+openclaw config set gateway.mode local
+openclaw gateway restart
+openclaw gateway install --force
+openclaw gateway restart   
+openclaw doctor --fix   
+openclaw doctor --post-upgrade
+openclaw dashboard --no-open
+openclaw logs --follow
+openclaw gateway status
+---------------------------
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~
+opencode
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+https://opencode.ai/docs/de#installation
+ollama launch opencode --model hermes3:3b
+curl -fsSL https://opencode.ai/install | bash
+npm install -g opencode-ai
+docker run -it --rm ghcr.io/anomalyco/opencode
+/connect
+opencode
+cd <project>  # Open directory
+opencode      # Run command
+
+
+
+
+
+
 
 ---------------------
 
@@ -233,4 +340,49 @@ You can also use --hidethinking to hide the reasoning trace while keeping the fu
 ollama run qwen3.5:0.8b --think=false "hello"
 Tippen Sie /set nothink oder /set think.
 ollama run qwen3.5:0.8b --hidethinking "hello"
+
+########################################################
+Coding models test
+########################################################
+
+hermes3:3b          best
+granite-code:3b     best
+yi-coder:1.5b       best
+stable-code:3b      best
+deepcoder:1.5b      ok
+deepseek-coder:1.3b best
+
+-------------------
+
+
+ollama list
+NAME                   ID              SIZE      MODIFIED
+hermes3:3b             a8851c5041d4    2.0 GB    44 seconds ago
+granite-code:3b        becc94fe1876    2.0 GB    6 minutes ago
+yi-coder:1.5b          186c460ee707    866 MB    11 minutes ago
+stable-code:3b         37681d29a55a    1.6 GB    14 minutes ago
+deepcoder:1.5b         3bc49891ec47    1.1 GB    26 minutes ago
+smollm:1.7b            95f6557a0f0f    990 MB    31 minutes ago
+deepseek-coder:1.3b    3ddd2d3fc8d2    776 MB    41 minutes ago
+tinyllama:latest       2644915ede35    637 MB    About an hour ago
+qwen2.5-coder:1.5b     d7372fd82851    986 MB    About an hour ago
+deepseek-r1:1.5b       e0979632db5a    1.1 GB    About an hour ago
+qwen3.5:0.8b           f3817196d142    1.0 GB    2 hours ago
+gemma3:1b              8648f39daa8f    815 MB    3 hours ago
+
+-------------------
+
+ollama run qwen3:8b
+
+https://ollama.com/library/qwen3:8b
+https://huggingface.co/Qwen/Qwen3.5-2B
+https://huggingface.co/Qwen/Qwen3.5-4B
+https://huggingface.co/Qwen/Qwen3.5-9B
+
+
+
+
+
+
+
 
