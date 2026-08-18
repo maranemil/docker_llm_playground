@@ -340,3 +340,27 @@ npx @playwright/mcp install-browser firefox
   }
 }
 
+
+######################################################
+fix node version for playwright 18 > 24
+######################################################
+
+https://askubuntu.com/questions/426750/how-can-i-update-my-nodejs-to-the-latest-version
+
+
+sudo npm cache clean -f
+sudo npm install -g n
+sudo n stable
+
+
+extra:
+
+To upgrade to latest version (and not current stable) version, you can use
+sudo n latest
+
+Fix PATH:
+  sudo apt-get install --reinstall nodejs-legacy     # fix /usr/bin/node
+
+To undo:
+  sudo n rm 6.0.0     # replace number with version of Node that was installed
+  sudo npm uninstall -g n
