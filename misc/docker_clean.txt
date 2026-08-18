@@ -1,3 +1,7 @@
+#####################################################
+clean
+#####################################################
+
 docker image prune
 docker image prune -a
 # docker image prune -a --filter "until=24h"
@@ -14,3 +18,28 @@ docker network prune
 
 https://docs.docker.com/engine/manage-resources/pruning/
 docker rmi $(docker images -f dangling=true -q)
+
+
+
+#####################################################
+speed limit
+#####################################################
+
+# limit speed
+docker run -d --name throttled --cap-add NET_ADMIN ubuntu:22.04 sleep infinity
+docker exec throttled tc qdisc add dev eth0 root tbf rate 1mbit burst 32kbit latency 400ms   
+
+# sudo tc qdisc add dev $VETH root tbf rate 5mbit burst 64kbit latency 400ms   
+docker run --device-read-bps /dev/sda:10mb --device-write-bps /dev/sda:5mb ubuntu   
+docker run --device-read-iops /dev/sda:100 --device-write-iops /dev/sda:50 ubuntu   
+
+
+--cpus=0.5
+--cpu-shares=512
+--memory=512m
+--memory-swap=512m
+
+
+
+
+

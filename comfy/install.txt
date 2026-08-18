@@ -1,0 +1,222 @@
+
+###########################################################
+Comfy
+###########################################################
+
+docker run -it --privileged --rm --device=/dev/kfd --device=/dev/dri --group-add video --cap-add=SYS_PTRACE --security-opt seccomp=unconfined --ipc=host -p 8188:8188 rocm/comfyui:comfyui-0.18.2.amd0_rocm7.2.0_ubuntu24.04 # ok
+# python $COMFYUI_PATH/main.py --port 8188 --listen --gpu-only
+
+# start server
+python $COMFYUI_PATH/main.py --port 8188 --listen --cpu
+
+# python ComfyUI/main.py
+http://127.0.0.1:8188/
+
+
+
+Value not in list: ckpt_name: 'v1-5-pruned-emaonly-fp16.safetensors' not in []
+wget https://huggingface.co/Comfy-Org/stable-diffusion-v1-5-archive/resolve/main/v1-5-pruned-emaonly-fp16.safetensors
+#https://huggingface.co/Comfy-Org/stable-diffusion-v1-5-archive/blob/main/v1-5-pruned-emaonly-fp16.safetensors # 2gb
+wget https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors #6gb
+
+
+# stable-audio
+wget https://huggingface.co/Comfy-Org/stable-audio-open-1.0_repackaged/resolve/main/stable-audio-open-1.0.safetensors  #4G
+wget https://huggingface.co/ComfyUI-Wiki/t5-base/resolve/main/t5-base.safetensors # 1G
+
+📂 ComfyUI/
+├── 📂 models/
+│   ├── 📂 checkpoints/
+│   │      └── stable-audio-open-1.0.safetensors
+│   └── 📂 text_encoders/
+│          └── t5-base.safetensors
+
+mv /workload/ComfyUI/models/diffusers/v1-5-pruned-emaonly-fp16.safetensors  /workload/ComfyUI/models/checkpoints/
+# ls checkpoints
+
+/workload/ComfyUI/models/checkpoints
+/workload/ComfyUI/models/text_encoders
+
+echo 3 | sudo tee /proc/sys/vm/drop_caches
+cat /proc/sys/vm/swappiness
+sudo sysctl vm.swappiness=10
+
+
+sudo nano /etc/sysctl.d/99-swappiness.conf
+vm.swappiness=10
+sudo sysctl --system
+
+watch -n 5 "echo 3 | sudo tee /proc/sys/vm/drop_caches"
+
+
+find / -type d -name models
+/workload/ComfyUI/models
+/workload/ComfyUI/comfy/ldm/models
+cd /workload/ComfyUI/models
+cd cd diffusers
+
+
+.....
+
+
+https://pypi.org/project/sd-server/
+https://pypi.org/project/comfy-diffusion/
+https://pypi.org/project/stable-diffusion-cpp-python/
+https://pypi.org/project/stable-diffusion-videos/
+https://pypi.org/project/comfy-diffusion/
+
+
+
+
+###########################################################
+rocm 
+###########################################################
+
+https://hub.docker.com/r/rocm/dev-ubuntu-18.04
+https://hub.docker.com/r/rocm/rocm-build-ubuntu-20.04
+
+docker pull rocm/dev-ubuntu-24.04
+docker pull rocm/dev-ubuntu-18.04
+docker pull rocm/rocm-build-ubuntu-20.04:6.3
+docker pull rocm/dev-ubuntu-20.04
+docker pull rocm/llama.cpp:llama.cpp-b6652.amd0_rocm7.0.0_ubuntu24.04_server
+docker pull rocm/comfyui:comfyui-0.18.2.amd0_rocm7.2.0_ubuntu24.04
+
+https://hub.docker.com/r/rocm/dev-ubuntu-24.04
+https://hub.docker.com/r/rocm/dev-ubuntu-20.04
+https://hub.docker.com/r/rocm/dev-ubuntu-24.04
+https://hub.docker.com/u/rocm?page=4
+
+docker run -it --rm --name python-app -v "C:/Examplefolder:/srv/app" rocm/dev-ubuntu-18.04 bash
+docker run -it --rm --name python-app -v "C:/Examplefolder:/srv/app" rocm/dev-ubuntu-22.04 bash  #ok
+
+https://rocm.docs.amd.com/projects/comfyui/en/docs-26.04/how-to/download-models.html#comfyui-download-models
+https://rocm.docs.amd.com/projects/comfyui/en/docs-26.04/install/comfyui-install.html
+https://rocm.docs.amd.com/projects/comfyui/en/docs-26.04/install/comfyui-install.html
+
+docker run -it --rm --name comfyui -p 8188:8188 -e PORT=8188 -e HOST=0.0.0.0 -v "C:/Examplefolder:/srv/app" rocm/comfyui:comfyui-0.18.2.amd0_rocm7.2.0_ubuntu24.04 # ok
+  
+docker pull rocm/comfyui:comfyui-0.18.2.amd0_rocm7.1.0_ubuntu22.04
+docker pull rocm/comfyui:comfyui-0.18.2.amd0_rocm7.2.0_ubuntu24.04
+
+
+
+
+
+
+###########################################################
+rocm amdgpu-install
+###########################################################
+
+
+sudo apt update && sudo apt install amd-container-toolkit
+sudo amd-ctk cdi generate --output=/etc/cdi/amd.json
+sudo amd-ctk cdi validate --path=/etc/cdi/amd.json
+docker run --rm --name amdrocm --device amd.com/gpu=all rocm/rocm-terminal rocm-smi   
+docker run --rm --name amdrocm  rocm/rocm-terminal rocm-smi
+.
+amd-ctk runtime configure --runtime=docker
+#docker run --rm --runtime=amd -e AMD_VISIBLE_DEVICES=all rocm/rocm-terminal rocm-smi
+docker run --rm --name amdrocm  -e AMD_VISIBLE_DEVICES=all rocm/rocm-terminal rocm-smi
+.
+rocm-smi: Displays GPU status and utilization.
+amd-smi list: Enumerates available AMD GPUs within the container context.
+rocminfo: Lists system AMD GPU attributes and agent details. 
+
+#Driver not initialized (amdgpu not found in modules)
+modprobe amdgpu   
+
+
+apt update
+apt install wget -y
+wget https://repo.radeon.com/amdgpu-install/6.2.4/ubuntu/jammy/amdgpu-install_6.2.60204-1_all.deb
+apt install ./amdgpu-install_6.2.60204-1_all.deb
+apt update
+
+amdgpu-install --usecase=graphics
+amdgpu-install --usecase=rocm
+amdgpu-install --usecase=graphics,rocm
+amdgpu-install --usecase=graphics,rocm,opencl --opencl=rocr,legacy --vulkan=amdvlk,pro --rocmrelease=5.2
+amdgpu-install --rocmrelease=5.2.0 --usecase=rocm,hip
+
+
+apt search rocm
+rocm6.2.4
+
+
+apt purge rocminfo
+amdgpu-install -y --usecase=graphics,rocm --rocmrelease=6.2.4  #ok
+amdgpu-install --usecase=graphics
+sudo usermod -aG render,video $USER
+sudo reboot
+
+# amdgpu dkms failed for running kernel
+
+
+# i386
+sudo dpkg --add-architecture i386
+sudo apt update
+sudo apt install mesa-amdgpu-vulkan-drivers:i386
+
+apt search  amdgpu
+mesa-amdgpu-vdpau-drivers
+mesa-amdgpu-va-drivers
+mesa-amdgpu-omx-drivers
+mesa-amdgpu-common-dev
+mesa-amdgpu-multimedia
+
+
+sudo apt install mesa-amdgpu-vdpau-drivers
+sudo apt install mesa-amdgpu-va-drivers
+sudo apt install mesa-amdgpu-common-dev
+sudo apt install mesa-amdgpu-multimedia
+
+ amd-smi list
+ERROR:root:Drivers not loaded (amdgpu, amd_hsmp, ionic, bnxt_en drivers not found in modules)
+
+Graphics: Use vulkaninfo | grep "GPU id" or glxinfo | grep "OpenGL renderer". 
+Compute: Use rocminfo or rocm-smi to verify GPU detection and status. 
+
+rocminfo
+ROCk module is NOT loaded, possibly no GPU devices
+
+
+groups
+sudo usermod -a -G render,video $USER
+lsmod | grep amdgpu
+sudo modprobe amdgpu
+
+
+ls -la /dev/kfd
+sudo apt install --reinstall rocm
+
+The following additional packages will be installed:
+  amd-smi-lib comgr composablekernel-dev half hip-dev hip-doc hip-runtime-amd hip-samples hipblas hipblas-dev
+  hipblaslt hipblaslt-dev hipcc hipcub-dev hipfft hipfft-dev hipfort-dev hipify-clang hiprand hiprand-dev hipsolver
+  hipsolver-dev hipsparse hipsparse-dev hipsparselt hipsparselt-dev hiptensor hiptensor-dev hsa-amd-aqlprofile
+  hsa-rocr hsa-rocr-dev hsakmt-roct-dev migraphx migraphx-dev miopen-hip miopen-hip-dev mivisionx mivisionx-dev
+  openmp-extras-dev openmp-extras-runtime rccl rccl-dev rocalution rocalution-dev rocblas rocblas-dev rocdecode
+  rocdecode-dev rocfft rocfft-dev rocm-cmake rocm-core rocm-dbgapi rocm-debug-agent rocm-developer-tools
+  rocm-device-libs rocm-gdb rocm-hip-libraries rocm-hip-runtime rocm-hip-runtime-dev rocm-hip-sdk
+  rocm-language-runtime rocm-llvm rocm-ml-libraries rocm-ml-sdk rocm-opencl rocm-opencl-dev rocm-opencl-icd-loader
+  rocm-opencl-runtime rocm-opencl-sdk rocm-openmp-sdk rocm-smi-lib rocm-utils rocminfo rocprim-dev rocprofiler
+  rocprofiler-dev rocprofiler-plugins rocprofiler-register rocprofiler-sdk rocprofiler-sdk-roctx rocrand rocrand-dev
+  rocsolver rocsolver-dev rocsparse rocsparse-dev rocthrust-dev roctracer roctracer-dev rocwmma-dev rpp rpp-dev
+The following NEW packages will be installed:
+  amd-smi-lib comgr composablekernel-dev half hip-dev hip-doc hip-runtime-amd hip-samples hipblas hipblas-dev
+  hipblaslt hipblaslt-dev hipcc hipcub-dev hipfft hipfft-dev hipfort-dev hipify-clang hiprand hiprand-dev hipsolver
+  hipsolver-dev hipsparse hipsparse-dev hipsparselt hipsparselt-dev hiptensor hiptensor-dev hsa-amd-aqlprofile
+  hsa-rocr hsa-rocr-dev hsakmt-roct-dev migraphx migraphx-dev miopen-hip miopen-hip-dev mivisionx mivisionx-dev
+  openmp-extras-dev openmp-extras-runtime rccl rccl-dev rocalution rocalution-dev rocblas rocblas-dev rocdecode
+  rocdecode-dev rocfft rocfft-dev rocm rocm-cmake rocm-core rocm-dbgapi rocm-debug-agent rocm-developer-tools
+  rocm-device-libs rocm-gdb rocm-hip-libraries rocm-hip-runtime rocm-hip-runtime-dev rocm-hip-sdk
+  rocm-language-runtime rocm-llvm rocm-ml-libraries rocm-ml-sdk rocm-opencl rocm-opencl-dev rocm-opencl-icd-loader
+  rocm-opencl-runtime rocm-opencl-sdk rocm-openmp-sdk rocm-smi-lib rocm-utils rocminfo rocprim-dev rocprofiler
+  rocprofiler-dev rocprofiler-plugins rocprofiler-register rocprofiler-sdk rocprofiler-sdk-roctx rocrand rocrand-dev
+  rocsolver rocsolver-dev rocsparse rocsparse-dev rocthrust-dev roctracer roctracer-dev rocwmma-dev rpp rpp-dev
+0 upgraded, 94 newly installed, 0 to remove and 18 not upgraded.
+
+Need to get 2247 MB of archives.
+After this operation, 35.5 GB of additional disk space will be used.
+export ROCR_VISIBLE_DEVICES=1
+
