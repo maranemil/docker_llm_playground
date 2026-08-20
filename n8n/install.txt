@@ -83,3 +83,15 @@ docker volume create n8n_data
 docker run -it --rm --name n8n -p 5678:5678 -v n8n_data:/home/node/.n8n docker.n8n.io/n8nio/n8n start --tunnel
 
 
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+n8n
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://www.youtube.com/watch?v=t5RBVTby9EU
+
+The command:
+curl -fsSL https://get.n8n.io | sh
+
+Update command used:
+curl -fsSL https://get.n8n.io | sh -s -- --upgrade --version 2.35.3
