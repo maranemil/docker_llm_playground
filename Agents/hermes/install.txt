@@ -45,3 +45,31 @@ docker sandbox run openclaw
 
 #
 docker sandbox create --name openclaw -t yourname/my-openclaw:latest shell .
+
+
+
+
+
+##########################################
+Hermes Agent With Kimi K3 Tutorial  📝 Prompts used:
+##########################################
+https://www.youtube.com/watch?v=0GvrKiWT7HI
+
+Free tier demo (Kimi K3 via ZenMux free)
+Build a complete, playable Snake game as a single HTML file with embedded JavaScript and CSS — full game loop, score tracking, game-over and restart logic, and keyboard controls. Make it visually polished, not bare-bones. Save it to /opt/data/snake.html and stop — don't test it, don't open a browser, just write the file.
+
+Demo 1 (SpreadsheetBench
+There's a messy sales CSV at /opt/data/sales_raw.csv. Clean it up: standardize the date format, standardize the currency column to plain numbers, remove duplicate rows, fill or flag missing values, and flag any rows that look like outliers or data-entry errors. Save the cleaned version as /opt/data/sales_clean.csv and give me a short summary of what you changed.
+
+Demo 2  (BrowseComp)
+Find the current listed price for a [Your desired product, mine was RTX 5070] on three different retailer websites, tell me which is cheapest right now, and note if any of them have it in stock. Give me a short summary at the end, don't browse more than one page per retailer.
+
+Demo 3 (Automation Bench
+Step 1: Check the current price on [product name] and save it to /opt/data/price_baseline.json along with today's date.
+Step 2: Check the current price on [same product URL] again and compare it to what's saved in /opt/data/price_baseline.json. If the price has changed, send me a message on Telegram with the old and new price, and log the change with a timestamp to /opt/data/price_log.csv.
+
+Demo 4 (3D game
+Build a simple 3D browser game using three.js where the player character swings between buildings in a low-poly city using a grappling web mechanic — think a spider-powered hero, but an original character, not any existing IP. Keep the graphics intentionally simple, basic shapes and flat colors are fine. Include basic WASD or arrow-key movement, a spacebar or click to fire the web line, physics-based swinging momentum, and a simple scoring or distance system. Save it as a single HTML file with embedded JavaScript at /opt/data/spider-swing.html. Load three.js from a CDN. Do not take screenshots, do not install a browser, do not visually verify the page — just write the file and stop.
+
+
+
