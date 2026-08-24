@@ -55,3 +55,39 @@ ollama launch claude --model kimi-k2.5:cloud --yes -- -p "how does this reposito
 /loop 1h Remind me to review the deploy status
 
 ollama launch claude -- --channels plugin:telegram@claude-plugins-official
+
+
+##################################################
+# Install Ollama Claude
+##################################################
+
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Pull a model (example: qwen3-coder)
+ollama pull qwen3-coder
+
+# Install Claude Code
+curl -fsSL https://claude.ai/install.sh | bash
+
+
+Add these to your ~/.bashrc or ~/.zshrc for persistence.
+
+export ANTHROPIC_BASE_URL="http://localhost:11434"
+export ANTHROPIC_AUTH_TOKEN="ollama"
+export ANTHROPIC_API_KEY=""
+
+
+claude --model qwen3-coder
+
+https://ollama.com/library/qwen3-coder
+https://code.claude.com/docs/en/quickstart
+https://code.claude.com/docs/en/vs-code
+https://docs.ollama.com/integrations/codex
+
+ollama launch claude --model qwen3-coder
+ollama launch opencode --model qwen3-coder
+ollama launch hermes --model qwen3-coder
+ollama launch openclaw --model qwen3-coder
+
+
+

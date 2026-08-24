@@ -7,3 +7,40 @@ https://developers.openai.com/codex/cli/
 
 npm i -g @openai/codex
 npm install -g @openai/codex
+
+
+npm install -g @openai/codex
+ollama launch codex
+ollama launch codex --config
+ollama launch codex --restore
+codex --oss -m gpt-oss:120b
+codex --oss -m gpt-oss:120b-cloud
+
+
+~/.codex/ollama-launch.config.toml:
+model = "gpt-oss:120b"
+model_provider = "ollama-launch"
+model_catalog_json = "/Users/you/.codex/model.json"
+
+[model_providers.ollama-launch]
+name = "Ollama"
+base_url = "http://localhost:11434/v1/"
+wire_api = "responses"
+
+codex --profile ollama-launch
+
+
+https://docs.ollama.com/integrations/opencode
+https://docs.ollama.com/integrations/deepseek-harness
+https://github.com/deepseek-ai/deepseek-harness
+https://deepseek.com/harness/en/
+
+
+https://openai.com/de-DE/codex/
+https://hermes-ai.net/de/docs/quickstart/
+
+npm i -g @openai/codex
+
+
+
+
