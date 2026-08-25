@@ -63,3 +63,18 @@ docker run -it ubuntu /bin/bash
 docker run --rm --gpus all nvidia/cuda:11.0.3-devel-ubuntu20.04 nvidia-smi
 docker run --rm --gpus all -it your_ai_image
 docker run -it --cpus="1.5" --memory="4g" my-ai-app
+
+
+
+
+688MB - 2GB MiniCPM5-1B-Demo
+
+https://huggingface.co/spaces/openbmb/MiniCPM5-1B-Demo
+https://huggingface.co/spaces/openbmb/MiniCPM5-1B-Demo
+https://ollama.com/openbmb/minicpm5
+https://huggingface.co/openbmb/MiniCPM5-1B
+https://github.com/OpenBMB/MiniCPM-Desk-Pet
+https://github.com/OpenBMB/MiniCPM-Desk-Pet/blob/main/NOTICE.md
+
+openbmb/minicpm5:latest
+ollama run openbmb/minicpm5

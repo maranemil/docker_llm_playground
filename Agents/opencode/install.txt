@@ -20,4 +20,11 @@ curl -fsSL https://opencode.ai/install | bash
 
 
 
+https://models.dev/labs/google/
+https://models.dev/
+https://opencode.ai/de
+
+curl -fsSL https://opencode.ai/install | bash
+npm i -g opencode-ai
+
 

@@ -14,3 +14,24 @@ npm install -g @mariozechner/pi-coding-agent
  
 
 
+
+https://www.npmjs.com/package/@earendil-works/pi-coding-agent
+https://github.com/earendil-works/pi
+https://pi.dev/
+
+
+npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+curl -fsSL https://pi.dev/install.sh | sh
+/model
+/tree
+~/.pi/agent/AGENTS.md
+
+
+
+https://omp.sh/
+curl -fsSL https://omp.sh/install | sh
+https://github.com/can1357/oh-my-pi
+
+
+
+
