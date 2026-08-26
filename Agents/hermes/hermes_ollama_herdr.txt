@@ -1,0 +1,118 @@
+
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+herdr terminal
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+curl -fsSL https://herdr.dev/install.sh | sh
+export PATH="/root/.local/bin:$PATH"
+herdr
+ctrl B q - exit herdr
+https://www.x-cmd.com/install/herdr
+https://herdr.dev/docs/configuration/
+
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+update ollama
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+apt-get install zstd
+curl -fsSL https://ollama.com/install.sh | sh 
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compatible hermes model 256k content window
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://ollama.com/library/qwen3.5
+https://ollama.com/library/qwen3-vl
+https://ollama.com/library/deepseek-r1
+https://ollama.com/library/deepseek-coder
+https://ollama.com/library/deepseek-coder-v2
+
+ollama pull qwen3.5:0.8b
+ollama run qwen3.5:0.8b --think=false
+
+ollama pull deepseek-r1:1.5b
+ollama pull deepseek-coder:1.3b
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+get node and depencencies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://oneuptime.com/blog/post/2026-02-02-ollama-installation-configuration/view
+https://hermes-agent.nousresearch.com/docs/user-guide/configuring-models
+https://github.com/ollama/ollama/blob/main/docs/api.md
+https://docs.ollama.com/context-length
+
+apt install net-tools
+apt-get install xz-utils
+curl -sL https://deb.nodesource.com/setup_26.x | sudo -E bash -
+apt-get install nsolid
+apt install libatomic1
+apt install build-essential
+apt install g++
+
+
+
+#ollama run hermes3:3b
+
+
+
+
+
+
+touch ~/.local/bin/hermes
+source ~/.bashrc
+export PATH="$HOME/.local/bin:$PATH"
+
+apt install systemd
+systemctl reboot -i
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+hermes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+OLLAMA_CONTEXT_LENGTH=64000 ollama serve
+ollama run qwen3.5:8b --think=false
+
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+
+hermes setup
+hermes model
+hermes skills search
+hermes tools
+hermes config get web
+hermes doctor --fix
+
+hermes dashboard
+http://127.0.0.1:9119
+
+/model
+/skills
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# test api
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+curl http://localhost:11434/api/generate -d '{ "model": "hermes3:3b","prompt": "Why is the sky blue?","stream": false}'
+curl http://localhost:11434/api/generate -d '{ "model": "hermes3:3b","prompt": "Why is the sky blue?","stream": true}'
+hermes chat 
+   
+ollama list                 
+NAME                       ID              SIZE      MODIFIED       
+openbmb/minicpm5:latest    08239e8f70e0    688 MB    10 minutes ago    
+gemma3:4b                  a2af6cc3eb7f    3.3 GB    5 weeks ago       
+gemma3:1b                  8648f39daa8f    815 MB    10 months ago     
+gemma3:270m                e7d36fb2c3b3    291 MB    10 months ago     
+llava:latest               8dd30f6b0cb1    4.7 GB    13 months ago     
+llava:7b                   8dd30f6b0cb1    4.7 GB    13 months ago     
+tinyllama:1.1b             2644915ede35    637 MB    13 months ago     
+qwen3:0.6b                 7df6b6e09427    522 MB    13 months ago 
+
+
+
+
+

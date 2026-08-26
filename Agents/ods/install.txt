@@ -1,0 +1,8 @@
+ODS 
+https://github.com/Osmantic/ODS
+curl -fsSL https://install.osmantic.com/ods.sh | bash
+http://localhost:3000
+
+
+
+
