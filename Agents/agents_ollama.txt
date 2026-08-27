@@ -382,14 +382,14 @@ https://huggingface.co/Qwen/Qwen3.5-9B
 
 -------------------
 
-skills
-
-https://github.com/davidondrej/skills
-https://github.com/mattpocock/skills
-https://github.com/tt-a1i/matt-skills-with-to-goal/blob/main/skills/engineering/setup-matt-pocock-skills/SKILL.md
 
 
 
+-------------------
+
+https://huggingface.co/Qwen/Qwen3.8-Flash-Next
+https://huggingface.co/spaces/victor/Qwen3.8-Flash-Next-free-endpoint
+https://ollama.com/library/qwen3:8b
 
 
 

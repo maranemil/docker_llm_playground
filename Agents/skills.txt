@@ -1,0 +1,97 @@
+#####################################
+skills
+#####################################
+
+https://github.com/davidondrej/skills
+https://github.com/mattpocock/skills
+https://github.com/tt-a1i/matt-skills-with-to-goal/blob/main/skills/engineering/setup-matt-pocock-skills/SKILL.md
+
+
+
+#####################################
+OpenAI Codex  skills
+#####################################
+
+
+https://www.mindstudio.ai/blog/codex-agents-md-vs-claude-code-claude-md-comparison
+https://www.mindstudio.ai/blog/codex-skills-system-reusable-markdown-instruction-files
+https://learn.chatgpt.com/docs/agent-configuration/agents-md
+https://github.com/bocan/codex
+
+~/.codex/skills/
+~/.codex/skills//skill-name
+
+AGENTS.md
+TEAM_GUIDE.md
+~/.codex/AGENTS.override.md
+/browser-use
+/image-gen
+/pdf
+/skill-creator
+/plan
+
+
+markdown
+##   Comment Insights
+**Description:**  analyze code
+## Steps
+1. Read the code
+2. Generate analysis 
+## Notes
+- Use Node.js for API calls
+
+
+markdown CLAUDE.md
+##   app Demo
+## About this project
+Pulls data from database 
+## Key files
+- `.env.local` — API keys (never commit this)
+- `/outputs/report.xlsx` — source of truth for dashboard data
+- `/dashboard` — Next.js app deployed to Vercel via GitHub
+## Standing instructions
+- Use Node.js for all API calls (not PowerShell)
+- Always merge new comment rows; never overwrite existing data
+- Run browser-use QA before marking any dashboard change complete
+
+------------------
+
+Create global guidance
+mkdir -p ~/.codex
+~/.codex/AGENTS.md
+
+
+## Working agreements
+- Always run `npm test` after modifying JavaScript files.
+- Prefer `pnpm` when installing dependencies.
+- Ask for confirmation before adding new production dependencies.
+
+codex --ask-for-approval never "Summarize the current instructions."
+
+----
+
+Layer project instructions
+# AGENTS.md
+
+## Repository expectations
+- Run `npm run lint` before opening a pull request.
+- Document public utilities in `docs/` when you change behavior.
+
+# services/payments/AGENTS.override.md
+
+## Payments service rules
+- Use `make test-payments` instead of `npm test`.
+- Never rotate API keys without notifying the security channel.
+
+codex --cd services/payments --ask-for-approval never "List the instruction sources you loaded."
+
+
+AGENTS.md
+Repository expectations
+services/
+	payments/
+		AGENTS.md
+		AGENTS.override.md
+		README.md
+	search/
+
