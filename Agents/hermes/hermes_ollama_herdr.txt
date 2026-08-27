@@ -116,4 +116,4 @@ qwen3:0.6b                 7df6b6e09427    522 MB    13 months ago
 
 https://ollama.com/library/qwen3.8
 https://huggingface.co/empero-ai/Qwen3.8-2B-Distill
-
+https://huggingface.co/empero-ai/Qwen3.8-2B-Distill-GGUF
