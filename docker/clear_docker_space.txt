@@ -1,0 +1,62 @@
+######################################################
+clear
+######################################################
+
+
+docker image prune -a -f   # remove all unused Docker images
+docker image prune -a -f --filter "until=168h"    # remove all unused Docker images
+
+docker stop $(docker ps -q)
+docker rm $(docker ps -aq)
+docker rmi -f $(docker images -aq)
+docker container prune
+docker system prune
+docker compose up -d --remove-orphans
+docker compose down --remove-orphans
+docker system prune --volumes   
+
+docker builder prune
+docker system prune -a --volumes
+
+wsl --shutdown
+wsl --unregister docker-desktop-data   
+
+docker system df -v   
+docker system prune --volumes
+docker volume prune -f
+
+
+------------------------
+
+######################################################
+save
+######################################################
+
+
+docker cp <old_container_name>:/path/to/data ./host_data   
+docker volume create my_ubuntu_volume
+docker run --rm -v my_ubuntu_volume:/dst -v $(pwd)/host_data:/src alpine sh -c 'cp -a /src/. /dst/'   
+docker stop <old_container_name>
+docker rm <old_container_name>
+docker run -d --name <new_container_name> -v my_ubuntu_volume:/path/in/container <ubuntu_image>   
+
+docker run -ti --rm debian:jessie /bin/bash
+docker run -i -t ubuntu /bin/bash
+docker ps  -a
+docker commit 5a8f89adeead newimagename
+docker commit agitated_newton newimagename
+docker run -ti -v "$PWD/somedir":/somedir newimagename /bin/bash
+
+docker container export -o ./myimage.docker mycontainer
+Import as an image: docker import ./myimage.docker myimage
+Then docker run -i -t -v /somedir --name mycontainer myimage /bin/bash
+
+docker volume create --driver local --opt type=none --opt device=C:\test-server --opt o=bind new-volumen-name
+docker run -it -v new-volumen-name:/var/www/html/directory_project --name LAMP-Container
+
+docker run -d --name my-app -p 8080:80 -v /srv/app/data:/var/lib/app nginx:latest
+docker run -d --name my-app -p 8080:80 --mount type=volume,source=app-data,target=/var/lib/app nginx:lates
+docker run -d --name devtest --mount source=nginx-config,target=/etc/nginx nginx:latest
+
+
+

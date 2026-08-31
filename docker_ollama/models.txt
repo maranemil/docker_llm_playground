@@ -78,3 +78,12 @@ https://github.com/OpenBMB/MiniCPM-Desk-Pet/blob/main/NOTICE.md
 
 openbmb/minicpm5:latest
 ollama run openbmb/minicpm5
+
+ollama run hf.co/empero-ai/Qwen3.8-4B-Distill-GGUF
+
+https://huggingface.co/docs/hub/ollama
+https://huggingface.co/empero-ai/models
+https://huggingface.co/empero-ai/Qwen3.8-4B-Distill-GGUF
+https://huggingface.co/unsloth/Qwen3.5-4B-GGUF
+https://huggingface.co/Ma7ee7/Qwen3.8_4B_Distilled_GGUF
+

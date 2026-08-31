@@ -1,0 +1,151 @@
+
+######################################################
+KI AI
+######################################################
+
+https://hub.docker.com/r/saladtechnologies/ollama
+docker pull saladtechnologies/ollama:0.24.0
+
+https://hub.docker.com/r/ollama/ollama
+docker pull ollama/ollama
+
+https://hub.docker.com/r/alpine/ollama
+docker pull alpine/ollama
+docker pull alpine/ollama
+
+
+https://hub.docker.com/r/ai/qwen3.6
+docker pull ai/qwen3.6
+21gb
+
+docker rm -f ollama
+docker run -d -p 11434:11434 -v ~/.ollama/root/.ollama --name ollama alpine/ollama
+docker exec -ti ollama ollama pull llama3.2
+docker run -d -p 11434:11434 --name llama3.2 alpine/llama3.2
+
+https://hub.docker.com/r/ai/gemma3
+https://hub.docker.com/r/ai/gemma4
+docker pull ai/gemma4
+docker pull ai/gemma3
+
+https://hub.docker.com/r/ai/qwen3
+docker pull ai/qwen3
+
+
+######################################################
+...
+######################################################
+
+
+https://hub.docker.com/hardened-images/catalog/dhi/node/guides
+$ docker run --rm dhi.io/node:<tag> node --version
+
+
+https://hub.docker.com/_/busybox
+docker pull busybox
+$ docker run -it --rm busybox
+
+https://hub.docker.com/_/alpine
+docker pull alpine
+
+https://hub.docker.com/_/ubuntu
+docker pull ubuntu
+docker run -it --rm --name ubuntu ubuntu
+docker exec -it ubuntu bash
+
+https://hub.docker.com/_/node
+docker pull node:lts-trixie-slim
+
+https://hub.docker.com/_/python
+docker pull python:3.10.21-slim-trixie
+$ docker run -it --rm --name my-running-app python:3.10.21-slim-trixie
+$ docker run -it --rm --name my-running-script -v "$PWD":/usr/src/myapp -w /usr/src/myapp python:3 python your-daemon-or-script.py
+
+
+https://hub.docker.com/_/hello-world
+docker pull hello-world
+$ docker run hello-world
+ 
+https://hub.docker.com/_/bash
+docker pull bash:devel-alpine3.24
+docker run -it --rm bash:4.4
+$ docker run -it --rm -v /path/to/script.sh:/script.sh:ro bash:4.4 bash /script.sh
+...
+$ docker run -it --rm -v /path/to/script.sh:/script.sh:ro bash:3.2 bash /script.sh
+...
+
+
+https://hub.docker.com/hardened-images/catalog/dhi/debian-base
+dhi.io/debian-base:<tag>
+
+
+https://hub.docker.com/hardened-images/catalog/dhi/bash/guides
+$ docker run -it --rm dhi.io/bash:<tag>
+
+
+------------------------------------------------------------------------
+######################################################
+saladtechnologies
+######################################################
+
+https://hub.docker.com/r/saladtechnologies/comfyui-api-ltx2
+docker pull saladtechnologies/comfyui-api-ltx2:1.0.0
+4gb
+
+
+https://hub.docker.com/r/saladtechnologies/ltx-2.3-recipe
+docker pull saladtechnologies/ltx-2.3-recipe:1.0.0
+7gb
+
+https://hub.docker.com/r/saladtechnologies/comfyui
+docker pull saladtechnologies/comfyui:comfy0.3.61-api1.9.2-torch2.8.0-cuda12.8-flux1-schnell-fp8
+14gb
+
+https://hub.docker.com/r/saladtechnologies/salad-comfiui-wan21
+docker pull saladtechnologies/salad-comfiui-wan21:1.0.0
+5gb
+
+
+https://hub.docker.com/r/saladtechnologies/a1111
+docker pull saladtechnologies/a1111
+4gb
+docker run --name a1111 -p 7860:7860 -e PORT=7860 -e HOST=0.0.0.0 saladtechnologies/a1111
+
+
+https://hub.docker.com/r/saladtechnologies/sdnext
+docker pull saladtechnologies/sdnext
+6gb
+
+
+https://hub.docker.com/r/saladtechnologies/hello-world
+docker pull saladtechnologies/hello-world:caddy
+50m
+docker run -it   --name hello-world saladtechnologies/hello-world:caddy
+docker exec -it hello-world bash
+
+
+https://hub.docker.com/r/saladtechnologies/openvoice_v2
+docker pull saladtechnologies/openvoice_v2:1.0.0
+8gb
+
+https://hub.docker.com/r/saladtechnologies/run-python
+docker pull saladtechnologies/run-python:0.2
+300mb
+
+
+https://hub.docker.com/r/saladtechnologies/sdnext-rundiffusion-xl
+docker pull saladtechnologies/sdnext-rundiffusion-xl
+17gb
+
+------------------------------------------------------------------------
+
+https://hub.docker.com/r/saladtechnologies/sdnext-sdxl10
+docker pull saladtechnologies/sdnext-sdxl10
+15gb
+https://github.com/SaladTechnologies/stable-diffusion-xl-1.0
+https://github.com/SaladTechnologies/stable-diffusion-xl-1.0
+docker run  --name sdnext-sdxl10 -p 7860:7860 -e PORT=7860 -e HOST=0.0.0.0 saladtechnologies/sdnext-sdxl10:latest
+
+
+https://github.com/vladmandic/sdnext/wiki/Docker
+https://github.com/vladmandic/sdnext/wiki/
