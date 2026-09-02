@@ -1,0 +1,35 @@
+
+https://openai.com/codex/
+https://learn.chatgpt.com/docs/quickstart
+https://docs.ollama.com/integrations/codex-app
+https://docs.ollama.com/integrations/codex
+ollama launch codex --config
+ollama launch codex-app
+ollama launch codex-app --model gemma4:31b
+ 
+
+
+https://opencode.ai/download
+https://docs.ollama.com/integrations/opencode
+https://opencode.ai/
+curl -fsSL https://opencode.ai/install | bash
+opencode
+ollama launch opencode --config
+https://opencode.ai/download/stable/linux-x64-deb
+https://opencode.ai/docs/ide/
+
+
+
+https://devin.ai/download
+https://devin.ai/desktop
+
+
+
+https://cursor.com/
+https://api2.cursor.sh/updates/download/golden/linux-x64-deb/cursor/3.18
+
+
+
+https://github.com/aaif-goose/goose
+https://goose-docs.ai/
+curl -fsSL https://github.com/aaif-goose/goose/releases/download/stable/download_cli.sh | bash
