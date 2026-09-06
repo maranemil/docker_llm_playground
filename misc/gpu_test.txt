@@ -72,3 +72,65 @@ https://rocm.docs.amd.com/en/latest/install/rocm.html?fam=all&w=compute&os=ubunt
 
 
 
+#################################################
+amdgpu  rocm
+#################################################
+
+
+
+
+### amdgpu install ubuntu 26.04
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+lspci | grep -iE 'vga|3d|display'
+sudo apt update
+sudo apt install rocm
+sudo usermod -aG render,video $USER
+sudo reboot
+
+
+
+### amdgpu install ubuntu 24.04
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+sudo apt update && sudo apt upgrade -y
+wget https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb
+#sudo apt install ./amdgpu-install_6.4.60401-1_all.deb
+sudo dpkg -i amdgpu-install_6.4.60401-1_all.deb
+sudo amdgpu-install --usecase=graphics,opencl
+sudo usermod -a -G render $USER
+sudo usermod -a -G video $USER
+sudo reboot
+
+
+sudo apt install rocm-smi
+rocm-smi
+
+
+
+========================= ROCm System Management Interface =========================
+=================================== Concise Info ===================================
+GPU[0]		: get_power_avg, Not supported on the given system
+Exception caught: map::at
+ERROR: GPU[0]	: sclk clock is unsupported
+====================================================================================
+GPU[0]		: get_power_cap, Not supported on the given system
+GPU  Temp (DieEdge)  AvgPwr  SCLK  MCLK     Fan  Perf  PwrCap       VRAM%  GPU%  
+0    41.0c           N/A     None  1600Mhz  0%   auto  Unsupported   24%   0%    
+====================================================================================
+=============================== End of ROCm SMI Log ================================
+
+
+
+
+sudo docker run -it --device=/dev/kfd --device=/dev/dri --security-opt seccomp=unconfined --group-add video rocm/rocm-terminal
+rocm-smi
+
+
+============================================ ROCm System Management Interface ============================================
+====================================================== Concise Info ======================================================
+Device  Node  IDs              Temp    Power     Partitions          SCLK  MCLK     Fan  Perf  PwrCap       VRAM%  GPU%  
+              (DID,     GUID)  (Edge)  (Socket)  (Mem, Compute, ID)                                                      
+==========================================================================================================================
+0       1     0x1638,   23706  41.0°C  13.0W     N/A, N/A, 0         None  1600Mhz  0%   auto  Unsupported  25%    1%    
+==========================================================================================================================
+================================================== End of ROCm SMI Log ===================================================
+
