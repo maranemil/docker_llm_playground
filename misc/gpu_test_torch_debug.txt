@@ -1,0 +1,473 @@
+
+------------------------------
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/17212
+https://github.com/AUTOMATIC1111/stable-diffusion-webui
+https://github.com/automatic1111/stable-diffusion-webui
+https://github.com/automatic1111/stable-diffusion-webui
+https://stable-diffusion-art.com/install-windows/
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/Install-and-Run-on-AMD-GPUs
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/7152
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/17213
+https://github.com/AUTOMATIC1111/stable-diffusion-webui/discussions/17275
+https://www.amd.com/en/blogs/2023/-how-to-running-optimized-automatic1111-stable-di.html
+https://www.leofebey.com/blog/stable-diffusion-on-debian-with-amd-and-uv
+
+
+https://instinct.docs.amd.com/projects/container-toolkit/en/latest/container-runtime/cdi-guide.html
+https://hub.docker.com/r/rocm/rocm-terminal
+https://instinct.docs.amd.com/projects/container-toolkit/en/release-1.0.x/container-runtime/quick-start-guide.html
+https://instinct.docs.amd.com/projects/container-toolkit/en/latest/container-runtime/quick-start-guide.html
+https://instinct.docs.amd.com/projects/container-toolkit/en/latest/index.html
+https://github.com/rocm/container-toolkit
+https://github.com/rocm/container-toolkit
+https://instinct.docs.amd.com/projects/container-toolkit/en/latest/container-runtime/troubleshooting.html
+https://rocm.docs.amd.com/projects/install-on-linux/en/docs-6.2.0/how-to/docker.html
+https://rocm.docs.amd.com/en/latest/install/rocm.html?fam=all&w=compute&os=ubuntu&ubuntu-ver=26.04&i=pkgman
+https://github.com/rocm/container-toolkit
+https://docs.docker.com/engine/install/linux-postinstall/
+https://rocm.docs.amd.com/projects/install-on-linux/en/develop/install/3rd-party/pytorch-install.html
+
+
+##########################################################
+install amd-container-toolkit
+##########################################################
+
+sudo apt install radeontop
+radeontop
+
+sudo apt  install rocminfo
+sudo snap install rocminfo
+rocminfo
+
+
+lsmod | grep amdgpu
+sudo modprobe amdgpu
+dmesg | grep amdgpu
+
+sudo apt-get install jq
+sudo apt update
+sudo usermod -a -G render,video $LOGNAME
+sudo apt update
+sudo apt install vim wget gpg
+sudo mkdir --parents --mode=0755 /etc/apt/keyrings
+wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | gpg --dearmor | sudo tee /etc/apt/keyrings/rocm.gpg > /dev/null
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amd-container-toolkit/apt/ noble main" | sudo tee /etc/apt/sources.list.d/amd-container-toolkit.list
+sudo apt update
+
+sudo apt update && sudo apt install amd-container-toolkit
+sudo apt install amd-container-toolkit
+sudo amd-ctk runtime configure
+sudo systemctl restart docker
+
+# sudo apt-get remove --auto-remove nvidia-cuda-toolkit
+# sudo apt-get purge nvidia-cuda-toolkit or sudo apt-get purge --auto-remove nvidia-cuda-toolkit
+# sudo apt-get autoremove --purge cuda
+# sudo apt-get --purge -y remove 'cuda*'
+# sudo apt-get --purge -y remove 'nvidia*'
+# sudo reboot
+
+docker run --runtime=amd -e AMD_VISIBLE_DEVICES=all rocm/rocm-terminal amd-smi monitor
+docker run --runtime=amd -e AMD_VISIBLE_DEVICES=0 rocm/rocm-terminal amd-smi monitor
+docker run --rm --runtime=amd -e AMD_VISIBLE_DEVICES=all rocm/rocm-terminal rocm-smi
+docker run --rm --runtime=amd -e AMD_VISIBLE_DEVICES=0 rocm/rocm-terminal amd-smi monitor # not working
+docker run --rm --runtime=amd -e AMD_VISIBLE_DEVICES=0,1,2 rocm/rocm-terminal rocm-smi
+docker run --rm --runtime=amd -e AMD_VISIBLE_DEVICES=0,1,2 rocm/rocm-terminal rocm-smi --showhw
+
+# docker run --privileged --ipc=host   -v /dev:/dev   -v /sys:/sys   -it ghcr.io/immich-app/immich-machine-learning:v2.2.3-rocm
+# ocker run --privileged --ipc=host   --device=/dev/kfd   --device=/dev/dri   --group-add=video   -it ghcr.io/immich-app/immich-machine-learning:v2.2.3-rocm
+
+amd-ctk gpu list
+amd-ctk cdi list
+Found 1 AMD GPU device
+amd.com/gpu=all
+amd.com/gpu=0
+  /dev/dri/renderD128
+
+sudo amd-ctk runtime configure --runtime=docker --set-as-default
+sudo systemctl restart docker
+docker ps -a --size
+
+
+https://github.com/ROCm/ROCm-docker/issues/116
+https://hub.docker.com/r/rocm/rocm-terminal/tags
+
+
+##########################################################
+##########################################################
+# docker run --rm rocm/rocm-terminal rocm-smi
+#docker run -it --device=/dev/kfd --device=/dev/dri --group-add video rocm/rocm-terminal ####### ok
+# rocm-smi
+
+# docker run --rm --runtime=amd -e AMD_VISIBLE_DEVICES=all rocm/rocm-terminal rocm-smi
+docker run  --runtime=amd  -e AMD_VISIBLE_DEVICES=0 rocm/rocm-terminal   ##############
+docker ps -a --size
+docker start hardcore_panini
+docker exec -ti hardcore_panini bash
+
+##########################################################
+#### https://www.leofebey.com/blog/stable-diffusion-on-debian-with-amd-and-uv
+##########################################################
+curl -LsSf https://astral.sh/uv/install.sh | sh
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui && cd stable-diffusion-webui
+uv python install 3.10
+python --version
+uv venv --python 3.10
+python3 -m venv venv
+source venv/bin/activate
+source .venv/bin/activate
+uv pip install -r requirements.txt
+pip ip install --upgrade pip
+uv pip install "setuptools<70" # important
+pip install setuptools # 69.5.1
+uv pip install wheel
+uv pip install pip
+pip show torch
+#uv pip install --upgrade torch torchvision torchaudio   --index-url https://download.pytorch.org/whl/rocm7.1   --force-reinstall
+uv pip install --upgrade torch torchvision torchaudio   --index-url https://download.pytorch.org/whl/rocm6.4   --force-reinstall
+uv pip install --upgrade torch torchvision torchaudio   --index-url https://download.pytorch.org/whl/rocm6.1   --force-reinstall
+uv pip install --upgrade torch torchvision torchaudio   --index-url https://download.pytorch.org/whl/rocm5.7   --force-reinstall
+uv pip install --upgrade torch torchvision torchaudio   --index-url https://download.pytorch.org/whl/rocm5.7   --force-reinstall
+export STABLE_DIFFUSION_REPO="https://github.com/w-e-w/stablediffusion.git"
+export HSA_OVERRIDE_GFX_VERSION=12.0.0
+export LD_PRELOAD=""
+export HSA_ENABLE_SDMA=0
+
+# amdgpu-install --usecase=dkms,rocm,rocmdev,rocmdevtools,lrt,openclsdk,hip,hiplibsdk,openmpsdk,mllib,mlsdk,asan --install-recommends --install-suggests
+rocm-smi -a
+rocminfo # ROCk module version 6.12.12 is loaded
+clinfo
+groups # root video
+sudo groupadd render
+
+ls -la /dev/dri
+renderD128
+HSA_OVERRIDE_GFX_VERSION=11.0.0 rocminfo
+apt list --installed | grep rocm
+uname -m && cat /etc/*release
+
+git clone https://github.com/openai/CLIP.git && cd CLIP
+pip install .
+cd ..
+pip install clip
+
+Fix: we have updated the dev branch
+git switch dev
+git pull
+
+sudo apt-get install libglib2.0-0
+apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+# apt install -y libgl1-mesa-glx
+# apt-get update && apt-get install libgl1
+apt-get update && apt-get install -y python3-opencv
+pip install opencv-python
+apt-get update && apt-get install -y --no-install-recommends
+
+python3 launch.py --skip-torch-cuda-test --listen   --opt-sub-quad-attention   --no-half-vae   --disable-nan-check   --use-pytorch-cross-attention
+python3 launch.py --skip-torch-cuda-test --listen   --opt-sub-quad-attention   --no-half-vae   --disable-nan-check  
+
+
+
+# RuntimeError: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver
+# uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.0 --force-reinstall
+# uv pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm7.0 --force-reinstall
+# pip3 install --force-reinstall -v torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.2.4
+# pip3 install -U xformers --index-url https://download.pytorch.org/whl/cu124
+# pip3 install -U xformers --index-url https://download.pytorch.org/whl/cu126
+
+# source activate
+# pip uninstall torch torchaudio torchvision
+# pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/rocm6.4/
+# deactivate
+
+rocminfo
+pip show torch
+python -c "import torch; print(torch.version.hip)"
+# comfy install --amd
+
+mkdir -p /home/tmp
+export TMPDIR=/home/tmp
+uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/rocm6.4 --force-reinstall
+
+
+RuntimeError: No HIP GPUs are available
+set HSA_OVERRIDE_GFX_VERSION=10.3.0
+set HIP_VISIBLE_DEVICES=0
+export HIP_VISIBLE_DEVICES=0
+export AMDGPU_TARGETS=gfx90c
+export HIP_VISIBLE_DEVICES=0
+sudo amdgpu-install --usecase=graphics,rocm,hip,mllib
+
+sudo rocminfo
+rocminfo |grep gfx
+python -c "import torch; print(torch.cuda.device_count())"
+pip install --no-build-isolation -r requirements.txt
+python3 -m pip install --upgrade pip
+python3 -m pip install -U setuptools pip
+
+https://rocm.docs.amd.com/projects/hip-python/en/docs-5.6.1/user_guide/0_install.html
+https://pypi.org/project/hip-python/
+https://pypi.amd.com/rocm-7.0.2/simple/hip-python/
+#hip_python-7.0.2.555.39-cp310-cp310-manylinux_2_17_x86_64.whl
+#hip_python-7.0.2.555.39-cp311-cp311-manylinux_2_17_x86_64.whl
+#hip_python-7.0.2.555.39-cp312-cp312-manylinux_2_17_x86_64.whl
+#hip_python-7.0.2.555.39-cp39-cp39-manylinux_2_17_x86_64.whl
+#python3 -m pip install  https://pypi.amd.com/rocm-7.0.2/simple/hip-python/hip_python-7.0.2.555.39-cp310-cp310-manylinux_2_17_x86_64.whl
+pip install hip-python
+
+https://rocm.docs.amd.com/projects/hip-python/en/latest/user_guide/0_install.html
+https://docs.cupy.dev/en/stable/install.html
+https://rocm.docs.amd.com/projects/hip-python/en/latest/user_guide/0_install.html
+https://docs.cupy.dev/en/stable/install.html
+# sudo apt install hipblas hipsparse rocsparse rocrand hiprand rocthrust rocsolver rocfft hipfft hipcub rocprim rccl roctracer-dev
+# 10.9 GB of additional disk space will be used.
+# docker run -it --device=/dev/kfd --device=/dev/dri --group-add video cupy/cupy-rocm
+# export CUPY_INSTALL_USE_HIP=1
+# export ROCM_HOME=/opt/rocm
+# export HCC_AMDGPU_TARGET=gfx908
+# pip install cupy
+# Failed to build 'cupy' when getting requirements to build wheel
+pip install cupy-cuda12x
+pip install cupy-cuda13x
+python3 -m pip install -i https://test.pypi.org/simple hip-python~=7.2.1
+python3 -m pip install -i https://test.pypi.org/simple hip-python-as-cuda~=7.2.1
+
+https://pytorch.org/get-started/locally/
+python3 --version
+sudo apt install python3-pip
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+pip3 install torch torchvision
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu132
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/rocm7.14
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+
+https://rocm.docs.amd.com/projects/hip-python/en/docs-5.6.1/user_guide/2_cuda_python_interop.html
+https://github.com/ROCm/hip-python
+https://rocm.docs.amd.com/projects/hip-python/en/latest/
+https://rocm.docs.amd.com/projects/hip-python/en/latest/user_guide/0_install.html
+https://github.com/lllyasviel/Fooocus/issues/1079
+https://rocm.docs.amd.com/en/latest/install/rocm.html?fam=all&w=compute&os=ubuntu&ubuntu-ver=26.04&i=pkgman
+https://github.com/ROCm/hip/issues/3799
+https://rocm.docs.amd.com/en/latest/install/rocm.html?fam=all&w=compute&os=ubuntu&ubuntu-ver=26.04&i=pkgman
+sudo apt install libatomic1 libquadmath0
+/opt/rocm/bin/rocm_agent_enumerator
+gfx1200
+sudo apt-get install lshw 
+lshw -c display
+description: VGA compatible controller
+       product: Cezanne [Radeon Vega Series / Radeon Vega Mobile Series]
+       vendor: Advanced Micro Devices, Inc. [AMD/ATI]
+
+python -c "import torch; print(torch.cuda.is_available())" # false
+python -c "import torch; print(torch.version.cuda)" # none
+python -c "import torch; print(torch.cuda.device_count())"  # 0
+python -c "import torch; print(torch.cuda.get_device_name(0))"  # RuntimeError: No HIP GPUs are available
+
+
+
+
+RuntimeError: Torch is not able to use GPU; docker rocm-user container
+ImportError: libgthread-2.0.so.0: cannot open shared object file: No such file or directory
+sudo apt update 
+sudo apt-get install libglib2.0-0
+python3 launch.py --skip-torch-cuda-test --listen   --opt-sub-quad-attention   --no-half-vae   
+./webui.sh --skip-torch-cuda-test
+
+# python3 launch.py --skip-torch-cuda-test --listen   --opt-sub-quad-attention   --no-half-vae   --disable-nan-check   --use-pytorch-cross-attention
+
+
+
+#########
+Install PyTorch with CUDA on Ubuntu
+https://linuxconfig.org/how-to-install-pytorch-with-cuda-on-ubuntu
+#########
+nvcc --version
+python3 --version
+sudo apt update
+sudo apt install python3-pip python3-venv
+ mkdir ~/pytorch-test
+cd ~/pytorch-test
+ python3 -m venv venv
+source venv/bin/activate
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+python -c "import torch; print(torch.cuda.is_available())" 
+python -c "import torch; print(torch.cuda.device_count())" 
+python -c "import torch; print(torch.cuda.version.cuda())" 
+
+
+#########
+https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/frameworks/pytorch/install.html?fam=all&os=linux&rocm-ver=10.0.0&pytorch-ver=2.13.0&i=docker&w=compute
+#########
+
+docker pull rocm/pytorch:rocm10.0_ubuntu26.04_py3.14_pytorch_release_2.13.0
+docker run -it --rm  --device /dev/kfd  --device /dev/dri  --network=host  --ipc=host  --group-add=video  --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined  rocm/pytorch:rocm10.0_ubuntu26.04_py3.14_pytorch_release_2.13.0  bash
+
+docker pull rocm/pytorch:rocm10.0_ubuntu24.04_py3.13_pytorch_release_2.13.0
+docker run -it --rm  --device /dev/kfd  --device /dev/dri  --network=host  --ipc=host  --group-add=video  --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined  rocm/pytorch:rocm10.0_ubuntu24.04_py3.13_pytorch_release_2.13.0  bash
+
+docker pull rocm/pytorch:rocm10.0_ubuntu24.04_py3.11_pytorch_release_2.13.0
+docker run -it --rm  --device /dev/kfd  --device /dev/dri  --network=host  --ipc=host  --group-add=video  --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined  rocm/pytorch:rocm10.0_ubuntu24.04_py3.11_pytorch_release_2.13.0  bash
+python -c "import torch; print(torch.cuda.is_available())"  # true
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+docker run --rm --device amd.com/gpu=all rocm/rocm-terminal rocm-smi
+docker run -it --rm --gpus all rocm/rocm-terminal rocm-smi
+docker run -it --rm --device=/dev/kfd --device=/dev/dri --group-add video --ipc=host --shm-size 16G rocm/rocm-terminal:latest
+docker run -it --rm --device=/dev/kfd --device=/dev/dri --group-add video --ipc=host --shm-size 16G rocm/pytorch:latest
+docker run -it  --rm--device=/dev/kfd --device=/dev/dri --security-opt seccomp=unconfined --group-add video rocm/rocm-terminal
+docker run --rm --device amd.com/gpu=all rocm/rocm-terminal rocm-smi
+
+docker run --rm -ti --device=nvidia.com/gpu=all ubuntu nvidia-smi -L
+docker run --rm -ti --device=amd.com/gpu=all ubuntu rocm-smi -L  ######
+
+CDI device injection failed: unresolvable CDI devices amd.com/gpu=all
+https://rocm.docs.amd.com/projects/install-on-linux/en/develop/how-to/docker.html
+https://github.com/rocm/container-toolkit
+
+
+
+
+
+docker start fervent_gagarin
+docker exec -ti fervent_gagarin bash
+git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui
+cd stable-diffusion-webui
+python3 -m pip install --upgrade pip wheel
+REQS_FILE='requirements.txt' python3 launch.py --precision full --no-half
+http://127.0.0.1:7860/
+python3 -m pip install --upgrade pip setuptools wheel
+pip install pytorch-lightning
+pip install pytorch-lightning==1.6.5
+pip install lightning
+pip install -r requirements.txt
+
+git clone https://github.com/openai/CLIP.git && cd CLIP
+pip install .
+cd ..
+pip install clip
+
+Fix: we have updated the dev branch
+git switch dev
+git pull
+
+apt update
+apt install python3.10-venv
+apt install python3.10-venv
+python3.10 -m venv venv
+
+python3 --version or python -m venv --help
+python3 -c 'import venv'  # should not return any errors
+python3 -m venv venv/    #  should populate the directory
+./webui.sh
+./webui.sh --skip-torch-cuda-test
+
+Collecting torch
+  Downloading https://download-r2.pytorch.org/whl/rocm5.7/torch-2.3.1%2Brocm5.7-cp310-cp310-linux_x86_64.whl (1905.1 MB)
+
+
+# REQS_FILE='requirements.txt' python3 launch.py --precision full --no-half --skip-torch-cuda-test
+
+RuntimeError: Torch is not able to use GPU; docker rocm-user container
+ImportError: libgthread-2.0.so.0: cannot open shared object file: No such file or directory
+sudo apt-get install libglib2.0-0
+
+Downloading: "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5/resolve/main/v1-5-pruned-emaonly.safetensors" to /home/rocm-user/stable-diffusion-webui/models/Stable-diffusion/v1-5-pruned-emaonly.safetensors
+
+sudo usermod -aG render  rocm-user
+sudo usermod -aG video rocm-user
+cat /etc/group | grep render
+sudo groupadd render
+RuntimeError: No HIP GPUs are available
+sudo usermod -a -G render,video rocm-user
+export HIP_VISIBLE_DEVICES=0
+echo $HIP_VISIBLE_DEVICES
+
+pip install --pre torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/rocm6.4
+After running "source venv/bin/activate" and before running "pip install -r requirements.txt"
+TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1 python main.py --use-pytorch-cross-attention --disable-smart-memory
+export TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL=1
+
+sudo apt install libatomic1 libquadmath0
+sudo apt update
+sudo apt install amdgpu-dkms
+sudo apt install rocm-hip-libraries
+
+
+pip install --force-reinstall --no-deps --pre xformers
+pip install --force-reinstall --no-deps --pre xformers
+
+set COMMANDLINE_ARGS= --xformers --opt-sdp-no-mem-attention --listen --enable-insecure-extension-access
+set COMMANDLINE_ARGS= --xformers
+set COMMANDLINE_ARGS=--xformers
+
+
+https://github.com/lllyasviel/Fooocus/issues/1079
+https://rocm.docs.amd.com/en/latest/install/rocm.html?fam=all&w=compute&os=ubuntu&ubuntu-ver=26.04&i=pkgman
+
+Agent 2                  
+*******                  
+  Name:                    gfx1032                            
+  Uuid:                    GPU-XX                             
+  Marketing Name:          AMD Radeon RX 6600M                
+  Vendor Name:             AMD                                
+  Feature:                 KERNEL_DISPATCH                    
+  Profile:                 BASE_PROFILE                       
+  Float Round Mode:        NEAR                               
+  Max Queue Number:        128(0x80)                          
+  Queue Min Size:          64(0x40)                           
+  Queue Max Size:          131072(0x20000)                    
+  Queue Type:              MULTI                              
+  Node:                    1                                  
+  Device Type:             GPU
+
+export HSA_OVERRIDE_GFX_VERSION=10.3.0 
+export HCC_AMDGPU_TARGET=gfx1032
+
+Agent 2                  
+*******                  
+  Name:                    gfx90c                             
+  Uuid:                    GPU-XX                             
+  Marketing Name:          AMD Radeon Graphics                
+  Vendor Name:             AMD                                
+  Feature:                 KERNEL_DISPATCH                    
+  Profile:                 BASE_PROFILE                       
+  Float Round Mode:        NEAR                               
+  Max Queue Number:        128(0x80)                          
+  Queue Min Size:          64(0x40)                           
+  Queue Max Size:          131072(0x20000)                    
+  Queue Type:              MULTI                              
+  Node:                    1                                  
+  Device Type:             GPU 
+
+
+
+export HSA_OVERRIDE_GFX_VERSION=10.3.0 
+export HCC_AMDGPU_TARGET=gfx90c
+
+go to the webui directory
+source ./venv/bin/activate
+cd repositories
+git clone https://github.com/facebookresearch/xformers.git
+cd xformers
+git submodule update --init --recursive
+pip install -r requirements.txt
+pip install -e .
+
+
+webui.sh --xformers
+./webui.sh --skip-torch-cuda-test --cpu
+launch.py: error: unrecognized arguments: --cpu
+
+--highvram
+--lowvram
+--novram
+--gpu-only
+--cpu
+
+./webui.sh --skip-torch-cuda-test --lowvram  # RuntimeError: No HIP GPUs are available
+./webui.sh --skip-torch-cuda-test --cpu
+
+
+
+
+
