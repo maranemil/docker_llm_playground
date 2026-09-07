@@ -1,0 +1,318 @@
+https://rocm.docs.amd.com/projects/rocm_smi_lib/en/docs-6.1.1/install/install.html
+https://rocm.docs.amd.com/projects/rocm_smi_lib/en/latest/install/install.html
+https://github.com/ROCm/rocm_smi_lib
+
+
+docker run -it   --security-opt seccomp=unconfined --group-add video rocm/rocm-terminal  #win11
+
+sudo apt install build-essential
+sudo apt update
+wget https://repo.radeon.com/amdgpu-install/6.0.2/ubuntu/jammy/amdgpu-install_6.0.60002-1_all.deb
+sudo apt install ./amdgpu-install_6.0.60002-1_all.deb
+sudo amdgpu-install --usecase=rocm
+
+
+
+sudo apt update
+wget https://repo.radeon.com/amdgpu-install/latest/ubuntu/jammy/amdgpu-install_6.0.60002-1_all.deb
+sudo apt install ./amdgpu-install_6.0.60002-1_all.deb   
+
+sudo amdgpu-install --usecase=rocm
+
+echo 'deb [arch=amd64] https://repo.radeon.com/rocm/apt/5.1.1 ubuntu main' | sudo tee /etc/apt/sources.list.d/rocm.list
+sudo apt update
+sudo apt install rocm-smi-lib
+
+sudo apt autoremove
+
+--
+
+rocm-smi
+
+apt update
+apt install sudo
+apt --fix-broken install
+apt install rocm-language-runtime rocm-opencl hsa-rocr openmp-extras-runtime rocprofiler-register libdrm-amdgpu-amdgpu1 libc6 libdrm2-amdgpu  libstdc++6
+
+---------------------------------
+
+
+2  sudo apt update && sudo apt upgrade -y
+3  wget https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb
+4  apt install wget
+5  sudo apt install wget
+6  apt install wget
+7  wget https://repo.radeon.com/amdgpu-install/6.4.1/ubuntu/noble/amdgpu-install_6.4.60401-1_all.deb
+8  sudo dpkg -i amdgpu-install_6.4.60401-1_all.deb
+9  sudo apt install rsync
+10  sudo apt install --fix-broken install
+11  sudo apt --fix-broken install
+12  sudo dpkg -i amdgpu-install_6.4.60401-1_all.deb
+13  sudo amdgpu-install --usecase=graphics,opencl
+14  sudo amdgpu-install --usecase=graphics
+15  sudo amdgpu-install --usecase=opencl
+16  sudo usermod -a -G render $USER
+17  sudo usermod -a -G video $USER
+18  rocm-smi
+19  sudo apt install rocm-smi
+20  rocm-smi
+21  sudo amdgpu-install --usecase=rocm
+22  sudo amdgpu-install --usecase=rocm -f
+23  echo 'deb [arch=amd64] https://repo.radeon.com/rocm/apt/5.1.1 ubuntu main' | sudo tee /etc/apt/sources.list.d/rocm.list
+24  sudo apt update
+25  sudo apt install rocm-smi-lib
+26  sudo apt autoremove
+27  history
+
+---------------------------------
+
+cd home/rocm-user/
+sudo amdgpu-install --no-dkms --usecase=opencl
+sudo usermod -a -G video $LOGNAME
+
+sudo usermod -a -G render $LOGNAME
+lsmod | grep amdgpu
+
+docker start trusting_bassi
+docker exec -ti trusting_bassi bash
+
+
+sudo apt install -f
+apt search manpages
+sudo apt update
+sudo apt install man-db manpages-posix
+man ls
+sudo apt install man-db
+
+sudo apt install -y unminimize && sudo unminimize   
+sudo apt update && sudo apt install -y unminimize man-db && sudo unminimize
+
+sudo apt install software-properties-common
+sudo add-apt-repository main && sudo add-apt-repository universe && sudo add-apt-repository restricted && sudo add-apt-repository multiverse   
+sudo apt update
+sudo apt install unminimize
+
+
+
+sudo ldconfig  -p | grep rocm
+ls -lh `dpkg -L rocm-smi-lib643.9.0  | grep librocm`
+
+
+apt list libnuma-dev rocm-dkms rocm-libs rccl hipcub miopen-hip
+apt install  libnuma-dev rocm-dkms rocm-libs rccl hipcub miopen-hip
+libnuma-dev/jammy,now 2.0.14-3ubuntu2 amd64 [installed]
+miopen-hip/Ubuntu 2.16.0.50101-48 amd64
+rccl/Ubuntu 2.11.4.50101-48 amd64
+rocm-dkms/Ubuntu 5.1.1.50101-48 amd64
+rocm-libs/Ubuntu 5.1.1.50101-48 amd64
+
+
+---------------------------------
+
+Solution 1: Use amdgpu-install (Recommended)
+
+# Add the repository (example for Ubuntu 22.04/Jammy)
+wget -qO - https://repo.radeon.com/amdgpu-install/latest/ubuntu/jammy/gpg.key | sudo apt-key add -
+echo "deb [arch=amd64] https://repo.radeon.com/amdgpu/latest/ubuntu/jammy main" | sudo tee /etc/apt/sources.list.d/amdgpu.list
+sudo apt update
+
+# Install ROCm with graphics and compute support
+sudo amdgpu-install --usecase=rocm,graphics --no-dkms   
+
+# Solution 2: Install amdgpu-dkms Directly
+
+sudo apt update
+sudo apt install linux-headers-$(uname -r) linux-modules-extra-$(uname -r)
+sudo apt install amdgpu-dkms   
+
+E: Unable to locate package linux-headers-6.6.87.1-microsoft-standard-WSL2
+E: Couldn't find any package by glob 'linux-headers-6.6.87.1-microsoft-standard-WSL2'
+E: Unable to locate package linux-modules-extra-6.6.87.1-microsoft-standard-WSL2
+E: Couldn't find any package by glob 'linux-modules-extra-6.6.87.1-microsoft-standard-WSL2'
+
+---------------------------------
+
+sudo apt install nano
+sudo nano /etc/ld.so.conf.d/x86_64-rocm-smi.conf 
+/opt/rocm-3.9.0/lib
+/opt/rocm-3.9.0/rocm_smi/lib
+sudo ldconfig  -p | grep rocm | grep smi
+
+sudo lshw -c video
+lsb_release -a
+apt show amdgpu
+uname -a
+dkms status amdgpu # amdgpu/6.12.12-2164967.24.04, 5.15.0-191-generic, x86_64: installed
+clinfo
+clinfo: /lib/x86_64-linux-gnu/libc.so.6: version `GLIBC_2.38' not found (required by clinfo)
+clinfo: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.32' not found (required by clinfo)
+sudo modprobe amdgpu
+modprobe: FATAL: Module amdgpu not found in directory /lib/modules/6.6.87.1-microsoft-standard-WSL2
+
+
+sudo apt install git rsync
+mkdir ~/src
+cd ~/src
+git clone https://github.com/microsoft/WSL2-Linux-Kernel
+cd WSL2-Linux-Kernel
+sudo apt-get install build-essential
+   
+sudo make headers_install
+sudo amdgpu-install --usecase=wsl,rocm
+sudo apt --fix-broken install
+cat /etc/apt/sources.list.d/amdgpu*.list
+amdgpu-install --no-dkms --usecase=rocm
+sudo apt install libatomic1 libquadmath0
+sudo usermod -a -G render,video $LOGNAME
+
+amdgpu-install -y --usecase=wsl,rocm --no-dkms
+
+---------------------------------
+
+sudo apt install build-essential flex bison dwarves libssl-dev libelf-dev cpio qemu-utils
+sudo apt install libncurses-dev
+tar zxf WSL2-Linux-Kernel-linux-msft-wsl-6.6.87.2.tar.gz
+cd WSL2-Linux-Kernel-linux-msft-wsl-6.6.87.2
+make -j$(nproc) KCONFIG_CONFIG=Microsoft/config-wsl
+
+
+https://instinct.docs.amd.com/projects/container-toolkit/en/latest/container-runtime/troubleshooting.html
+https://rocm.docs.amd.com/projects/rocm_smi_lib/en/latest/install/install.html
+
+docker run -it --device=/dev/kfd --device=/dev/dri --group-add video --privileged=true rocm/rocm-terminal:5.4.2
+rocminfo
+rocm-smi
+docker run -it --device=/dev/kfd --device=/dev/dri --group-add video  rocm/rocm-terminal:5.4.2
+lsmod | grep amdgpu
+lsmod | grep amdgpu
+sudo modprobe amdgpu
+dmesg | grep amdgpu
+sudo usermod -a -G render,video $USER
+sudo amdgpu-install --no-dkms --usecase=wsl,opencl
+sudo amdgpu-install --no-dkms --usecase=opencl
+amdgpu-install --usecase=rocm,opencl --opencl=rocr
+sudo add-apt-repository -y -s deb http://security.ubuntu.com/ubuntu jammy main universe   
+
+
+sudo apt-get install rocm-opencl
+ sudo apt-get install rocm
+sudo apt-get install rocm rocm-opencl-dev
+
+#hsa-runtime-rocr4wsl-amdgpu is incompatible with your current Ubuntu 22.04
+sudo amdgpu-install --usecase=graphics,opencl --vulkan=amdvlk,pro   
+sudo depmod   
+
+#Unable to locate package vulkan-amdgpu-pro
+sudo sed -i 's/focal/jammy/g' /etc/apt/sources.list.d/amdgpu.list
+sudo sed -i 's/focal/jammy/g' /etc/apt/sources.list.d/rocm.list
+sudo apt update   
+sudo amdgpu-install --usecase=graphics,opencl --vulkan=amdvlk,pro   
+sudo amdgpu-install --usecase=workstation --opencl=rocr --vulkan=pro --accept-eula  
+sudo apt install mesa-vulkan-drivers vulkan-radeon   
+
+
+sudo apt dist-upgrade
+sudo apt install update-manager-core
+sudo do-release-upgrade
+sudo update-manager
+
+
+docker restart trusting_bassi
+
+---------------------------------
+
+sudo apt install linux-image-5.6.0-1042-oem linux-headers-5.6.0-1042-oem && reboot
+sudo apt remove linux-image-5.8.0-41-generic linux-headers-5.8.0-41-generic && sudo apt autoremove && reboot
+sudo apt-mark hold linux-image-generic linux-headers-generic
+apt-mark showhold
+dpkg --get-selections | grep hold
+sudo apt-mark unhold  linux-image-generic linux-headers-generic
+sudo apt-mark unhold $(apt-mark showhold)   
+
+https://oneuptime.com/blog/post/2026-03-02-apt-mark-hold-unhold-package-versions-ubuntu/view
+
+sudo apt update   
+sudo apt purge amdgpu-dkms
+sudo apt install amdgpu-dkms   
+amdgpu-install --no-dkms --usecase=rocm   
+
+---------------------------------
+
+
+
+
+https://rocm.docs.amd.com/en/latest/install/rocm.html?fam=instinct&os=ubuntu&ubuntu-ver=26.04&i=pkgman&gpu=amd-instinct-mi350x&gfx=gfx950&w=compute
+
+
+Ubuntu native installation
+
+# Make the directory if it doesn't exist yet.
+# This location is recommended by the distribution maintainers.
+sudo mkdir --parents --mode=0755 /etc/apt/keyrings
+
+# Download the key, convert the signing-key to a full
+# keyring required by apt and store in the keyring directory
+wget https://repo.radeon.com/rocm/rocm.gpg.key -O - | \
+    gpg --dearmor | sudo tee /etc/apt/keyrings/rocm.gpg > /dev/null
+
+
+Ubuntu 22
+sudo tee /etc/apt/sources.list.d/amdgpu.list << EOF
+deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/31.50/ubuntu jammy main
+EOF
+sudo apt update
+
+Ubuntu 24
+sudo tee /etc/apt/sources.list.d/amdgpu.list << EOF
+deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/31.50/ubuntu noble main
+EOF
+sudo apt update
+
+Ubuntu 26
+sudo tee /etc/apt/sources.list.d/amdgpu.list << EOF
+deb [arch=amd64 signed-by=/etc/apt/keyrings/rocm.gpg] https://repo.radeon.com/amdgpu/31.50/ubuntu resolute main
+EOF
+sudo apt update
+
+sudo apt install amdgpu-dkms
+
+---------------------------------
+
+remove
+
+sudo apt autoremove amdgpu-dkms
+# Remove the repositories
+sudo rm /etc/apt/sources.list.d/amdgpu.list
+
+# Clear the cache and clean the system
+sudo rm -rf /var/cache/apt/*
+sudo apt clean all
+sudo apt update
+
+---------------------------------
+
+
+https://github.com/ROCm/legacy-rocm-build/issues/3654
+
+apt-get install --yes 'gdebi-core'
+
+wget 'https://repo.radeon.com/amdgpu-install/6.1.3/ubuntu/jammy/amdgpu-install_6.1.60103-1_all.deb'
+gdebi --non-interactive 'amdgpu-install_6.1.60103-1_all.deb'
+apt-get update
+apt-get install --yes --verbose-versions 'rocm-opencl-runtime'
+
+wget 'https://repo.radeon.com/amdgpu-install/6.2/ubuntu/noble/amdgpu-install_6.2.60200-1_all.deb'
+gdebi --non-interactive 'amdgpu-install_6.2.60200-1_all.deb'
+apt-get update
+apt-get install --yes --verbose-versions 'rocm-opencl-runtime'
+
+apt-get install --yes --verbose-versions 'clinfo'
+
+LD_PRELOAD='/opt/rocm-6.2.0/lib/libamdocl64.so.2' clinfo --list
+
+
+---------------------------------
+
+win11 
+powercfg -h off
+powercfg.exe /hibernate off
