@@ -1,0 +1,54 @@
+
+
+midi gen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://signalmidi.app/edit
+https://www.openmusic.ai/midi-editor
+https://huggingface.co/spaces/skytnt/midi-composer
+https://github.com/SkyTNT/midi-model
+https://colab.research.google.com/github/SkyTNT/midi-model/blob/main/demo.ipynb
+https://onlinesequencer.net/
+
+
+singer voice gen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://www.youtube.com/watch?v=4-sbcdURFwU
+https://www.youtube.com/watch?v=KOEWlbgDLrM
+https://huggingface.co/spaces/MiniMaxAI/MiniMax-Music3#
+https://huggingface.co/MiniMaxAI/MiniMax-Music3#
+https://huggingface.co/Soul-AILab/SoulX-Singer
+https://huggingface.co/spaces/multimodalart/omnivoice-singing
+https://huggingface.co/m-a-p/YuE-s1-7B-anneal-en-cot
+https://huggingface.co/QuickWick/Music-AI-Voices
+https://huggingface.co/models?other=singing-voice-synthesis
+https://huggingface.co/k2-fsa/OmniVoice
+https://huggingface.co/ModelsLab/omnivoice-singing
+https://huggingface.co/collections/sweedly/music-ai
+https://huggingface.co/spaces/Plachta/Seed-VC
+https://huggingface.co/spaces/WANIFAHEEM12/AI-Singing-Voice-Generator
+https://huggingface.co/spaces/WANIFAHEEM12/AI-Singing-Voice-Generator/tree/main
+https://huggingface.co/Revocalize
+https://huggingface.co/spaces/Plachta/Seed-VC
+https://github.com/Soul-AILab/SoulX-Singer
+https://huggingface.co/spaces/Soul-AILab/SoulX-Singer
+https://huggingface.co/collections/Abacaxisampaio/voice-cover
+https://huggingface.co/spaces/k2-fsa/OmniVoice
+https://github.com/microsoft/VibeVoice
+https://huggingface.co/collections/ijohn07/music-ai
+https://huggingface.co/collections/John6666/spaces-for-audio-voices
+https://github.com/k2-fsa/OmniVoice
+https://huggingface.co/spaces/mrfakename/E2-F5-TTS
+https://github.com/Tencent-Hunyuan/HunyuanVideo-Foley
+https://huggingface.co/tencent/HunyuanVideo-Foley
+https://szczesnys.github.io/hunyuanvideo-foley/
+https://acestudio.ai/ai-singing-voice-generator/
+https://dreamtonics.com/synthesizerv/
+https://emvoiceapp.com/
+https://voice-models.com/
+https://acestudio.ai/
+
+
+gen prompt song
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+a smoky late-night soul ballad about old flames, warm female voice
+Soulful and intense, a major leap in AI vocal dynamic expressiveness. The ultimate next-generation tool for vocal music creators

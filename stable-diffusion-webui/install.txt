@@ -104,6 +104,16 @@ models--Ojimi--anime-kawai-diffusion           models--sd2-community--stable-dif
 models--bdsqlsz--stable-diffusion-xl-anime-V5  models--stabilityai--stable-diffusion-3.5-medium
 models--dreamlike-art--dreamlike-anime-1.0     models--stable-diffusion-v1-5--stable-diffusion-v1-5
 
+
+
+
+https://huggingface.co/sd2-community/stable-diffusion-2
+https://huggingface.co/dreamlike-art/dreamlike-anime-1.0
+https://huggingface.co/dreamlike-art/dreamlike-photoreal-2.0
+https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5
+https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
+
+
 ------------------------------------------------
 
 https://github.com/fboulnois/stable-diffusion-docker
