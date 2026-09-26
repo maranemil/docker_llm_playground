@@ -106,7 +106,7 @@ models--dreamlike-art--dreamlike-anime-1.0     models--stable-diffusion-v1-5--st
 
 
 
-
+https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 https://huggingface.co/sd2-community/stable-diffusion-2
 https://huggingface.co/dreamlike-art/dreamlike-anime-1.0
 https://huggingface.co/dreamlike-art/dreamlike-photoreal-2.0

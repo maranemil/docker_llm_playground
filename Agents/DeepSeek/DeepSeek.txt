@@ -14,3 +14,11 @@ cd deepseek-harness
 pnpm install
 pnpm run build
 pnpm dsh web
+
+
+
+
+-------------------------------------------
+
+https://github.com/deepseek-ai/deepseek-harness
+https://www.deepseek.com/harness/en/

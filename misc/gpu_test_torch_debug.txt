@@ -469,5 +469,19 @@ launch.py: error: unrecognized arguments: --cpu
 
 
 
+##################
+pytorch rocm cuda
+##################
+
+https://linuxconfig.org/how-to-install-pytorch-with-cuda-on-ubuntu
+https://www.nhr.kit.edu/userdocs/ftp/amd-rocm/
+https://www.codegenes.net/blog/install-pytorch-rocm/
+https://www.codegenes.net/blog/pytorch-rocm-windows/
+https://rocm.docs.amd.com/projects/ai-ecosystem/en/latest/system-setup/system-health-checks.html
+https://discuss.linuxcontainers.org/t/rocm-and-pytorch-on-amd-apu-or-gpu-ai/19743
+https://www.pcmasters.de/tech-guide/133714731-llms-lokal-mit-pytorch-auf-windows-rocm-6-4-4-auf-radeon-rx-7000-radeon-rx-9000-und-ryzen-ai.html
+https://trainer.kubeflow.org/en/latest/user-guides/pytorch-rocm.html
+
+
 
 
