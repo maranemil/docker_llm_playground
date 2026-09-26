@@ -220,3 +220,19 @@ Need to get 2247 MB of archives.
 After this operation, 35.5 GB of additional disk space will be used.
 export ROCR_VISIBLE_DEVICES=1
 
+
+
+##############################
+Qwen-Image
+##############################
+
+https://huggingface.co/spaces
+https://huggingface.co/spaces/Pepe104/MiniMax-H3-Turbo-Lora-UNCENSORED
+https://huggingface.co/spaces/Qwen/Qwen-Image-2.1
+https://huggingface.co/spaces/zerogpu-aoti/wan2-2-fp8da-aoti-faster
+https://huggingface.co/spaces/stepfun-ai/StepAudio-3-Music
+https://huggingface.co/spaces/r3gm/wan2-2-fp8da-aoti-preview
+https://huggingface.co/spaces/Hittler-AI/FLUX.2-Klein-Multi-LoRA
+https://huggingface.co/spaces/hugging-apps/qwen-image-2-1
+
+

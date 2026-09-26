@@ -86,4 +86,4 @@ https://huggingface.co/empero-ai/models
 https://huggingface.co/empero-ai/Qwen3.8-4B-Distill-GGUF
 https://huggingface.co/unsloth/Qwen3.5-4B-GGUF
 https://huggingface.co/Ma7ee7/Qwen3.8_4B_Distilled_GGUF
-
+https://huggingface.co/ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF

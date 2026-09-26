@@ -1,0 +1,162 @@
+
+
+jupyter
+
+https://dev.to/hassan_aftab/jupyter-notebooks-in-docker-4a29
+https://github.com/jupyter/docker-stacks
+https://github.com/jupyter/docker-stacks
+https://docs.docker.com/guides/jupyter/
+https://jupyter-docker-stacks.readthedocs.io/en/latest/
+https://hub.docker.com/u/jupyter
+https://hub.docker.com/r/jupyterhub/jupyterhub/
+
+docker run -p 10000:8888 quay.io/jupyter/scipy-notebook:2026-07-28
+docker run -p 8888:8888 -v "${PWD}":/home/jovyan/work quay.io/jupyter/scipy-notebook:latest  
+docker run -p 8888:8888 jupyter/base-notebook
+docker run --rm -p 8889:8888 quay.io/jupyter/base-notebook start-notebook.py --NotebookApp.token='my-token' #
+http://127.0.0.1:8889/?token=my-token
+docker run --rm -p 8889:8888 -v "$(pwd):/home/jovyan/work" quay.io/jupyter/base-notebook start-notebook.py --NotebookApp.token='my-token'
+docker run --rm -p 8889:8888 -v jupyter-data:/home/jovyan/work quay.io/jupyter/base-notebook start-notebook.py --NotebookApp.token='my-token'
+docker run -p 8888:8888 jupyter/scipy-notebook
+http://127.0.0.1:8888/?token=<token>
+
+
+ERROR: Exception in ASGI application
+https://huggingface.co/spaces/skytnt/midi-composer
+https://github.com/SkyTNT/midi-model
+https://github.com/SkyTNT/midi-model
+https://github.com/SkyTNT/midi-model/issues/38
+https://colab.research.google.com/github/SkyTNT/midi-model/blob/main/demo.ipynb
+https://huggingface.co/spaces/skytnt/midi-composer/tree/main
+
+# ok
+docker run --rm --user root -e PASSWORD=password -p 8889:8888 quay.io/jupyter/base-notebook start-notebook.py --NotebookApp.token='my-token'
+docker run --rm -e GRANT_SUDO=yes --user root -e PASSWORD=password -p 8889:8888 quay.io/jupyter/base-notebook start-notebook.py --NotebookApp.token='my-token'
+docker run --rm -e GRANT_SUDO=yes --user root --network=host -e PASSWORD=password -p 8889:8888 quay.io/jupyter/base-notebook start-notebook.py --NotebookApp.token='my-token'
+su
+apt update
+apt install git curl
+apt install fluidsynth
+
+!git clone https://github.com/SkyTNT/midi-model
+%cd midi-model
+!apt install fluidsynth
+!pip install -r requirements.txt
+!pip install spaces
+!pip install pydantic==2.10.6
+%ls
+!python app.py --max-gen 4096 --share
+!python app.py --share
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+* Running on local URL:  http://127.0.0.1:7860
+* Running on public URL: https://xxxxxxxx.gradio.live
+!python app.py
+Running on local URL:  http://127.0.0.1:7860
+!curl http://127.0.0.1:7860
+
+
+!git clone https://huggingface.co/spaces/skytnt/midi-composer
+%cd midi-composer
+!apt install fluidsynth
+!pip install -r requirements.txt
+!pip install spaces
+!pip install pydantic==2.10.6
+%ls
+!python app.py
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+AttributeError: 'MIDIModel' object has no attribute 'all_tied_weights_keys'. Did you mean: '_tied_weights_keys'?
+
+
+pip install -r requirements.txt --root-user-action=ignore
+wget https://huggingface.co/skytnt/midi-model/blob/main/model.safetensors
+wget https://huggingface.co/skytnt/midi-model/blob/main/model.safetensors
+wget https://huggingface.co/skytnt/midi-model-tv2o-medium/blob/main/model.safetensors
+wget https://huggingface.co/skytnt/midi-model-tv2o-medium/resolve/main/model.safetensors
+
+https://huggingface.co/datasets/projectlosangeles/Los-Angeles-MIDI-Dataset/tree/main
+https://huggingface.co/skytnt/midi-model-tv2o-medium/tree/main
+https://huggingface.co/skytnt/midi-model/tree/main
+https://huggingface.co/skytnt/midi-model-tv2o-medium/tree/main
+https://huggingface.co/skytnt/midi-model-tv2o-medium/blob/main/model.safetensors
+https://huggingface.co/asigalov61/Music-Llama/tree/main
+https://huggingface.co/skytnt/midi-model/tree/main
+https://huggingface.co/skytnt/midi-model/blob/main/model.safetensors
+
+
+# Map host port 8080 to container port 80
+docker run -p 8080:80 my-web-app
+# Access via browser: http://localhost:8080   
+docker run --rm --network host alpine wget http://localhost:8080   
+docker run --rm --add-host=host.docker.internal:host-gateway alpine wget http://host.docker.internal:8080   
+
+
+
+
+apt install lynx
+lynx http://127.0.0.1:7860
+
+apt install links2
+links2 http://localhost:7860/
+
+
+
+https://hub.docker.com/r/jlesage/firefox
+docker run -d \
+    --name=firefox \
+    -p 5800:5800 \
+    -v /docker/appdata/firefox:/config:rw \
+    jlesage/firefox
+
+
+
+############################################
+midi gens 
+############################################
+
+
+midi comp
+https://sky-music.specy.app/composer
+https://onlinesequencer.net/
+
+
+https://pypi.org/project/pretty-midi/
+https://pypi.org/project/audio2midi/
+https://pypi.org/project/alsa-midi/
+https://pypi.org/project/ambient-gen/
+https://pypi.org/project/text2midi/
+https://pypi.org/project/midi2voice/#
+https://pypi.org/project/musicgen-trainer/#
+https://pypi.org/project/pycomposer/#
+https://pypi.org/project/musicgeneration/#
+https://pypi.org/project/midigpt/#
+https://pypi.org/project/audio-to-midi/#
+https://pypi.org/project/image-to-midi/
+https://pypi.org/project/sound-to-midi/
+https://pypi.org/project/markovmusic/#train
+https://pypi.org/project/musicli-sequencer/
+https://pypi.org/project/music-bassline-generator/
+https://pypi.org/project/music/
+---------------------------------
+
+https://huggingface.co/spaces/Kkcd106/Midi-Simple-GeneratorV2
+https://huggingface.co/spaces/Kkcd106/Midi-Simple-GeneratorV2/tree/main
+https://huggingface.co/spaces/Kkcd106/Midi-Simple-GeneratorV2/blob/main/index.html
+https://huggingface.co/spaces/skytnt/midi-composer#
+https://huggingface.co/spaces/kolaslab/MIDI-Melody-Generator#
+https://huggingface.co/spaces/kolaslab/MIDI-Melody-Generator/blob/main/index.html
+https://huggingface.co/spaces/asigalov61/MIDI-Melody
+https://huggingface.co/spaces/MelodyYuuka/midi-composer
+https://huggingface.co/spaces/netynet/MIDI-Renderer
+https://huggingface.co/spaces/projectlosangeles/midi-moss-music-8b-thinking
+https://huggingface.co/spaces/PashaWNN/midi_to_music_box#
+https://github.com/PashaWNN/midi_to_music_box
+https://huggingface.co/spaces/lukiebub-house-band-ai/MIDI-Remixer
+https://huggingface.co/spaces/juancopi81/multitrack-midi-music-generator#
+https://huggingface.co/spaces/asigalov61/MIDI-Search
+https://huggingface.co/spaces/asigalov61/ByteDance-Solo-Piano-Audio-to-MIDI-Transcription
+
+
+
+https://huggingface.co/spaces/skytnt/midi-composer
+https://huggingface.co/spaces/kolaslab/MIDI-Melody-Generator
+
