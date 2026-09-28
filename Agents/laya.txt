@@ -1,0 +1,9 @@
+
+Non-autoregressive System 1 decision engine. 
+
+https://github.com/NandhaKishorM/laya
+https://github.com/mizorewww/laya-mlx
+https://github.com/ipenywis/laya-ultrafast
+https://github.com/KalyanKS-NLP/llm-engineer-toolkit
+
+
