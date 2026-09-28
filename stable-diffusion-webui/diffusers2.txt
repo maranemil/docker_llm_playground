@@ -1,0 +1,434 @@
+
+
+docker run  --rm  --network=host  -it --name python3agate  -v ./src:/app python:3.10  bash
+
+----------------------------------------------------
+
+AgatePipeline
+
+# 3GB
+
+import sys
+from huggingface_hub import snapshot_download
+
+
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+#print timestr
+
+
+path = snapshot_download("Logolabs/agate-preview-001")
+sys.path.insert(0, path)
+from agate import AgatePipeline
+
+pipe = AgatePipeline.from_pretrained(path, device="cpu")      # "cpu" works too, slowly or use "cuda"
+image = pipe("a green teapot and a red cup on a table", seed=0)[0]
+image.save(timestr + "_teapot.png")
+
+--
+
+Name or service not known' thrown while requesting HEAD https://huggingface.co/stabilityai/sd-vae-ft-mse/resolve/31f26fdeee1355a5c34592e401dd41e45d25a493/diffusion_pytorch_model.safetensors.index.json
+
+----------------------------------------------------
+
+https://huggingface.co/PixArt-alpha/PixArt-XL-2-1024-MS
+https://huggingface.co/PixArt-alpha/PixArt-XL-2-1024-MS
+
+pip install -U diffusers --upgrade
+pip install transformers accelerate safetensors sentencepiece
+
+21GB
+
+from diffusers import PixArtAlphaPipeline
+import torch
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
+pipe = PixArtAlphaPipeline.from_pretrained("PixArt-alpha/PixArt-XL-2-1024-MS", torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+# if using torch < 2.0
+# pipe.enable_xformers_memory_efficient_attention()
+
+prompt = "An astronaut riding a green horse"
+image = pipe(prompt=prompt).images[0]
+image.save(timestr + "_pix.png")
+
+# pipe.transformer = torch.compile(pipe.transformer, mode="reduce-overhead", fullgraph=True)
+#  pipe.enable_model_cpu_offload()
+
+----------------------------------------------------
+
+https://huggingface.co/Qwen/Qwen-Image-2.1
+https://github.com/QwenLM/Qwen-Image-2.1
+
+
+pip install torch>=2.4.0
+pip install transformers>=5.17
+pip install git+https://github.com/huggingface/diffusers
+pip install accelerate
+pip install pillow
+
+pip install torch>=2.4.0
+pip install transformers>=5.17
+pip install git+https://github.com/huggingface/diffusers
+pip install accelerate pillow
+
+# 33GB
+
+
+import torch
+from diffusers import QwenImage21Pipeline
+
+pipe = QwenImage21Pipeline.from_pretrained(
+    "Qwen/Qwen-Image-2.1", torch_dtype=torch.bfloat16
+).to("cuda")
+
+image = pipe(
+    prompt="A neon shop sign that reads \"QWEN IMAGE 2.1\", rainy night, reflections on wet pavement",
+    num_inference_steps=40,
+    generator=torch.Generator("cuda").manual_seed(42),
+).images[0]
+
+image.save("t2i_example.png")
+
+
+----------------------------------------------------
+
+
+https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
+
+pip install --upgrade pip
+pip install diffusers --upgrade
+pip install invisible_watermark transformers accelerate safetensors
+
+libGL.so.1: cannot open shared object file: No such file or directory
+# Source - https://stackoverflow.com/a/63377623
+# Posted by Tushar Kolhe, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-09-28, License - CC BY-SA 4.0
+
+RUN apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
+
+# Source - https://stackoverflow.com/a/68666500
+# Posted by Awanish Kumar Golwara
+# Retrieved 2026-09-28, License - CC BY-SA 4.0
+
+apt-get update && apt-get install libgl1
+
+#7g
+
+from diffusers import DiffusionPipeline
+import torch
+
+pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+pipe.to("cuda")
+
+# if using torch < 2.0
+# pipe.enable_xformers_memory_efficient_attention()
+
+prompt = "An astronaut riding a green horse"
+
+image = pipe(prompt=prompt).images[0]
+image.save("t2i_example.png")
+
+
+...
+
+from diffusers import StableDiffusionXLPipeline, DPMSolverMultistepScheduler
+
+pipe = StableDiffusionXLPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-xl-base-1.0",
+    torch_dtype=torch.float16
+)
+pipe.scheduler = DPMSolverMultistepScheduler.from_config(
+    pipe.scheduler.config,
+    algorithm_type="dpmsolver++",
+    use_karras_sigmas=True
+)
+pipe.enable_attention_slicing()
+
+image = pipe(
+    prompt="your prompt",
+    num_inference_steps=25,  # Recommended: 25-30
+    guidance_scale=7.5,
+    clip_skip=2
+).images[0]
+
+
+
+https://huggingface.co/blog/stable_diffusion
+
+Using num_inference_steps=15 with guidance_scale=7.5 in Stable Diffusion provides a fast generation speed but risks quality degradation, including oversaturation, color shifts, or artifacts, because high guidance at low steps causes incomplete denoising. 
+
+To mitigate these issues:
+
+Lower guidance_scale: Reduce guidance_scale to 5.0 when using low step counts (15–20) to avoid oversaturation. 
+Use appropriate schedulers: Switch to DDIM or DPM++ 2M schedulers, which converge better at lower step counts compared to standard DDPM.
+Avoid sub-10 steps: Step counts below 15 often result in blurry or incomplete images; if faster speeds are needed, use specialized models like LCM (2–8 steps) instead. 
+Clip Skip: clip_skip is a separate parameter that controls how many layers of the CLIP text encoder are skipped during prompt embedding (e.g., clip_skip=2 uses earlier layers). It is independent of step count but can be used alongside these settings to refine prompt adherence and detail.
+
+
+
+
+----------------------------------------------------
+
+
+https://huggingface.co/dreamlike-art/dreamlike-photoreal-2.0
+
+docker exec -it python3agate bash
+
+/usr/local/lib/python3.10/site-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+
+
+pip install torchvision
+
+# 2gb
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-photoreal-2.0"
+#pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to("cpu")  # cuda
+
+prompt = "photo, a church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens"
+#image = pipe(prompt).images[0]
+image = pipe(
+    prompt="a photo of an astronaut riding a horse on mars",
+    num_inference_steps=15,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence
+).images[0]
+image.save("./result.jpg")
+
+
+
+
+# ok
+
+from diffusers import StableDiffusionPipeline
+import torch
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
+model_id = "dreamlike-art/dreamlike-photoreal-2.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to("cpu")
+
+prompt = "photo, a church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens"
+#image = pipe(prompt).images[0]
+image = pipe(
+    prompt="a photo of an astronaut riding a horse on mars",
+    num_inference_steps=15,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence 
+    height=512,   # Default for SD 1.x 512
+    width=512,    # Landscape ratio  768
+
+).images[0]
+#image.save("./result.jpg")
+image.save(timestr + "_dreamlike.png")
+
+
+----------------------------------------------------
+
+
+https://huggingface.co/dreamlike-art/dreamlike-photoreal-1.0
+
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-photoreal-1.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "caucasian creative man wearing a sweater, sitting, on an icelandic beach"
+image = pipe(prompt).images[0]
+
+image.save("./result.jpg")
+
+----------------------------------------------------
+
+https://huggingface.co/dreamlike-art/dreamlike-diffusion-1.0
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-diffusion-1.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "dreamlikeart, a grungy woman with rainbow hair, travelling between dimensions, dynamic pose, happy, soft eyes and narrow chin, extreme bokeh, dainty figure, long hair straight down, torn kawaii shirt and baggy jeans, In style of by Jordan Grimmer and greg rutkowski, crisp lines and color, complex background, particles, lines, wind, concept art, sharp focus, vivid colors"
+image = pipe(prompt).images[0]
+
+image.save("./result.jpg")
+
+----------------------------------------------------
+
+https://huggingface.co/dreamlike-art/dreamlike-anime-1.0
+
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-anime-1.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "anime, masterpiece, high quality, 1girl, solo, long hair, looking at viewer, blush, smile, bangs, blue eyes, skirt, medium breasts, iridescent, gradient, colorful, besides a cottage, in the country"
+negative_prompt = 'simple background, duplicate, retro style, low quality, lowest quality, 1980s, 1990s, 2000s, 2005 2006 2007 2008 2009 2010 2011 2012 2013, bad anatomy, bad proportions, extra digits, lowres, username, artist name, error, duplicate, watermark, signature, text, extra digit, fewer digits, worst quality, jpeg artifacts, blurry'
+image = pipe(prompt, negative_prompt=negative_prompt).images[0]
+
+image.save("./result.jpg")
+
+
+
+----------------------------------------------------
+
+https://huggingface.co/docs/diffusers/en/api/pipelines/stable_diffusion/overview
+
+import torch
+from diffusers import StableDiffusionPipeline
+
+# Modell laden (Float16 für geringeren VRAM-Verbrauch empfohlen)
+pipe = StableDiffusionPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", 
+    torch_dtype=torch.float16,
+    use_safetensors=True
+)
+
+# Auf GPU verschieben
+pipe = pipe.to("cuda")
+
+# Optional: Aufmerksamkeits-Slicing aktivieren, falls VRAM begrenzt ist
+pipe.enable_attention_slicing()
+
+# Bild generieren
+prompt = "a photo of an astronaut riding a horse on mars"
+image = pipe(prompt).images[0]
+image.save("astronaut.png")
+
+...
+
+from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
+
+pipeline = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
+pipeline.scheduler = EulerDiscreteScheduler.from_config(pipeline.scheduler.config)
+
+# or
+euler_scheduler = EulerDiscreteScheduler.from_pretrained("CompVis/stable-diffusion-v1-4", subfolder="scheduler")
+pipeline = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4", scheduler=euler_scheduler)
+
+..
+
+pip install -U gradio
+
+from diffusers import StableDiffusionPipeline
+import gradio as gr
+
+pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
+gr.Interface.from_pipeline(pipe).launch()
+
+
+..
+
+from diffusers import StableDiffusionImg2ImgPipeline
+import gradio as gr
+
+pipe = StableDiffusionImg2ImgPipeline.from_pretrained("stable-diffusion-v1-5/stable-diffusion-v1-5")
+gr.Interface.from_pipeline(pipe).launch()
+
+----------------------------------------------------
+
+
+https://theneuralbase.com/stable-diffusion/learn/beginner/stablediffusionpipeline-from-pretrained/
+
+StableDiffusionPipeline.from_pretrained  DPMSolverMultistepScheduler Guidance
+
+
+import torch
+from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
+
+model_id = "runwayml/stable-diffusion-v1-5" # or SDXL equivalent
+pipe = StableDiffusionPipeline.from_pretrained(
+    model_id, 
+    torch_dtype=torch.float16,
+    variant="fp16" # if available
+).to("cuda")
+
+# Configure DPMSolverMultistepScheduler
+pipe.scheduler = DPMSolverMultistepScheduler.from_config(
+    pipe.scheduler.config,
+    algorithm_type="dpmsolver++",
+    use_karras_sigmas=True
+)
+
+# Generate with guidance
+image = pipe(
+    prompt="a photo of an astronaut riding a horse on mars",
+    num_inference_steps=25,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence
+).images[0]
+
+image.save("output.png")   
+
+--
+
+
+import torch
+from diffusers import StableDiffusionXLPipeline
+
+pipe = StableDiffusionXLPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-xl-base-1.0",
+    torch_dtype=torch.float16,
+    use_safetensors=True
+)
+pipe = pipe.to("cuda")
+
+prompt = "a golden retriever wearing sunglasses on a beach"
+image = pipe(prompt=prompt, num_inference_steps=30).images[0]
+image.save("output.png")
+
+print("Image generated and saved as output.png")
+
+
+
+----------------------------------------------------
+
+https://huggingface.co/krea/Krea-2-Turbo
+https://huggingface.co/krea
+https://github.com/krea-ai/krea-2
+
+
+
+
+pip install git+https://github.com/huggingface/diffusers.git
+
+import torch
+from diffusers import Krea2Pipeline
+
+pipe = Krea2Pipeline.from_pretrained("krea/Krea-2-Turbo", torch_dtype=torch.bfloat16).to("cpu")
+image = pipe("a fox in the snow", num_inference_steps=8, guidance_scale=0.0).images[0]
+image.save("krea2.png")
+
+
+Cannot access gated repo for url https://huggingface.co/krea/Krea-2-Turbo/resolve/98e0fe118d17c9e3547fbb2e25acdbae2cadf7c7/model_index.json.
+Access to model krea/Krea-2-Turbo is restricted. You must have access to it and be authenticated to access it. Please log in.
+
+
+https://github.com/MiniMax-AI/MiniMax-H3
+https://huggingface.co/spaces/multimodalart/minimax-h3
+https://huggingface.co/MiniMaxAI/MiniMax-H3
+
+# Original checkpoint, both task families (SGLang, vLLM):
+hf download MiniMaxAI/MiniMax-H3 --include "model_index.json" "FL2VA/*" "Ref2VA/*" --local-dir MiniMax-H3
+
+# Or a single task family:
+hf download MiniMaxAI/MiniMax-H3 --include "model_index.json" "FL2VA/*" --local-dir MiniMax-H3
+
+----------------------------
+https://hechao.li/posts/container-bandwidth-limit/
+https://oneuptime.com/blog/post/2026-02-08-how-to-limit-network-bandwidth-for-docker-containers/view
+
+
+
