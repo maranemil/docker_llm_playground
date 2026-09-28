@@ -1,0 +1,49 @@
+https://huggingface.co/Logolabs/agate-preview-001
+https://github.com/logolabs/agate-comfyui
+ 
+
+docker run  --rm  --network=host  -it --name python3agate  -v ./src:/app python:3.10  bash
+pip install torch transformers diffusers safetensors huggingface_hub pillow
+pip install --upgrade pip
+pip install accelerate
+apt install nano
+
+import sys
+from huggingface_hub import snapshot_download
+
+path = snapshot_download("Logolabs/agate-preview-001")
+sys.path.insert(0, path)
+from agate import AgatePipeline
+
+pipe = AgatePipeline.from_pretrained(path, device="cpu")      # "cpu" works too, slowly or use "cuda"
+image = pipe("a green teapot and a red cup on a table", seed=0)[0]
+image.save("teapot.png")
+
+
+AGATE_CKPT=/path/to/agate-preview-001.safetensors AGATE_SOURCE=/path/to/agate-preview-001 python -m pytest -q tests
+
+
+cd ComfyUI/custom_nodes
+git clone https://github.com/logolabs/agate-comfyui
+pip install -r agate-comfyui/requirements.txt     
+# with ComfyUI's Python; portable build:
+# ..\python_embeded\python.exe -m pip install -r agate-comfyui\requirements.txt
+
+
+
+----------------
+
+
+https://huggingface.co/docs/diffusers/en/api/pipelines/pixart
+https://huggingface.co/PixArt-alpha/PixArt-XL-2-1024-MS
+https://pixart-alpha.github.io/
+https://github.com/PixArt-alpha/PixArt-alpha
+
+
+https://huggingface.co/OneThink/OneThinker-8B
+https://huggingface.co/OneThink
+https://github.com/tulerfeng/OneThinker
+https://huggingface.co/OneThink/OneThinker-SFT-Qwen3-8B
+https://huggingface.co/datasets/OneThink/OneThinker-train-data
+
+

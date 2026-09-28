@@ -59,3 +59,40 @@ python -m flux t2i --name flux-schnell   --height 512 --width 512  --prompt "log
 
 https://github.com/black-forest-labs/flux/blob/main/docs/text-to-image.md
 FLUX.1 [schnell]	Text to Image	https://huggingface.co/black-forest-labs/FLUX.1-schnell	apache-2.0
+
+
+------------
+
+
+
+https://hub.docker.com/r/maximofn/flux1-schnell
+https://hub.docker.com/r/maximofn/flux1-schnell
+https://github.com/maximofn/FLUX.1-schnell-docker
+https://huggingface.co/black-forest-labs/FLUX.1-schnell
+https://fluxcd.io/flux/installation/
+
+Option 1: Pre-built Image (Easiest)
+docker pull maximofn/flux1-schnell:latest
+docker pull maximofn/flux1-schnell:1.0.0
+docker run  --rm  --network=host  -it --name flux1-schnell  -v ./src:/app maximofn/flux1-schnell:1.0.0 bash
+# Run the app script included in the image
+./run_app.sh
+
+https://github.com/maximofn/FLUX.1-RealismLora-docker
+https://hub.docker.com/r/maximofn/flux-1-realismlora
+docker pull maximofn/flux-1-realismlora:1.0.0
+docker pull maximofn/flux-1-realismlora:latest
+./run_app.sh
+python -m pip install -e .
+pip install -r requirements.txt
+python3 app.py
+
+
+Option 2: Build Custom ComfyUI Flux Image
+wget https://raw.githubusercontent.com/frefrik/comfyui-flux/main/docker-compose.yml   
+export HF_TOKEN=your_huggingface_token_here   
+docker compose up -d   
+
+
+
+

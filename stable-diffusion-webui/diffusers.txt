@@ -1,0 +1,213 @@
+diffusers
+
+
+
+StableDiffusionPipeline, PixArtAlphaPipeline
+
+https://www.geeksforgeeks.org/machine-learning/build-text-2-image-with-huggingface-diffusers/
+
+! pip install diffusers accelerate
+import torch
+from diffusers import StableDiffusionPipeline
+pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+prompt = "a horse racing near beach, 8k, realistic photography";
+image = pipe(prompt).images[0]
+image
+
+https://github.com/huggingface/diffusers/releases
+https://github.com/huggingface/diffusers/blob/main/examples/text_to_image/train_text_to_image.py
+https://huggingface.co/docs/diffusers/en/training/text2image
+
+git clone https://github.com/huggingface/diffusers
+cd diffusers
+pip install .
+cd examples/text_to_image
+pip install -r requirements.txt
+accelerate config default
+
+from accelerate.utils import write_basic_config
+write_basic_config()
+accelerate launch train_text_to_image.py   --mixed_precision="fp16"
+accelerate launch train_text_to_image.py   --snr_gamma=5.0
+
+---------
+
+https://pyimagesearch.com/2024/01/22/getting-started-with-diffusers-for-text-to-image/
+https://huggingface.co/nvidia/Cosmos3-Super-Text2Image/tree/main/transformer
+https://huggingface.co/tasks/text-to-image
+https://jingyechen.github.io/textdiffuser/
+
+from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
+
+model_id = "stabilityai/stable-diffusion-2"
+scheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder="scheduler")
+pipe = StableDiffusionPipeline.from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "a photo of an astronaut riding a horse on mars"
+image = pipe(prompt).images[0]
+
+---------
+https://learnopencv.com/hugging-face-diffusers/
+
+pip install diffusers
+pip install transformers
+pip install accelerate
+
+seed = 42
+import torch
+from diffusers import StableDiffusionPipeline
+device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+pipe = StableDiffusionPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5",
+    use_safetensors=True,
+    torch_dtype=torch.float16,
+).to(device)
+prompt = "A photo of a large pirate ship sailing in the middle of a storm and lightning, highly detailed, unreal engine effect"
+image = pipe(
+    prompt, num_inference_steps=150, generator=torch.manual_seed(seed)
+).images[0]
+
+
+
+
+
+
+pipe = StableDiffusionPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-2-1",
+    torch_dtype=torch.float16,
+    variant="fp16"
+)
+pipe = pipe.to(device)
+prompt = "A photo of a large pirate ship sailing in the middle of a storm and lightning, highly detailed, unreal engine effect"
+image = pipe(
+    prompt, num_inference_steps=150, generator=torch.manual_seed(seed)
+).images[0]
+
+
+
+prompt = "A photo of a large pirate ship sailing in the middle of a storm and lightning, highly detailed, unreal engine effect"
+image = pipe(
+    prompt,
+    num_inference_steps=150,
+    generator=torch.manual_seed(seed),
+    negative_prompt='low resolution, distorted, ugly, deformed, disfigured, poor details'
+).images[0]
+image
+
+
+
+	
+from diffusers import EulerAncestralDiscreteScheduler
+pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
+image = pipe(
+    prompt,
+    num_inference_steps=150,
+    generator=torch.manual_seed(seed),
+    negative_prompt='low resolution, distorted, ugly, deformed, disfigured, poor details'
+).images[0]
+
+
+
+....
+https://github.com/huggingface/diffusers/blob/main/src/diffusers/pipelines/pixart_alpha/pipeline_pixart_alpha.py
+https://apxml.com/courses/advanced-diffusion-architectures/chapter-3-transformer-diffusion-models
+https://huggingface.co/docs/diffusers/en/api/pipelines/dit
+https://arxiv.org/html/2312.04557v1
+https://arxiv.org/abs/2212.09748
+https://github.com/PixArt-alpha/PixArt-sigma
+---
+
+https://huggingface.co/docs/diffusers/v0.32.1/en/api/pipelines/pixart
+https://hedras.co/models/pixart-alpha
+
+
+https://huggingface.co/docs/diffusers/main/en/api/pipelines/pixart
+https://huggingface.co/docs/diffusers/v0.23.1/en/api/pipelines/pixart
+
+pip install -U bitsandbytes
+
+from transformers import T5EncoderModel
+from diffusers import PixArtAlphaPipeline
+import torch
+
+text_encoder = T5EncoderModel.from_pretrained(
+    "PixArt-alpha/PixArt-XL-2-1024-MS",
+    subfolder="text_encoder",
+    load_in_8bit=True,
+    device_map="auto",
+
+)
+pipe = PixArtAlphaPipeline.from_pretrained(
+    "PixArt-alpha/PixArt-XL-2-1024-MS",
+    text_encoder=text_encoder,
+    transformer=None,
+    device_map="auto"
+)
+
+with torch.no_grad():
+    prompt = "cute cat"
+    prompt_embeds, prompt_attention_mask, negative_embeds, negative_prompt_attention_mask = pipe.encode_prompt(prompt)
+
+
+
+import gc
+
+def flush():
+    gc.collect()
+    torch.cuda.empty_cache()
+
+del text_encoder
+del pipe
+flush()
+
+
+pipe = PixArtAlphaPipeline.from_pretrained(
+    "PixArt-alpha/PixArt-XL-2-1024-MS",
+    text_encoder=None,
+    dtype=torch.float16,
+).to("cuda")  # or "mps", "xpu", "cpu"
+
+latents = pipe(
+    negative_prompt=None,
+    prompt_embeds=prompt_embeds,
+    negative_prompt_embeds=negative_embeds,
+    prompt_attention_mask=prompt_attention_mask,
+    negative_prompt_attention_mask=negative_prompt_attention_mask,
+    num_images_per_prompt=1,
+    output_type="latent",
+).images
+
+del pipe.transformer
+flush()
+
+with torch.no_grad():
+    image = pipe.vae.decode(latents / pipe.vae.config.scaling_factor, return_dict=False)[0]
+image = pipe.image_processor.postprocess(image, output_type="pil")[0]
+image.save("cat.png")
+
+---
+
+
+import torch
+from diffusers import PixArtAlphaPipeline
+
+# You can replace the checkpoint id with "PixArt-alpha/PixArt-XL-2-512x512" too.
+pipe = PixArtAlphaPipeline.from_pretrained("PixArt-alpha/PixArt-XL-2-1024-MS", torch_dtype=torch.float16)
+# Enable memory optimizations.
+pipe.enable_model_cpu_offload()
+
+prompt = "A small cactus with a happy face in the Sahara desert."
+image = pipe(prompt).images[0]
+
+
+
+
+
+
+
+
+
+
+

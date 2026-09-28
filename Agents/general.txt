@@ -120,3 +120,12 @@ Open Source Growth: Frameworks like CrewAI, LangChain, and AutoGen are rapidly g
 with 28-day star rankings highlighting high engagement in LangChain and OpenAI’s agents.
 Context Awareness: New frameworks like OpenAgentsControl use "ContextScout" to prioritize relevant 
 information for better accuracy and lower token costs.
+
+
+------------
+
+https://paperclip.ing/
+https://github.com/paperclipai/paperclip
+
+
+
