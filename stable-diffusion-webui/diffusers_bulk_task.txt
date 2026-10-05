@@ -1,0 +1,131 @@
+
+#################################################################
+bulk generation from styles list
+#################################################################
+
+
+docker run  --rm  --network=host  -it --name python3agate  -v ./src:/app python:3.10  bash
+docker run    --network=host  -it --name python3agate  -v ./src:/app python:3.10  bash
+pip install torchvision
+
+
+docker exec -it python3agate bash
+docker update --cpus 16 python3agate
+docker exec python3agate ls -la /
+
+
+sudo sysctl vm.swappiness=30
+echo "vm.swappiness=10" | sudo tee /etc/sysctl.d/99-swappiness.conf
+sudo sysctl --system   
+cat /proc/sys/vm/swappiness
+sysctl vm.swappiness
+
+
+find . -type f -name "*.png" -print0 | tar -czvf archive.tar.gz --null -T -   
+docker cp python3agate:/archive.tar.gz .
+
+
+
+cat runtest.sh
+while IFS= read -r line || [[ -n "$line" ]]; do
+    echo "$line"
+    python3 dm.py "$line"
+done < "filename.txt"
+
+
+
+cat dm.py
+from diffusers import StableDiffusionPipeline
+import torch
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
+import sys
+
+# sys.argv[0] is the script name
+# sys.argv[1] is the first argument
+print("Script:", sys.argv[0])
+print("Arg 1:", sys.argv[1] if len(sys.argv) > 1 else "None")
+
+promptstyle = ""
+if len(sys.argv) > 1:
+    promptstyle = sys.argv[1]
+if len(sys.argv) > 2:
+    promptstyle += "_" + sys.argv[2]
+print(promptstyle)
+
+model_id = "dreamlike-art/dreamlike-photoreal-2.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to("cpu")
+
+prompt = promptstyle + " artstyle,a photo of an astronaut, hafltone, anti alias, sharp,"
+#prompt = "photo, a church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens"
+#image = pipe(prompt).images[0]
+image = pipe(
+    prompt= promptstyle + " artstyle,a photo of an astronaut, hafltone, anti alias, sharp,",
+    num_inference_steps=13,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence
+    height=456,   # Default for SD 1.x 512
+    width=312,    # Landscape ratio  768
+
+#    clip_skip=2,
+).images[0]
+print(prompt)
+
+image.save(timestr + "_" + promptstyle + "_dreamlike.png")
+#image.save("./result.jpg")
+
+
+#################################################################
+EulerDiscreteScheduler usage
+#################################################################
+
+from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
+
+model_id = "runwayml/stable-diffusion-v1-5"
+
+# Laden des Euler-Schedulers
+scheduler = EulerDiscreteScheduler.from_pretrained(model_id, subfolder="scheduler")
+
+# Initialisieren der Pipeline mit dem neuen Scheduler
+pipe = StableDiffusionPipeline.from_pretrained(model_id, scheduler=scheduler, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+# Generierung
+image = pipe("prompt").images[0]   
+
+----------
+
+from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
+
+pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5")
+pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)   
+
+
+from diffusers import EulerAncestralDiscreteScheduler
+pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)   
+
+--
+# seed usage
+
+import torch
+from diffusers import StableDiffusionPipeline
+
+# Pipeline laden
+pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
+pipe = pipe.to("cuda")
+
+# Prompt definieren
+prompt = "a photo of an astronaut riding a horse"
+
+# Seed setzen (z. B. 42)
+seed = 42
+generator = torch.Generator(device="cuda").manual_seed(seed)
+
+# Bild generieren
+image = pipe(prompt, generator=generator).images[0]   
+
+---
+
+
+
