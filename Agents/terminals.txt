@@ -1,0 +1,34 @@
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tmux
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://wiki.ubuntuusers.de/tmux/
+
+
+sudo apt-get install tmux 
+tmux
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cmux
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://cmux.com/de
+https://cmux.com/de/linux
+
+https://cmux.com/api/download/browser-nightly/linux-x64/deb
+
+
+https://cmux.com/api/download/browser-nightly/linux-x64/run
+chmod +x cmux-linux-x64-installer.run
+./cmux-linux-x64-installer.run
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+herdr terminal
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+curl -fsSL https://herdr.dev/install.sh | sh
+export PATH="/root/.local/bin:$PATH"
+herdr
+ctrl B q - exit herdr
+https://www.x-cmd.com/install/herdr
+https://herdr.dev/docs/configuration/
