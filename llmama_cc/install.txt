@@ -1,0 +1,66 @@
+
+https://huggingface.co/QiE2035/flux2-klein-9b-uncensored-text-encoder-Q2_K-GGUF
+
+
+sudo apt update
+sudo apt install -y build-essential git cmake libcurl4-openssl-dev   
+
+# curl
+curl -LsSf https://llama.app/install.sh | sh
+ ~/.llama-app/llama serve
+http://127.0.0.1:8080/
+
+
+ ~/.llama-app/llama cli --hf-repo QiE2035/flux2-klein-9b-uncensored-text-encoder-Q2_K-GGUF --hf-file flux2-klein-9b-uncensored-text-encoder-q2_k.gguf -p "The meaning to life and the universe is"
+
+ ~/.llama-app/llama serve --hf-repo QiE2035/flux2-klein-9b-uncensored-text-encoder-Q2_K-GGUF --hf-file flux2-klein-9b-uncensored-text-encoder-q2_k.gguf -c 2048
+
+
+
+https://marketplace.visualstudio.com/items?itemName=maruf-bepary.llama-vscode-chat
+https://github.com/ggml-org/llama.vscode
+
+https://github.com/continuedev/continue
+https://docs.continue.dev/customize/model-providers/more/llamacpp
+
+name: My Config
+version: 0.0.1
+schema: v1
+
+models:
+  - name: <MODEL_NAME>
+    provider: llama.cpp
+    model: <MODEL_ID>
+    apiBase: http://localhost:8080
+
+
+--------------------------------------------------------------
+
+git clone https://github.com/ggml-org/llama.cpp
+cd llama.cpp
+mkdir build
+cd build   
+cmake --build . --config Release -j $(nproc)   
+
+
+--------------------------------------------------------------
+
+# Download and run a model directly from Hugging Face
+llama cli -hf ggml-org/Qwen3.5-0.8B-GGUF
+# Launch OpenAI-compatible API server
+llama serve -hf ggml-org/Qwen3.5-0.8B-GGUF
+
+
+https://github.com/ggml-org/llama.cpp/releases
+https://github.com/ggml-org/llama.cpp/releases/download/b11524/llama-b11524-bin-ubuntu-arm64.tar.gz
+https://github.com/ggml-org/llama.cpp/releases/download/b11524/llama-b11524-bin-ubuntu-x64.tar.gz
+https://github.com/ggml-org/llama.cpp/releases/download/b11524/llama-b11524-bin-ubuntu-rocm-10.0-x64.tar.gz
+tar -xzvf llama-b11524-bin-ubuntu-x64.tar.gz
+
+
+# brew install llama.cpp
+
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp && LLAMA_CURL=1 make
+./llama-cli --hf-repo QiE2035/flux2-klein-9b-uncensored-text-encoder-Q2_K-GGUF --hf-file flux2-klein-9b-uncensored-text-encoder-q2_k.gguf -p "The meaning to life and the universe is"
+./llama-server --hf-repo QiE2035/flux2-klein-9b-uncensored-text-encoder-Q2_K-GGUF --hf-file flux2-klein-9b-uncensored-text-encoder-q2_k.gguf -c 2048

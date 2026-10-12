@@ -1,0 +1,944 @@
+
+
+ https://huggingface.co/cagliostrolab/animagine-xl-4.0
+
+
+6gb
+
+import torch
+from diffusers import StableDiffusionXLPipeline
+
+pipe = StableDiffusionXLPipeline.from_pretrained(
+    "cagliostrolab/animagine-xl-4.0",
+    torch_dtype=torch.float16,
+    use_safetensors=True,
+    custom_pipeline="lpw_stable_diffusion_xl",
+    add_watermarker=False
+)
+pipe.to('cuda')
+
+prompt = "1girl, arima kana, oshi no ko, hoshimachi suisei, hoshimachi suisei 1stcostume, cosplay, looking at viewer, smile, outdoors, night, v, masterpiece, high score, great score, absurdres"
+negative_prompt = "lowres, bad anatomy, bad hands, text, error, missing finger, extra digits, fewer digits, cropped, worst quality, low quality, low score, bad score, average score, signature, watermark, username, blurry"
+
+image = pipe(
+    prompt,
+    negative_prompt=negative_prompt,
+    width=832,
+    height=1216,
+    guidance_scale=5,
+    num_inference_steps=28
+).images[0]
+
+image.save("./arima_kana.png")
+
+-----------------------
+
+https://huggingface.co/ivanmikhnenkov/tinydit-256
+
+
+python -m tinydit.sample --ckpt model.safetensors --config run1 --sets NOVEL=prompts/novel.txt --out out.png --shape 320x208
+
+..............................
+
+
+https://huggingface.co/CompVis/stable-diffusion-v1-4
+
+pip install --upgrade diffusers transformers scipy
+
+import torch
+from diffusers import StableDiffusionPipeline
+
+model_id = "CompVis/stable-diffusion-v1-4"
+device = "cuda"
+
+
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to(device)
+
+prompt = "a photo of an astronaut riding a horse on mars"
+image = pipe(prompt).images[0]  
+    
+image.save("astronaut_rides_horse.png")
+
+
+
+5gb
+
+import torch
+from diffusers import StableDiffusionPipeline
+
+model_id = "CompVis/stable-diffusion-v1-4"
+device = "cpu"
+
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to(device)
+
+prompt = "a photo of an astronaut riding a horse on mars"
+image = pipe(prompt).images[0]  
+    
+image.save("astronaut_rides_horse.png")
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+https://huggingface.co/stabilityai/sd-turbo
+
+3gb
+
+pip install diffusers transformers accelerate --upgrade
+
+
+from diffusers import AutoPipelineForText2Image
+import torch
+
+pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sd-turbo", torch_dtype=torch.float16, variant="fp16")
+pipe.to("cuda")
+
+prompt = "A cinematic shot of a baby racoon wearing an intricate italian priest robe."
+image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+image.save("test44.png")
+
+
+
+5gb
+
+from diffusers import AutoPipelineForText2Image
+import torch
+
+pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sd-turbo", torch_dtype=torch.float32 )
+pipe.to("cpu")
+
+prompt = "A cinematic shot of a baby racoon wearing an intricate italian priest robe."
+image = pipe(prompt=prompt, num_inference_steps=10, guidance_scale=0.0).images[0]
+image.save("test44.png")
+
+
+------------------------------------------------------------------------------
+
+https://huggingface.co/playgroundai/playground-v2.5-1024px-aesthetic
+
+6gb
+
+pip install diffusers>=0.27.0
+pip install transformers accelerate safetensors
+
+from diffusers import DiffusionPipeline
+import torch
+
+pipe = DiffusionPipeline.from_pretrained(
+    "playgroundai/playground-v2.5-1024px-aesthetic",
+    torch_dtype=torch.float16,
+    variant="fp16",
+).to("cuda")
+
+# # Optional: Use DPM++ 2M Karras scheduler for crisper fine details
+# from diffusers import EDMDPMSolverMultistepScheduler
+# pipe.scheduler = EDMDPMSolverMultistepScheduler()
+
+prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
+image = pipe(prompt=prompt, num_inference_steps=10, guidance_scale=3).images[0]
+image.save("test44.png")
+
+
+
+
+from diffusers import DiffusionPipeline
+import torch
+
+pipe = DiffusionPipeline.from_pretrained(
+    "playgroundai/playground-v2.5-1024px-aesthetic",
+    torch_dtype=torch.float16,
+    variant="fp16",
+).to("cpu")
+
+# # Optional: Use DPM++ 2M Karras scheduler for crisper fine details
+# from diffusers import EDMDPMSolverMultistepScheduler
+# pipe.scheduler = EDMDPMSolverMultistepScheduler()
+
+prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
+image = pipe(prompt=prompt, num_inference_steps=10, guidance_scale=3).images[0]
+image.save("test44.png")
+
+
+------------------------------
+
+
+
+-------------------------------------------------------------------------------
+
+
+https://huggingface.co/hakurei/waifu-diffusion
+
+
+6gb
+
+import torch
+from torch import autocast
+from diffusers import StableDiffusionPipeline
+
+pipe = StableDiffusionPipeline.from_pretrained(
+    'hakurei/waifu-diffusion',
+    torch_dtype=torch.float32
+).to('cuda')
+
+prompt = "1girl, aqua eyes, baseball cap, blonde hair, closed mouth, earrings, green background, hat, hoop earrings, jewelry, looking at viewer, shirt, short hair, simple background, solo, upper body, yellow shirt"
+with autocast("cuda"):
+    image = pipe(prompt, guidance_scale=6)["sample"][0]  
+    
+image.save("test.png")
+
+-----------------------------------------------
+
+https://huggingface.co/dreamlike-art/dreamlike-photoreal-1.0
+
+
+3gb
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-photoreal-1.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "caucasian creative man wearing a sweater, sitting, on an icelandic beach"
+image = pipe(prompt).images[0]
+
+image.save("./result.jpg")
+
+
+
+
+
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-photoreal-1.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to("cpu")
+
+prompt = "caucasian creative man wearing a sweater, sitting, on an icelandic beach"
+negative_prompt = 'simple background, duplicate, retro style, low quality, lowest quality, 1980s, 1990s, 2000s, 2005 2006 2007 2008 2009 2010 2011 2012 2013, bad anatomy, bad proportions, extra digits, lowres, username, artist name, error, duplicate, watermark, signature, text, extra digit, fewer digits, worst quality, jpeg artifacts, blurry'
+image = pipe(
+    prompt="caucasian creative man wearing a sweater, sitting, on an icelandic beach",
+    num_inference_steps=15,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence
+    height=512,   # Default for SD 1.x 512
+    width=512,    # Landscape ratio  768  1024
+).images[0]
+
+
+image.save("./resul2t.jpg")
+
+
+----------------------------------------------------------------------------------------
+
+https://huggingface.co/dreamlike-art/dreamlike-diffusion-1.0
+
+2gb
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-diffusion-1.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "dreamlikeart, a grungy woman with rainbow hair, travelling between dimensions, dynamic pose, happy, soft eyes and narrow chin, extreme bokeh, dainty figure, long hair straight down, torn kawaii shirt and baggy jeans, In style of by Jordan Grimmer and greg rutkowski, crisp lines and color, complex background, particles, lines, wind, concept art, sharp focus, vivid colors"
+image = pipe(prompt).images[0]
+
+image.save("./result.jpg")
+
+--------------------------------------------
+https://huggingface.co/dreamlike-art/dreamlike-anime-1.0
+
+
+2gb
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-anime-1.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "anime, masterpiece, high quality, 1girl, solo, long hair, looking at viewer, blush, smile, bangs, blue eyes, skirt, medium breasts, iridescent, gradient, colorful, besides a cottage, in the country"
+negative_prompt = 'simple background, duplicate, retro style, low quality, lowest quality, 1980s, 1990s, 2000s, 2005 2006 2007 2008 2009 2010 2011 2012 2013, bad anatomy, bad proportions, extra digits, lowres, username, artist name, error, duplicate, watermark, signature, text, extra digit, fewer digits, worst quality, jpeg artifacts, blurry'
+image = pipe(prompt, negative_prompt=negative_prompt).images[0]
+
+image.save("./result.jpg")
+
+
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-anime-1.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to("cpu")
+
+prompt = "anime, masterpiece, high quality, 1girl, solo, long hair, looking at viewer, blush, smile, bangs, blue eyes, skirt, medium breasts, iridescent, gradient, colorful, besides a cottage, in the country"
+negative_prompt = 'simple background, duplicate, retro style, low quality, lowest quality, 1980s, 1990s, 2000s, 2005 2006 2007 2008 2009 2010 2011 2012 2013, bad anatomy, bad proportions, extra digits, lowres, username, artist name, error, duplicate, watermark, signature, text, extra digit, fewer digits, worst quality, jpeg artifacts, blurry'
+image = pipe(
+    prompt="anime, masterpiece, high quality, 1girl, solo, long hair, looking at viewer, blush, smile, bangs, blue eyes, skirt, medium breasts, iridescent",
+    num_inference_steps=15,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence
+    height=512,   # Default for SD 1.x 512
+    width=512,    # Landscape ratio  768  1024
+).images[0]
+
+
+image.save("./result.jpg")
+
+
+
+-----------------------------------------------------------------------------------------------------------------
+
+https://huggingface.co/SfinOe/dreamlike_2.0
+
+2gb
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "dreamlike-art/dreamlike-photoreal-2.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "photo, a church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens"
+image = pipe(prompt).images[0]
+
+image.save("./result.jpg")
+image.save("high_quality_image.png")
+
+
+
+
+# fast
+
+from diffusers import StableDiffusionPipeline
+import torch
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
+model_id = "dreamlike-art/dreamlike-photoreal-2.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to("cpu")
+
+prompt = "photo, a church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens"
+image = pipe(
+    prompt="photo, a church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens",
+    num_inference_steps=15,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence
+    height=512,   # Default for SD 1.x 512
+    width=512,    # Landscape ratio  768  1024
+).images[0]
+
+#image.save("./result.jpg")
+#image.save("high_quality_image.png")
+image.save(timestr + "_dreamlike.png")
+
+
+
+v2
+
+from diffusers import StableDiffusionPipeline
+import torch
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
+model_id = "dreamlike-art/dreamlike-photoreal-2.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to("cpu")
+
+prompt = "photo, a church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens"
+image = pipe(
+    prompt="church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens,shot with Canon EOS R5, 85mm f/1.2 lens, golden hour natural lighting, professional composition, hyperrealistic detail, masterpiece quality, 8K resolution",
+    num_inference_steps=15,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence
+    height=512,   # Default for SD 1.x 512
+    width=512,    # Landscape ratio  768  1024
+    true_cfg_scale=1.0,
+    use_kv_cache=True,
+    denoising_start=0.8,
+    generator=torch.Generator("cpu").manual_seed(42),
+).images[0]
+
+#image.save("./result.jpg")
+#image.save("high_quality_image.png")
+image.save(timestr + "_dreamlike.png")
+
+
+------------------------------
+
+https://huggingface.co/xyn-ai/waifu-diffusion
+
+6gb
+
+import torch
+from torch import autocast
+from diffusers import StableDiffusionPipeline
+
+pipe = StableDiffusionPipeline.from_pretrained(
+    'hakurei/waifu-diffusion',
+    torch_dtype=torch.float32
+).to('cuda')
+
+prompt = "1girl, aqua eyes, baseball cap, blonde hair, closed mouth, earrings, green background, hat, hoop earrings, jewelry, looking at viewer, shirt, short hair, simple background, solo, upper body, yellow shirt"
+with autocast("cuda"):
+    image = pipe(prompt, guidance_scale=6)["sample"][0]  
+    
+image.save("test.png")
+image.save("high_quality_image.png")
+
+----------------------------------------
+
+https://huggingface.co/stablediffusionapi/anything-v5
+
+import requests  
+import json  
+  
+url =  "https://stablediffusionapi.com/api/v3/dreambooth"  
+  
+payload = json.dumps({  
+"key":  "",  
+"model_id":  "anything-v5",  
+"prompt":  "actual 8K portrait photo of gareth person, portrait, happy colors, bright eyes, clear eyes, warm smile, smooth soft skin, big dreamy eyes, beautiful intricate colored hair, symmetrical, anime wide eyes, soft lighting, detailed face, by makoto shinkai, stanley artgerm lau, wlop, rossdraws, concept art, digital painting, looking into camera",  
+"negative_prompt":  "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime",  
+"width":  "512",  
+"height":  "512",  
+"samples":  "1",  
+"num_inference_steps":  "30",  
+"safety_checker":  "no",  
+"enhance_prompt":  "yes",  
+"seed":  None,  
+"guidance_scale":  7.5,  
+"multi_lingual":  "no",  
+"panorama":  "no",  
+"self_attention":  "no",  
+"upscale":  "no",  
+"embeddings":  "embeddings_model_id",  
+"lora":  "lora_model_id",  
+"webhook":  None,  
+"track_id":  None  
+})  
+  
+headers =  {  
+'Content-Type':  'application/json'  
+}  
+  
+response = requests.request("POST", url, headers=headers, data=payload)  
+  
+print(response.text)
+
+--------------------------
+
+https://huggingface.co/stablediffusionapi/anime-diffusion
+
+import requests  
+import json  
+  
+url =  "https://stablediffusionapi.com/api/v3/dreambooth"  
+  
+payload = json.dumps({  
+"key":  "",  
+"model_id":  "anime-diffusion",  
+"prompt":  "actual 8K portrait photo of gareth person, portrait, happy colors, bright eyes, clear eyes, warm smile, smooth soft skin, big dreamy eyes, beautiful intricate colored hair, symmetrical, anime wide eyes, soft lighting, detailed face, by makoto shinkai, stanley artgerm lau, wlop, rossdraws, concept art, digital painting, looking into camera",  
+"negative_prompt":  "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime",  
+"width":  "512",  
+"height":  "512",  
+"samples":  "1",  
+"num_inference_steps":  "30",  
+"safety_checker":  "no",  
+"enhance_prompt":  "yes",  
+"seed":  None,  
+"guidance_scale":  7.5,  
+"multi_lingual":  "no",  
+"panorama":  "no",  
+"self_attention":  "no",  
+"upscale":  "no",  
+"embeddings":  "embeddings_model_id",  
+"lora":  "lora_model_id",  
+"webhook":  None,  
+"track_id":  None  
+})  
+  
+headers =  {  
+'Content-Type':  'application/json'  
+}  
+  
+response = requests.request("POST", url, headers=headers, data=payload)  
+  
+print(response.text)
+
+----------------------------
+
+https://huggingface.co/friedrichor/stable-diffusion-2-1-realistic
+
+
+4gb
+
+import torch
+from diffusers import StableDiffusionPipeline
+
+device = "cuda:0"
+pipe = StableDiffusionPipeline.from_pretrained("friedrichor/stable-diffusion-2-1-realistic", torch_dtype=torch.float32)
+pipe.to(device)
+
+prompt = "a woman in a red and gold costume with feathers on her head"
+extra_prompt = ", facing the camera, photograph, highly detailed face, depth of field, moody light, style by Yasmin Albatoul, Harry Fayt, centered, extremely detailed, Nikon D850, award winning photography"
+negative_prompt = "cartoon, anime, ugly, (aged, white beard, black skin, wrinkle:1.1), (bad proportions, unnatural feature, incongruous feature:1.4), (blurry, un-sharp, fuzzy, un-detailed skin:1.2), (facial contortion, poorly drawn face, deformed iris, deformed pupils:1.3), (mutated hands and fingers:1.5), disconnected hands, disconnected limbs"
+
+generator = torch.Generator(device=device).manual_seed(42)
+image = pipe(prompt + extra_prompt,
+             negative_prompt=negative_prompt,
+             height=768, width=768,
+             num_inference_steps=20,
+             guidance_scale=7.5,
+             generator=generator).images[0]
+#image.save("image.png")
+image.save("high_quality_image.png")
+
+
+----------------------
+
+
+https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
+
+6gb
+
+
+from diffusers import DiffusionPipeline
+import torch
+
+pipe = DiffusionPipeline.from_pretrained("stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, use_safetensors=True, variant="fp16")
+pipe.to("cuda")
+
+# if using torch < 2.0
+# pipe.enable_xformers_memory_efficient_attention()
+
+prompt = "An astronaut riding a green horse"
+
+images = pipe(prompt=prompt).images[0]
+image.save("high_quality_image.png")
+
+
+
+
+
+
+from diffusers import DiffusionPipeline
+import torch
+
+# load both base & refiner
+base = DiffusionPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-xl-base-1.0", torch_dtype=torch.float16, variant="fp16", use_safetensors=True
+)
+base.to("cuda")
+refiner = DiffusionPipeline.from_pretrained(
+    "stabilityai/stable-diffusion-xl-refiner-1.0",
+    text_encoder_2=base.text_encoder_2,
+    vae=base.vae,
+    torch_dtype=torch.float16,
+    use_safetensors=True,
+    variant="fp16",
+)
+refiner.to("cuda")
+
+# Define how many steps and what % of steps to be run on each experts (80/20) here
+n_steps = 40
+high_noise_frac = 0.8
+
+prompt = "A majestic lion jumping from a big stone at night"
+
+# run both experts
+image = base(
+    prompt=prompt,
+    num_inference_steps=n_steps,
+    denoising_end=high_noise_frac,
+    output_type="latent",
+).images
+image = refiner(
+    prompt=prompt,
+    num_inference_steps=n_steps,
+    denoising_start=high_noise_frac,
+    image=image,
+).images[0]
+image.save("high_quality_image.png")
+
+
+-----------------------------
+
+https://huggingface.co/PrunaAI/Pruna-Qwen-Image-2.1
+
+
+pip install 'torch>=2.4.0' 'transformers>=5.17' accelerate peft pillow
+pip install git+https://github.com/huggingface/diffusers@6256aa7666cedd47443adc8f82da9a10e110b09c
+
+
+import torch
+from PIL import Image
+from diffusers import FlowMatchEulerDiscreteScheduler, QwenImage21Pipeline
+
+STEPS = 8  # 8 for higher quality, 5 for higher speed
+
+# The terminal sigma 0 is appended by the scheduler.
+SIGMAS = {
+    5: [1.0, 0.94, 6 / 7, 2 / 3, 0.4],
+    8: [1.0, 14 / 15, 6 / 7, 10 / 13, 2 / 3, 6 / 11, 0.4, 2 / 9],
+}[STEPS]
+
+pipe = QwenImage21Pipeline.from_pretrained(
+    "Qwen/Qwen-Image-2.1", torch_dtype=torch.bfloat16
+).to("cuda")
+pipe.load_lora_weights(
+    "PrunaAI/Pruna-Qwen-Image-2.1",
+    weight_name=f"p_qwen_image_2.1_{STEPS}step_v0.1.safetensors",
+)
+
+# Use the sigmas exactly as given: no extra shifting.
+pipe.scheduler = FlowMatchEulerDiscreteScheduler.from_config(
+    pipe.scheduler.config,
+    use_dynamic_shifting=False,
+    shift=1.0,
+    shift_terminal=None,
+)
+
+....
+
+image = pipe(
+    prompt=(
+        'A glowing neon shop sign that reads "QWEN IMAGE 2.1", mounted on a brick wall '
+        "in a narrow city alley at night. Heavy rain, wet pavement reflecting pink and "
+        "blue light, shallow depth of field, cinematic photograph."
+    ),
+    width=1024,
+    height=1024,
+    generator=torch.Generator("cuda").manual_seed(42),
+    num_inference_steps=STEPS,
+    sigmas=SIGMAS,
+    true_cfg_scale=1.0,
+    use_kv_cache=True,
+).images[0]
+image.save("high_quality_image.png")
+
+
+-----------------------------------------------
+
+https://huggingface.co/Qwen/Qwen-Image-2.1
+
+pip install torch>=2.4.0
+pip install transformers>=5.17
+pip install git+https://github.com/huggingface/diffusers
+pip install accelerate pillow
+
+
+33gb
+
+import torch
+from diffusers import QwenImage21Pipeline
+
+pipe = QwenImage21Pipeline.from_pretrained(
+    "Qwen/Qwen-Image-2.1", torch_dtype=torch.bfloat16
+).to("cuda")
+
+image = pipe(
+    prompt="A neon shop sign that reads \"QWEN IMAGE 2.1\", rainy night, reflections on wet pavement",
+    width=2048, height=2048,
+    num_inference_steps=40,
+    generator=torch.Generator("cuda").manual_seed(42),
+).images[0]
+
+image.save("t2i_example.png")
+
+-----------------------------------------------
+
+https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5
+
+6gb
+
+
+from diffusers import StableDiffusionPipeline
+import torch
+
+model_id = "sd-legacy/stable-diffusion-v1-5"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "a photo of an astronaut riding a horse on mars"
+image = pipe(prompt).images[0]  
+    
+#image.save("astronaut_rides_horse.png")
+image.save("high_quality_image.png")
+------------------------------------
+https://huggingface.co/imagepipeline/RunDiffusion-XL
+
+import requests  
+import json  
+  
+url =  "https://imagepipeline.io/sdxl/text2image/v1/run"  
+  
+payload = json.dumps({  
+"model_id":  "372f1620-2665-46fa-985d-c68b41d0f6da",  
+"prompt":  "ultra realistic close up portrait ((beautiful pale cyberpunk female with heavy black eyeliner)), blue eyes, shaved side haircut, hyper detail, cinematic lighting, magic neon, dark red city, Canon EOS R3, nikon, f/1.4, ISO 200, 1/160s, 8K, RAW, unedited, symmetrical balance, in-frame, 8K",  
+"negative_prompt":  "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime",  
+"width":  "512",  
+"height":  "512",  
+"samples":  "1",  
+"num_inference_steps":  "30",  
+"safety_checker":  false,   
+"guidance_scale":  7.5,  
+"multi_lingual":  "no",  
+"embeddings":  "", 
+"lora_models": "", 
+"lora_weights":  "" 
+})  
+  
+headers =  {  
+'Content-Type':  'application/json',
+'API-Key': 'your_api_key'
+}  
+  
+response = requests.request("POST", url, headers=headers, data=payload)  
+  
+print(response.text)
+
+
+------------------------------------
+
+
+https://huggingface.co/stabilityai/sdxl-turbo
+
+
+6gb 
+
+from diffusers import AutoPipelineForText2Image
+import torch
+
+pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
+pipe.to("cuda")
+
+prompt = "A cinematic shot of a baby racoon wearing an intricate italian priest robe."
+
+image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+image.save("high_quality_image.png")
+
+
+------------------------------------------------------------------------------------------------------------
+
+https://huggingface.co/stablediffusionapi/protovisionxl-v3
+
+import requests  
+import json  
+  
+url =  "https://stablediffusionapi.com/api/v4/dreambooth"  
+  
+payload = json.dumps({  
+"key":  "your_api_key",  
+"model_id":  "protovisionxl-v3",  
+"prompt":  "ultra realistic close up portrait ((beautiful pale cyberpunk female with heavy black eyeliner)), blue eyes, shaved side haircut, hyper detail, cinematic lighting, magic neon, dark red city, Canon EOS R3, nikon, f/1.4, ISO 200, 1/160s, 8K, RAW, unedited, symmetrical balance, in-frame, 8K",  
+"negative_prompt":  "painting, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, deformed, ugly, blurry, bad anatomy, bad proportions, extra limbs, cloned face, skinny, glitchy, double torso, extra arms, extra hands, mangled fingers, missing lips, ugly face, distorted face, extra legs, anime",  
+"width":  "512",  
+"height":  "512",  
+"samples":  "1",  
+"num_inference_steps":  "30",  
+"safety_checker":  "no",  
+"enhance_prompt":  "yes",  
+"seed":  None,  
+"guidance_scale":  7.5,  
+"multi_lingual":  "no",  
+"panorama":  "no",  
+"self_attention":  "no",  
+"upscale":  "no",  
+"embeddings":  "embeddings_model_id",  
+"lora":  "lora_model_id",  
+"webhook":  None,  
+"track_id":  None  
+})  
+  
+headers =  {  
+'Content-Type':  'application/json'  
+}  
+  
+response = requests.request("POST", url, headers=headers, data=payload)  
+  
+print(response.text)
+
+
+------------------------------------------------------------------------
+
+
+https://huggingface.co/Linaqruf/animagine-xl-2.0
+
+
+pip install diffusers --upgrade
+pip install transformers accelerate safetensors
+
+7gb
+
+import torch
+from diffusers import (
+    StableDiffusionXLPipeline, 
+    EulerAncestralDiscreteScheduler,
+    AutoencoderKL
+)
+
+# Load VAE component
+vae = AutoencoderKL.from_pretrained(
+    "madebyollin/sdxl-vae-fp16-fix", 
+    torch_dtype=torch.float16
+)
+
+# Configure the pipeline
+pipe = StableDiffusionXLPipeline.from_pretrained(
+    "Linaqruf/animagine-xl-2.0", 
+    vae=vae,
+    torch_dtype=torch.float16, 
+    use_safetensors=True, 
+    variant="fp16"
+)
+pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
+pipe.to('cuda')
+
+# Define prompts and generate image
+prompt = "face focus, cute, masterpiece, best quality, 1girl, green hair, sweater, looking at viewer, upper body, beanie, outdoors, night, turtleneck"
+negative_prompt = "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry"
+
+image = pipe(
+    prompt, 
+    negative_prompt=negative_prompt, 
+    width=1024,
+    height=1024,
+    guidance_scale=12,
+    num_inference_steps=50
+).images[0]
+image.save("high_quality_image.png")
+
+
+
+A girl with mesmerizing blue eyes looks at the viewer. Her long, white hair is adorned with blue butterfly hair ornaments.
+1girl, green hair, sweater, looking at viewer, upper body, beanie, outdoors, night, turtleneck
+lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry
+
+
+
+---------------------------------------------------------
+
+
+https://huggingface.co/playgroundai/playground-v2-1024px-aesthetic
+
+pip install transformers accelerate safetensors
+
+7gb
+
+from diffusers import DiffusionPipeline
+import torch
+
+pipe = DiffusionPipeline.from_pretrained(
+    "playgroundai/playground-v2-1024px-aesthetic",
+    torch_dtype=torch.float16,
+    use_safetensors=True,
+    add_watermarker=False,
+    variant="fp16"
+)
+pipe.to("cuda")
+
+prompt = "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
+image  = pipe(prompt=prompt, guidance_scale=3.0).images[0]
+image.save("high_quality_image.png")
+
+---------------------------------------------------------
+
+https://huggingface.co/Lykon/dreamshaper-xl-turbo
+
+pip install diffusers transformers accelerate
+
+7gb
+
+from diffusers import AutoPipelineForText2Image, DPMSolverMultistepScheduler
+import torch
+
+pipe = AutoPipelineForText2Image.from_pretrained('lykon/dreamshaper-xl-turbo', torch_dtype=torch.float16, variant="fp16")
+pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
+pipe = pipe.to("cuda")
+
+prompt = "portrait photo of muscular bearded guy in a worn mech suit, light bokeh, intricate, steel metal, elegant, sharp focus, soft lighting, vibrant colors"
+
+generator = torch.manual_seed(0)
+image = pipe(prompt, num_inference_steps=6, guidance_scale=2).images[0]  
+image.save("high_quality_image.png")
+
+
+---------------------------------------------------------
+
+
+---------------------------------------------------------
+
+
+https://huggingface.co/frankjoshua/sdxl-turbo
+
+pip install diffusers transformers accelerate --upgrade
+
+6gb
+
+
+from diffusers import AutoPipelineForText2Image
+import torch
+
+pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
+pipe.to("cpu")
+
+prompt = "A cinematic shot of a baby racoon wearing an intricate italian priest robe."
+
+image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+image.save("high_quality_image.png")
+
+
+---------------------------------------------------------
+https://huggingface.co/etri-vilab/koala-700m
+https://huggingface.co/etri-vilab/koala-1b
+
+6gb
+import torch
+from diffusers import StableDiffusionXLPipeline
+
+pipe = StableDiffusionXLPipeline.from_pretrained("etri-vilab/koala-700m", torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "A portrait painting of a Golden Retriever like Leonard da Vinci"
+negative = "worst quality, low quality, illustration, low resolution"
+image = pipe(prompt=prompt, negative_prompt=negative).images[0]
+image.save("high_quality_image.png")
+
+
+8gb
+import torch
+from diffusers import StableDiffusionXLPipeline
+
+pipe = StableDiffusionXLPipeline.from_pretrained("etri-vilab/koala-1b", torch_dtype=torch.float16)
+pipe = pipe.to("cuda")
+
+prompt = "A portrait painting of a Golden Retriever like Leonard da Vinci"
+negative = "worst quality, low quality, illustration, low resolution"
+image = pipe(prompt=prompt, negative_prompt=negative).images[0]
+image.save("high_quality_image.png")
+--------------------------------------------------------------------------------------------------------------
+
+
+pip install peft
+
+
+-----------------------
+
+https://github.com/noskill/diffusers-ui
+https://github.com/abhishekkrthakur/diffuzers
+
+
+
+
+
+
