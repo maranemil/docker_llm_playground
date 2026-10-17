@@ -2,7 +2,7 @@ https://huggingface.co/dreamlike-art/dreamlike-photoreal-2.0
 
 docker run  --rm  --network=host  -it --name python3agate  -v ./src:/app python:3.10  bash
 docker run   --network=host  -it --name python3agate  -v ./src:/app python:3.10  bash
-
+docker exec -it python3agate bash
 
 env
 https://docs.python.org/3/tutorial/venv.html
