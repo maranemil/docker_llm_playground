@@ -1,0 +1,50 @@
+https://huggingface.co/dreamlike-art/dreamlike-photoreal-2.0
+
+docker run  --rm  --network=host  -it --name python3agate  -v ./src:/app python:3.10  bash
+docker run   --network=host  -it --name python3agate  -v ./src:/app python:3.10  bash
+
+
+env
+https://docs.python.org/3/tutorial/venv.html
+python -m venv tutorial-env
+source tutorial-env/bin/activate
+# deactivate
+# python -m pip install accelerate
+# python -m pip list
+# python -m pip freeze > requirements.txt
+# python -m pip install -r requirements.txt
+
+
+# pkg
+pip install transformers
+apt update
+apt install nano
+pip install diffusers
+pip install accelerate
+
+
+
+cd app
+nano dm.py
+
+from diffusers import StableDiffusionPipeline
+import torch
+import time
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
+model_id = "dreamlike-art/dreamlike-photoreal-2.0"
+pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float32)
+pipe = pipe.to("cpu")
+
+prompt = "photo, a church in the middle of a field of crops, bright cinematic lighting, gopro, fisheye lens"
+#image = pipe(prompt).images[0]
+image = pipe(
+    prompt="a photo of an astronaut riding a horse on mars",
+    num_inference_steps=15,       # Recommended: 25-30 for DPMSolver++
+    guidance_scale=7.5,           # Controls prompt adherence 
+    height=512,   # Default for SD 1.x 512
+    width=512,    # Landscape ratio  768
+
+).images[0]
+#image.save("./result.jpg")
+image.save(timestr + "_dreamlike.png")
