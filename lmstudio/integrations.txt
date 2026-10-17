@@ -5,3 +5,57 @@ pip install lmstudio
 import lmstudio as lms
 model = lms.llm()
 model.complete("Once upon a time,")
+
+
+-----------------------------
+
+https://lmstudio.ai/docs/integrations/codex
+
+
+codex --oss --local-provider lmstudio   
+codex --oss --local-provider lmstudio -m qwen/qwen3-coder-30b  
+codex --oss -m ibm/granite-4-micro 
+
+~/.codex/config.toml
+[model_providers.lmstudio]
+name = "LM Studio"
+base_url = "http://localhost:1234/v1"
+wire_api = "responses"
+
+[profiles.local-lmstudio]
+model_provider = "lmstudio"
+model = "openai/gpt-oss-20b"   
+
+
+codex --profile local-lmstudio   
+
+Key Requirements
+lms server start
+lms server start --port 1234
+lms load <model> --context-length 32768
+
+---
+
+https://lmstudio.ai/docs/integrations/claude-code
+
+
+lms server start --port 1234
+
+export ANTHROPIC_BASE_URL=http://localhost:1234
+export ANTHROPIC_AUTH_TOKEN=lmstudio
+export CLAUDE_CODE_ATTRIBUTION_HEADER=0
+
+
+claude --model openai/gpt-oss-20b
+
+----
+
+https://lmstudio.ai/docs/integrations/hermes
+
+lms server start --port 1234
+hermes setup
+hermes model
+
+
+
+
