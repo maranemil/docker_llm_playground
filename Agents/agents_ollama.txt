@@ -288,6 +288,10 @@ ollama run qwen3:0.6b
 ollama run gemma3:270m
 ollama run gemma3:1b
 ollama run deepseek-r1:1.5b
+
+
+https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-8B/tree/main
+https://huggingface.co/deepseek-ai/deepseek-coder-7b-instruct-v1.5
 -------
 
 
