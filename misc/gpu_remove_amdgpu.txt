@@ -1,0 +1,84 @@
+
+
+
+
+uname -r
+6.8.0-146-generic
+sudo apt install -f
+sudo dpkg --configure -a
+sudo apt --fix-broken install
+sudo update-grub
+journalctl -k -b -1
+
+
+-----------------------
+
+sudo apt remove --purge <broken-dkms-package-name>
+sudo apt --fix-broken install
+
+sudo update-initramfs -u -k 6.8.0-147-generic
+sudo update-grub
+
+sudo apt purge linux-image-6.8.0-147-generic linux-headers-6.8.0-147-generic
+sudo update-grub
+
+sudo dkms remove rtl8852au/1.15.0.1 --all
+
+-----------------------
+Error! Bad return status for module build on kernel: 6.8.0-147-generic (x86_64)
+Consult /var/lib/dkms/amdgpu/6.12.12-2164967.24.04/build/make.log for more infor
+mation.
+dkms autoinstall on 6.8.0-147-generic/x86_64 succeeded for virtualbox
+dkms autoinstall on 6.8.0-147-generic/x86_64 failed for amdgpu(10)
+Error! One or more modules failed to install during autoinstall.
+Refer to previous errors for more information.
+ * dkms: autoinstall for kernel 6.8.0-147-generic
+   ...fail!
+run-parts: /etc/kernel/postinst.d/dkms exited with return code 11
+dpkg: Fehler beim Bearbeiten des Paketes linux-image-6.8.0-147-generic (--config
+ure):
+ »installiertes post-installation-Skript des Paketes linux-image-6.8.0-147-gener
+ic«-Unterprozess gab den Fehlerwert 11 zurück
+Es wurde kein Apport-Bericht verfasst, da das Limit MaxReports bereits erreicht 
+ist.
+    Fehler traten auf beim Bearbeiten von:
+ linux-headers-6.8.0-147-generic
+ linux-headers-generic
+ linux-generic
+ linux-image-6.8.0-147-generic
+E: Sub-process /usr/bin/dpkg returned an error code (1)
+
+-----------------------------------
+
+ls /var/lib/dkms
+amdgpu  virtualbox
+
+ls /var/lib/dkms/amdgpu/
+6.12.12-2164967.24.04  kernel-6.8.0-146-generic-x86_64
+
+sudo dkms remove rtl8852au/1.15.0.1 --all
+sudo dkms remove amdgpu  --all
+
+####################################################
+FIX: kms autoinstall on 6.8.0-147-generic/x86_64 failed for amdgpu(10)
+####################################################
+Uninstalling the AMDGPU stack
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+https://amdgpu-install.readthedocs.io/en/latest/install-installing.html
+amdgpu-uninstall
+amdgpu-install --uninstall
+sudo apt-get purge amdgpu-install
+
+
+dpkg -l | grep linux-image
+sudo apt-get purge linux-image-6.8.0-147-generic
+sudo apt-get purge linux-headers-6.8.0-147-generic
+
+sudo rm -rf /lib/modules/6.8.0-147-generic
+rmdir: '/lib/modules/6.8.0-147-generic' konnte nicht entfernt werden: Das Verzeichnis ist nicht leer
+
+sudo apt autoremove
+sudo apt install -f
+sudo dpkg --configure -a
+sudo apt --fix-broken install
+sudo update-grub
