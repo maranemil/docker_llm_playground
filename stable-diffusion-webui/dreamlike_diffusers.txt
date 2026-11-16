@@ -48,3 +48,67 @@ image = pipe(
 ).images[0]
 #image.save("./result.jpg")
 image.save(timestr + "_dreamlike.png")
+
+
+###
+
+
+docker run  --rm  --network=host  -it --name amdgpu  -v ./src:/app  rocm/rocm-terminal:latest bash #
+sudo apt update
+sudo apt install nano
+pip install --upgrade pip
+pip install diffusers 
+pip install  torchvision
+pip install transformers
+pip install accelerate
+mkdir app && cd app
+nano dr.py
+python3 dr.py
+
+docker run -it --rm  --device /dev/kfd  --device /dev/dri  --network=host  --ipc=host  --group-add=video  --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined  rocm/pytorch:rocm10.0_ubuntu24.04_py3.11_pytorch_release_2.13.0  bash
+python -c "import torch; print(torch.cuda.is_available())"  # true
+
+pip show torch
+python -c "import torch; print(torch.version.hip)"
+python -c "import torch; print(torch.cuda.device_count())" # 1
+
+import torch
+from diffusers import StableDiffusionPipeline
+# Load model and move the entire pipeline to CPU
+pipe = StableDiffusionPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", torch_dtype=torch.float32
+)
+pipe.to("cpu")
+
+import torch
+from diffusers import StableDiffusionPipeline
+pipe = StableDiffusionPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16
+)
+pipe = pipe.to("cuda")  # ROCm maps to 'cuda' on Linux
+
+
+
+
+import torch
+from diffusers import DiffusionPipeline
+# Load your pipeline
+pipe = DiffusionPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5",
+    dtype=torch.float16
+)
+# Move the pipeline to the AMD GPU via ROCm-enabled PyTorch
+pipe = pipe.to("cuda")
+prompt = "Astronaut in a jungle, cold color palette, detailed, 8k"
+image = pipe(prompt).images[0]
+image.save("output.png")
+
+
+# HW Exception by GPU node-1 (Agent handle: 0x1a9f3c40) reason :GPU Hang
+https://github.com/beecave-homelab/insanely-fast-whisper-rocm/issues/61
+sudo apt install linux-image-generic-hwe-24.04
+
+
+
+
+
