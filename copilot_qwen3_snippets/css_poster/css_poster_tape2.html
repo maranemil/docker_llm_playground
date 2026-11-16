@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Retro Mixtape Poster</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    padding: 20px;
+  }
+
+  .poster {
+    position: relative;
+    width: 600px;
+    height: 800px;
+    background: repeating-linear-gradient(
+      45deg,
+      #FF1F8F 0 60px,
+      #FFD93D 60px 120px,
+      #06BEE1 120px 180px,
+      #8B5CF6 180px 240px
+    );
+    border: 10px solid #000;
+    box-shadow: 20px 20px 0 #000;
+    overflow: hidden;
+  }
+
+  /* Halftone dots overlay */
+  .poster::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.25) 1.5px, transparent 2px);
+    background-size: 12px 12px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Top banner */
+  .banner {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 3;
+  }
+
+  .banner h1 {
+    display: inline-block;
+    background: #000;
+    color: #FFD93D;
+    padding: 10px 40px;
+    font-size: 54px;
+    letter-spacing: 6px;
+    border: 4px solid #FFD93D;
+    transform: rotate(-3deg);
+    text-shadow: 4px 4px 0 #FF1F8F;
+  }
+
+  .banner p {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #000;
+    background: #fff;
+    display: inline-block;
+    padding: 4px 14px;
+    border: 3px solid #000;
+    letter-spacing: 3px;
+  }
+
+  /* Cassette */
+  .cassette {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-2deg);
+    width: 460px;
+    height: 290px;
+    background: #E8DCC4;
+    border: 5px solid #000;
+    border-radius: 14px;
+    box-shadow: 10px 10px 0 #000;
+    z-index: 2;
+  }
+
+  /* Top edge screws */
+  .cassette::before,
+  .cassette::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    width: 10px;
+    height: 10px;
+    background: #555;
+    border: 2px solid #000;
+    border-radius: 50%;
+  }
+  .cassette::before { left: 14px; }
+  .cassette::after  { right: 14px; }
+
+  /* Label */
+  .label {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    right: 40px;
+    height: 110px;
+    background: #fff;
+    border: 3px solid #000;
+    background-image: repeating-linear-gradient(
+      0deg,
+      #fff 0 22px,
+      #06BEE1 22px 24px
+    );
+    padding: 10px 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .label .title {
+    font-size: 28px;
+    color: #000;
+    letter-spacing: 2px;
+    text-align: center;
+    background: #FF1F8F;
+    color: #fff;
+    padding: 4px;
+    border: 2px solid #000;
+    transform: rotate(-1deg);
+  }
+
+  .label .tracks {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #000;
+    line-height: 1.4;
+    font-weight: bold;
+  }
+
+  /* Tape window */
+  .window {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 80px;
+    background: #1a1a1a;
+    border: 4px solid #000;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  /* Reels */
+  .reel {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #333 20%, #8B5E3C 22%, #6B4423 70%, #3a2414 100%);
+    border: 3px solid #000;
+    position: relative;
+    animation: spin 4s linear infinite;
+  }
+
+  .reel::before {
+    content: '';
+    position: absolute;
+    inset: 18px;
+    background: #E8DCC4;
+    border-radius: 50%;
+    border: 2px solid #000;
+  }
+
+  .reel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(0deg, transparent 46%, #000 46%, #000 54%, transparent 54%),
+      linear-gradient(60deg, transparent 46%, #000 46%, #000 54%, transparent 54%),
+      linear-gradient(120deg, transparent 46%, #000 46%, #000 54%, transparent 54%);
+    border-radius: 50%;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Tape strip between reels */
+  .tape-strip {
+    position: absolute;
+    top: 50%;
+    left: 80px;
+    right: 80px;
+    height: 14px;
+    background: #3a2414;
+    transform: translateY(-50%);
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    z-index: -1;
+  }
+
+  /* Bottom teeth */
+  .teeth {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    height: 18px;
+    background: repeating-linear-gradient(
+      90deg,
+      #000 0 8px,
+      #E8DCC4 8px 16px
+    );
+    border-top: 3px solid #000;
+    border-left: 3px solid #000;
+    border-right: 3px solid #000;
+  }
+
+  /* Starburst */
+  .starburst {
+    position: absolute;
+    top: 180px;
+    right: 30px;
+    width: 140px;
+    height: 140px;
+    background: #FFD93D;
+    border: 4px solid #000;
+    clip-path: polygon(
+      50% 0%, 60% 20%, 80% 10%, 75% 32%,
+      100% 35%, 82% 50%, 100% 65%, 75% 68%,
+      80% 90%, 60% 80%, 50% 100%, 40% 80%,
+      20% 90%, 25% 68%, 0% 65%, 18% 50%,
+      0% 35%, 25% 32%, 20% 10%, 40% 20%
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+    transform: rotate(10deg);
+  }
+
+  .starburst span {
+    font-size: 22px;
+    color: #000;
+    text-align: center;
+    line-height: 1;
+    transform: rotate(-10deg);
+  }
+
+  /* Bottom badge */
+  .badge {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    background: #000;
+    color: #06BEE1;
+    padding: 8px 18px;
+    font-size: 16px;
+    letter-spacing: 4px;
+    border: 3px solid #06BEE1;
+    transform: rotate(3deg);
+    z-index: 3;
+  }
+
+  .badge small {
+    display: block;
+    color: #FFD93D;
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  /* Side A marker */
+  .side-a {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    width: 70px;
+    height: 70px;
+    background: #FF1F8F;
+    border: 4px solid #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 38px;
+    color: #fff;
+    z-index: 3;
+    box-shadow: 4px 4px 0 #000;
+  }
+</style>
+</head>
+<body>
+  <div class="poster">
+
+    <div class="banner">
+      <h1>MIXTAPE</h1>
+      <p>★ HIGH FIDELITY ★ STEREO ★ 1986 ★</p>
+    </div>
+
+    <div class="cassette">
+      <div class="label">
+        <div class="title">★ AWESOME MIX VOL.1 ★</div>
+        <div class="tracks">
+          01. COME AS YOU ARE &nbsp; 02. TEARS IN HEAVEN<br>
+          03. SWEET DREAMS &nbsp;&nbsp;&nbsp;&nbsp; 04. TAKE ON ME<br>
+          05. BLUE MONDAY &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 06. DON'T STOP
+        </div>
+      </div>
+
+      <div class="window">
+        <div class="tape-strip"></div>
+        <div class="reel"></div>
+        <div class="reel" style="animation-direction: reverse;"></div>
+      </div>
+
+      <div class="teeth"></div>
+    </div>
+
+    <div class="starburst"><span>NEW!<br>HITS!</span></div>
+
+    <div class="badge">
+      C-90
+      <small>CHROMIUM DIOXIDE</small>
+    </div>
+
+    <div class="side-a">A</div>
+
+  </div>
+</body>
+</html>
+
