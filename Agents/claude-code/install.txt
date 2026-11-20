@@ -89,5 +89,12 @@ ollama launch opencode --model qwen3-coder
 ollama launch hermes --model qwen3-coder
 ollama launch openclaw --model qwen3-coder
 
+---------------------------------------------------
+
+Nemotron
+
+
+https://huggingface.co/nvidia/NVIDIA-Nemotron-3.5-Transcribe-30B-A4B
+https://github.com/NVIDIA-NeMo/Nemotron
 
 
